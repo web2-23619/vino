@@ -11,8 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('liste_achats', function (Blueprint $table) {
+        Schema::create('bottles', function (Blueprint $table) {
             $table->id();
+			$table->string('name');
+			$table->decimal('price', 6 ,2);
+			$table->string('image_url');
+			$table->string('country');
+			$table->integer('volume');
+			$table->string('type');
+			$table->string('upc_saq');
             $table->timestamps();
         });
     }
@@ -22,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('liste_achats');
+        Schema::dropIfExists('bouteilles');
     }
 };
