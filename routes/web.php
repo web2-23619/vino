@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('layouts/app');
 });
+
+
+route::get('/spider', [App\Http\Controllers\SpiderController::class, 'index'])->name('spider');
