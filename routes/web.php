@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CellarController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('layouts/app');
 });
+
+
+Route::get('/cellar', [CellarController::class, 'index'])->name('cellar.index');
+Route::delete('/cellar/{task}', [CellarController::class, 'destroy'])->name('cellar.delete');
