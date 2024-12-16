@@ -1,0 +1,68 @@
+:root {
+	/*============================ */
+	/* = COLORS */
+	/*============================ */
+	--clair: #fefef2;
+	--fonce: #4a4a48;
+	--tres-fonce: #10040a;
+	--contraste: #53233b;
+	--contraste-fonce: #3b0d1b;
+
+	/*============================ */
+	/* = SPACING */
+	/*============================ */
+	--espace-pico: 0.1rem;
+	--espace-nano: 0.3rem;
+	--espace-micro: 0.5rem;
+	/*--- */
+	--espace-xs: 1rem;
+	--espace-s: 1.5rem;
+	--espace-m: 2rem;
+	--espace-l: 4rem;
+	--espace-xl: 6rem;
+	--espace-xxl: 8rem;
+
+	/*========================= */
+	/* = FONT-FAMILY */
+	/*========================= */
+	--police-accent: "Montserrat", "Gill Sans", "Gill Sans MT", Calibri,
+		"Trebuchet MS", sans-serif;
+	--police-regular: "Hind Madurai", "Helvetica", "Arial", sans-serif;
+
+	/*========================= */
+	/* = FONT-SIZE */
+	/*========================= */
+	--police-xs: 0.694rem;
+	--police-s: 0.833rem;
+	--police-std: 1rem;
+	--police-m: 1.200rem;
+	--police-l: 1.440rem;
+	--police-xl: 1.728rem;
+	--police-xxl: 2.074rem;
+	--police-mega: 2.488rem;
+	--police-giga: 2.896rem;
+
+	/*============================ */
+	/* = TAILLE BORDURE */
+	/*============================ */
+	--bordure-s: 1px;
+	--bordure-m: 2px;
+	--bordure-l: 3px;
+
+	/*========================= */
+	/* = RAYON */
+	/*========================= */
+	--rayon-s: 2px;
+	--rayon-m: 3px;
+	--rayon-l: 5px;
+	--rayon-xl: 15px;
+
+	/*========================= */
+	/* = DUREE */
+	/*========================= */
+	--duree-x-rapide: 80ms;
+	--duree-rapide: 200ms;
+	--duree-std: 300ms;
+	--duree-lent: 500ms;
+	--duree-x-lent: 750ms;
+}
