@@ -1,0 +1,33 @@
+body{
+	max-width: 430px;
+	margin-inline:auto;
+	background-color: var(--contraste);
+
+	position: relative;
+	display: flex;
+	flex-direction: column;
+
+	height: 100dvh;
+}
+
+body > * {
+	background-color: var(--clair);
+	padding-inline: var(--espace-m);
+}
+
+body > header {
+	padding-block: var(--espace-s);
+}
+
+body > main {
+	flex-grow: 1;
+}
+
+body > footer {
+	padding: var(--espace-m);
+	background-color: var(--fonce);
+	
+	position: sticky;
+	bottom: 0;
+	order: 1;
+}

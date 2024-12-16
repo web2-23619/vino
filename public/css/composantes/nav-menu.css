@@ -1,0 +1,39 @@
+.nav-menu{
+	display: flex;
+	flex-direction: row;
+	gap: var(--espace-xs);
+	align-items: start;
+	justify-content: space-between;
+
+	transition-property: scale;
+	transition-duration: var(--duree-rapide);
+	transition-timing-function: ease-in-out;
+}
+
+.nav-menu__item{
+	font-family: var(--police-accent);
+	color: var(--clair);
+	font-size: var(--police-xs);
+
+	width: max-content;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--espace-micro);
+	align-items: center;
+	justify-content: center;
+
+	svg{
+		height: 24px;
+		max-width: 24px;
+		fill: var(--clair);
+	}
+
+	path{
+		fill: var(--clair);
+	}
+}
+
+.nav-menu__item:active{
+	transform: scale(0.95);
+}
