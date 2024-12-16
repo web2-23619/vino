@@ -19,5 +19,5 @@ Route::get('/', function () {
 });
 
 
-Route::get('/cellar', [CellarController::class, 'index'])->name('cellar.index');
-Route::delete('/cellar/{task}', [CellarController::class, 'destroy'])->name('cellar.delete');
+Route::get('/cellier', [CellarController::class, 'index'])->name('cellar.index');
+Route::get('supprimer/cellier/{cellar}', [CellarController::class, 'destroy'])->name('cellar.delete');
