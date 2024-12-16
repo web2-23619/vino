@@ -16,6 +16,6 @@
 }
 
 
-.cellier + .cellier {
+* + .cellier {
 	margin-top: var(--espace-s);
 }

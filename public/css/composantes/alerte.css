@@ -1,0 +1,24 @@
+.alerte {
+    display: flex;
+	align-items: center;
+    justify-content: space-between;
+
+    border-radius: var(--rayon-m);
+    padding-inline: var(--espace-xs);
+    padding-block: var(--espace-micro);
+
+    background-color: color-mix(in oklab, var(--couleur) 20%, white 80%);
+    border: var(--bordure-s) solid var(--couleur);
+
+	& button {
+		padding: var(--espace-nano);
+	}
+}
+
+.alerte_succes {
+    --couleur: lime;
+}
+
+.alerte_erreur {
+    --couleur: tomato;
+}

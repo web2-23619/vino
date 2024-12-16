@@ -64,6 +64,6 @@ class CellarController extends Controller
     {
 		$cellar->delete();
 
-		return	redirect()->route('cellar.index')->with('success', 'Cellier supprimé avec succès');
+		return	redirect()->route('cellar.index')->with('succes', 'Cellier supprimé avec succès');
     }
 }

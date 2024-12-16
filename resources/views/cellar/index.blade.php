@@ -5,7 +5,19 @@
 	<header>
 		<h2>Celliers</h2>
 	</header>
-	@foreach($cellars as $cellar)
+	@if(session('succes'))
+	<div class="alerte alerte_succes">
+		<p>{{ session('succes') }}</p>
+		<button data-js-action="fermer">x</button>
+	</div>
+	@endif
+	@if(session('erreur'))
+	<div class="alerte alerte_erreur">
+		<p>{{ session('erreur') }}</p>
+		<button data-js-action="fermer">x</button>
+	</div>
+	@endif
+	@forelse($cellars as $cellar)
 	<article class="cellier">
 		<p>{{$cellar->name}}</p>
 		<div class="menu-deroulant">
@@ -22,6 +34,8 @@
 			</ul>
 		</div>
 	</article>
-	@endforeach
+	@empty
+	<p>Aucun cellier</p>
+	@endforelse
 </section>
 @endsection

@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>{{ config('app.name') }} - @yield('title')</title>
 	<link rel="stylesheet" href="{{ asset('css/main.css') }}">
+	<script type="module" src="{{ asset('js/main.js') }}"></script>
 </head>
 
 <body>
@@ -13,6 +14,14 @@
 		<h1>Vino</h1>
 	</header>
 	<main>
+		<!-- Template pour l'utilisation des modales, ne pas supprimer-->
+		<template id="modale-action">
+			<div class="modale-action">
+				<div class="modale-action__contenu">
+					<p class="modale-action__message">{{}}</p>
+				</div>
+			</div>
+		</template>
 		@yield('content')
 	</main>
 	<footer>
