@@ -9,6 +9,11 @@ class Cellar extends Model
 {
     use HasFactory;
 
-	protected $fillable = ['nom', 'quantite', 'user_id'];
+	protected $fillable = ['name', 'quantity', 'user_id'];
+
+	public function user()
+	{
+		return $this->belongsTo(User::class);
+	}
 
 }
