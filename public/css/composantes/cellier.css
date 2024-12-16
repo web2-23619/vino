@@ -15,11 +15,6 @@
 	}
 }
 
-.cellier > button {
-	border: none;
-	background-color: transparent;
-	padding: var(--espace-micro);
-}
 
 .cellier + .cellier {
 	margin-top: var(--espace-s);

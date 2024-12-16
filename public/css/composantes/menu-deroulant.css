@@ -1,0 +1,41 @@
+.menu-deroulant {
+    position: relative;
+
+    & [type="checkbox"] {
+        appearance: none;
+        &::after {
+            content: "⋮";
+        }
+    }
+
+    [type="checkbox"]:not(:checked) + .menu-deroulant__contenu {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    & [type="checkbox"]:checked  + .menu-deroulant__contenu {
+        opacity: 1;
+    }
+}
+.menu-deroulant__contenu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--espace-nano);
+
+	background-color: var(--contraste);
+
+	& *:is(a, button) {
+		display: block;
+
+		font-size: var(--police-s);
+		font-family: var(--police-regular);
+		color: var(--clair);
+
+		padding-inline: var(--espace-xs);
+		padding-block: var(--espace-micro);
+	}
+}
