@@ -28,7 +28,7 @@
 
 	background-color: var(--contraste);
 
-	& *:is(a, button) {
+	& *:is(a, button, li) {
 		display: block;
 
 		font-size: var(--police-s);
