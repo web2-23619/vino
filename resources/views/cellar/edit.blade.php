@@ -1,30 +1,28 @@
 @extends('layouts.app')
 @section('title', 'Modifier cellier')
 @section('content')
-@section('content')
-<section>
+<section class="register-page">
 	<header>
 		<h2>Modifier le Cellier</h2>
 	</header>
-	<form action="{{ route('cellar.update', $cellar->id) }}" method="POST">
+	<form action="{{ route('cellar.update', $cellar->id) }}" method="POST" class="register-form">
 		@csrf
 		@method('PUT')
-
-		<label for="name">Nom:</label>
-		<input type="text" name="name" id="name" value="{{ old('name', $cellar->name) }}" required>
-		@error('name')
-		<div>{{ $message }}</div>
-		@enderror
-
-		<label for="quantity">Quantité:</label>
-		<input type="number" name="quantity" id="quantity" value="{{ old('quantity', $cellar->quantity) }}" required>
-		@error('quantity')
-		<div>{{ $message }}</div>
-		@enderror
-
-		<button type="submit">Modifier</button>
+		<div class="form-group">
+			<label for="name">Nom:</label>
+			<input type="text" name="name" id="name" value="{{ old('name', $cellar->name) }}" required>
+			@error('name')
+			<div>{{ $message }}</div>
+			@enderror
+		</div>
+		<div class="form-group">
+			<label for="quantity">Quantité:</label>
+			<input type="number" name="quantity" id="quantity" value="{{ old('quantity', $cellar->quantity) }}" required>
+			@error('quantity')
+			<div>{{ $message }}</div>
+			@enderror
+		</div>
+		<button type="submit" class="btn">Modifier</button>
 	</form>
 </section>
-
-
 @endsection
