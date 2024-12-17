@@ -2,11 +2,9 @@
 
 use App\Http\Controllers\CellarController;
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
-
-use App\Http\Controllers\CellarController;
+use App\Http\Controllers\SpiderController;
 
 
 /*
@@ -23,6 +21,8 @@ use App\Http\Controllers\CellarController;
 Route::get('/', function () {
     return view('layouts/app');
 });
+
+route::get('/spider', [App\Http\Controllers\SpiderController::class, 'index'])->name('spider');
 
 
 Route::middleware('auth')->group(function(){
@@ -42,9 +42,6 @@ Route::put('/password/reset/{user}/{token}', [UserController::class, 'resetUpdat
 Route::get('/login', [AuthController::class, 'create'])->name('login');
 Route::post('/login', [AuthController::class, 'store'])->name('login.store');
 Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
-
-
-route::get('/spider', [App\Http\Controllers\SpiderController::class, 'index'])->name('spider');
 
 Route::delete('supprimer/cellier/{cellar}', [CellarController::class, 'destroy'])->name('cellar.delete');
 
