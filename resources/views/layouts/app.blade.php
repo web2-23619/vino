@@ -7,7 +7,7 @@
 	<title>{{ config('app.name') }} - @yield('title')</title>
 	<link rel="stylesheet" href="{{ asset('css/main.css') }}">
 	<script src="{{ asset('js/logout.js') }}" defer></script>
-	<script type="module" src="{{ asset('js/main.js') }}"></script>
+	<script type="module" src="@yield('js')"></script>
 
 </head>
 

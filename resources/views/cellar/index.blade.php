@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('js', asset('js/pages/celliers.js'))
 @section('title', 'Celliers')
 @section('content')
 <section>
