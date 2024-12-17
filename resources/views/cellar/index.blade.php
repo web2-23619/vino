@@ -32,7 +32,6 @@
 	<p>Aucun cellier</p>
 	@endforelse
 	<!-- Bouton Ajouter Cellier sticky -->
-	<a href="{{ route('cellar.create') }}" class="add-cellar-btn">Ajouter un Cellier</a>
 </section>
 <!-- Template pour l'utilisation des modales, ne pas supprimer-->
 <template id="supprimerCellier">

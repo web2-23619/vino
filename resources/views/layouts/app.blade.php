@@ -19,6 +19,11 @@
 		@yield('content')
 	</main>
 	<footer>
+		@if(isset($addButton))
+		<div>
+			<a href="{{ route('cellar.create') }}" class="btn-add">✚ Ajouter un Cellier</a>
+		</div>
+		@endif
 		<nav class="nav-menu">
 			<a href="{{ route('cellar.index') }}" class="nav-menu__item">
 				<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
@@ -75,37 +80,37 @@
 					<path d="M20,19v1a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V19a6,6,0,0,1,6-6h4A6,6,0,0,1,20,19Z"
 						fill="#fefef2" />
 				</svg>Profile</a> -->
-				@auth
-    <!-- Profile link when logged in -->
-    <a href="{{ route('user.profile') }}" class="nav-menu__item">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <title>Icone avatar</title>
-            <circle cx="12" cy="8" fill="#fefef2" r="4" />
-            <path d="M20,19v1a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V19a6,6,0,0,1,6-6h4A6,6,0,0,1,20,19Z" fill="#fefef2" />
-        </svg>Profil
-    </a>
+			@auth
+			<!-- Profile link when logged in -->
+			<a href="{{ route('user.profile') }}" class="nav-menu__item">
+				<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<title>Icone avatar</title>
+					<circle cx="12" cy="8" fill="#fefef2" r="4" />
+					<path d="M20,19v1a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V19a6,6,0,0,1,6-6h4A6,6,0,0,1,20,19Z" fill="#fefef2" />
+				</svg>Profil
+			</a>
 
-    <!-- Logout button -->
-    <a href="{{ route('logout') }}" class="nav-menu__item logout-link">
-        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-            <title>Logout</title>
-            <path d="M502.6 233.4l-176-160A24 24 0 0 0 288 96v72H176c-8.8 0-16 7.2-16 16v144c0 8.8 7.2 16 16 16h112v72a24 24 0 0 0 38.6 18.6l176-160c9.6-8.7 9.6-23.5 0-32.2z" />
-        </svg>Déconnexion
-    </a>
-    <!-- Hidden logout form -->
-    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-        @csrf
-    </form>
-@else
-    <!-- Show Login link when not authenticated -->
-    <a href="{{ route('login') }}" class="nav-menu__item">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <title>Icone avatar</title>
-            <circle cx="12" cy="8" fill="#fefef2" r="4" />
-            <path d="M20,19v1a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V19a6,6,0,0,1,6-6h4A6,6,0,0,1,20,19Z" fill="#fefef2" />
-        </svg>Connexion
-    </a>
-@endauth
+			<!-- Logout button -->
+			<a href="{{ route('logout') }}" class="nav-menu__item logout-link">
+				<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+					<title>Logout</title>
+					<path d="M502.6 233.4l-176-160A24 24 0 0 0 288 96v72H176c-8.8 0-16 7.2-16 16v144c0 8.8 7.2 16 16 16h112v72a24 24 0 0 0 38.6 18.6l176-160c9.6-8.7 9.6-23.5 0-32.2z" />
+				</svg>Déconnexion
+			</a>
+			<!-- Hidden logout form -->
+			<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+				@csrf
+			</form>
+			@else
+			<!-- Show Login link when not authenticated -->
+			<a href="{{ route('login') }}" class="nav-menu__item">
+				<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<title>Icone avatar</title>
+					<circle cx="12" cy="8" fill="#fefef2" r="4" />
+					<path d="M20,19v1a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V19a6,6,0,0,1,6-6h4A6,6,0,0,1,20,19Z" fill="#fefef2" />
+				</svg>Connexion
+			</a>
+			@endauth
 
 		</nav>
 	</footer>

@@ -15,7 +15,7 @@ class CellarController extends Controller
 		  $user_id = 3;
 		  $cellars = Cellar::select()->where('user_id', $user_id)->orderBy('name')->get();
         // Retourner la vue avec la liste des celliers
-        return view('cellar.index', compact('cellars'));
+        return view('cellar.index', ['cellars'=>$cellars, 'addButton' => true]);
     }
     
 
