@@ -24,7 +24,7 @@
 			<input type="checkbox" aria-label="bouton pour ouvrir menu des actions">
 			<ul class="menu-deroulant__contenu">
 				<!-- <li><a class="button" href="">Modifier</a></li> -->
-				<li data-js-action="supprimerCellier" data-js-cellier="{{ $cellar->id }}" data-js-cellierName="{{$cellar->name}}">Supprimer</li>
+				<li data-js-action="supprimerCellier" data-js-cellier="{{ $cellar->id }}" data-js-Name="{{$cellar->name}}">Supprimer</li>
 			</ul>
 		</div>
 	</article>

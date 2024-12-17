@@ -44,7 +44,7 @@ export default class App {
 
 		const declencheur = event.target;
 		const cellierID = declencheur.dataset.jsCellier;
-		const cellierNom = declencheur.dataset.jsCellierName;
+		const cellierNom = declencheur.dataset.jsName;
 
 		console.log(cellierNom);
 
