@@ -1,0 +1,21 @@
+.cellier {
+	display: flex;
+	flex-direction: row;
+	gap: var(--espace-xl);
+	align-items: center;
+	justify-content: space-between;
+
+	p{
+		font-size: var(--police-m);
+	}
+
+	svg {
+		height: 16px;
+		fill: var(--fonce);
+	}
+}
+
+
+* + .cellier {
+	margin-top: var(--espace-s);
+}
