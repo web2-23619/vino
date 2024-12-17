@@ -3,7 +3,7 @@
 @section('content')
     <h1>Ajouter un Cellier</h1>
     
-    <form action="{{ route('cellars.store') }}" method="POST">
+    <form action="{{ route('cellar.store') }}" method="POST">
         @csrf
         <label for="name">Nom:</label> 
         <input type="text" name="name" id="name" value="{{ old('name') }}" required>
