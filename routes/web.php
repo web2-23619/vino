@@ -1,9 +1,11 @@
 <?php
-use Illuminate\Support\Facades\Route;
+
 
 use App\Http\Controllers\CellarController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SpiderController;
 
 
 /*
@@ -20,6 +22,8 @@ use App\Http\Controllers\AuthController;
 Route::get('/', function () {
     return view('layouts/app');
 });
+
+route::get('/spider', [App\Http\Controllers\SpiderController::class, 'index'])->name('spider');
 
 
 Route::middleware('auth')->group(function(){
@@ -40,8 +44,6 @@ Route::get('/login', [AuthController::class, 'create'])->name('login');
 Route::post('/login', [AuthController::class, 'store'])->name('login.store');
 Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
 
-
-Route::get('/cellier', [CellarController::class, 'index'])->name('cellar.index');
 Route::delete('supprimer/cellier/{cellar}', [CellarController::class, 'destroy'])->name('cellar.delete');
 
 // Affiche la liste des celliers
