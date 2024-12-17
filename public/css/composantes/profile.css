@@ -1,0 +1,87 @@
+/* Profile Page Styling */
+.profile-page {
+    padding: var(--espace-m);
+    font-family: var(--police-regular);
+    color: var(--fonce);
+}
+
+/* Header Styling */
+.profile-header {
+    text-align: center;
+    margin-bottom: var(--espace-s);
+}
+
+.profile-header h2 {
+    font-family: var(--police-accent);
+    font-size: var(--police-xl);
+    font-style: italic;
+}
+
+/* Stats Section */
+.profile-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: var(--espace-m);
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: var(--police-mega);
+    font-weight: bold;
+}
+
+.stat-label {
+    font-size: var(--police-std);
+    color: var(--contraste);
+}
+
+/* Bottles List Section */
+.bottles-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-s);
+}
+
+.bottle-item {
+    display: flex;
+    align-items: center;
+    gap: var(--espace-s);
+    border-bottom: 1px solid var(--contraste-fonce);
+    padding-bottom: var(--espace-xs);
+}
+
+.bottle-placeholder {
+    width: 80px;
+    height: 80px;
+    background-color: var(--clair);
+    border: 1px solid var(--contraste-fonce);
+}
+
+.bottle-name {
+    font-size: var(--police-m);
+    font-weight: bold;
+}
+
+.bottle-desc {
+    font-size: var(--police-xs);
+    color: var(--fonce);
+}
+
+.bottle-quantity {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--espace-nano);
+}
+
+.bottle-quantity button {
+    border: none;
+    background-color: var(--contraste-fonce);
+    color: white;
+    padding: var(--espace-nano) var(--espace-xs);
+    border-radius: var(--rayon-m);
+    cursor: pointer;
+}
