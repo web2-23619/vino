@@ -12,12 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cellars', function (Blueprint $table) {
+            // $table->id();
+			// $table->string('name');
+			// $table->integer('quantity');
+			// $table->unsignedBigInteger('user_id');
+            // $table->timestamps();
+			// $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->id();
-			$table->string('name');
-			$table->integer('quantity');
-			$table->unsignedBigInteger('user_id');
+            $table->string('name');
+            $table->integer('quantity');
+            $table->unsignedBigInteger('user_id')->nullable(); 
             $table->timestamps();
-			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
