@@ -12,17 +12,19 @@ class CellarController extends Controller
      */
     public function index()
     {
-		$user_id = 3;
-		$cellars = Cellar::select()->where('user_id', $user_id)->orderBy('name')->get();
-        return view('cellar/index', ["cellars"=>$cellars]);
+		  $user_id = 3;
+		  $cellars = Cellar::select()->where('user_id', $user_id)->orderBy('name')->get();
+        // Retourner la vue avec la liste des celliers
+        return view('cellars.index', compact('cellars'));
     }
+    
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        return view('cellars.create');
     }
 
     /**
@@ -30,7 +32,22 @@ class CellarController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validation des données du formulaire
+        $request->validate([
+            'name' => 'required|string|max:255', 
+            'quantity' => 'required|integer|min:0', 
+        ]);
+    
+        // Création du nouveau cellier
+        $cellar = new Cellar([
+            'name' => $request->input('name'),
+            'quantity' => $request->input('quantity'), 
+            // 'user_id' => auth()->id(), 
+        ]);
+    
+        $cellar->save();
+    
+        return redirect()->route('cellars.index')->with('success', 'Cellier ajouté avec succès!');
     }
 
     /**
@@ -46,7 +63,12 @@ class CellarController extends Controller
      */
     public function edit(Cellar $cellar)
     {
-        //
+        
+        // if ($cellar->user_id !== auth()->id()) {
+        //     return redirect()->route('cellars.index')->with('error', 'Accès non autorisé!');
+        // }
+    
+        return view('cellars.edit', compact('cellar'));
     }
 
     /**
@@ -54,16 +76,35 @@ class CellarController extends Controller
      */
     public function update(Request $request, Cellar $cellar)
     {
-        //
+        // Validation des données du formulaire
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'quantity' => 'required|integer|min:0',
+        ]);
+    
+
+        // if ($cellar->user_id !== auth()->id()) {
+        //     return redirect()->route('cellars.index')->with('error', 'Accès non autorisé!');
+        // }
+    
+        // Mise à jour des données du cellier
+        $cellar->update([
+            'name' => $request->input('name'),
+            'quantity' => $request->input('quantity'),
+        ]);
+    
+        return redirect()->route('cellars.index')->with('success', 'Cellier modifié avec succès!');
     }
+    
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Cellar $cellar)
     {
-		$cellar->delete();
+    $cellar->delete();
 
 		return	redirect()->route('cellar.index')->with('succes', 'Cellier supprimé avec succès');
+
     }
 }
