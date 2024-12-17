@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Liste des vins</h1>
-    <form action="{{ route('spider') }}">
+    <form action="{{ route('spider') }}" method="GET">
         <button type="submit">Update list</button>
     </form>
     @foreach ($items as $item)

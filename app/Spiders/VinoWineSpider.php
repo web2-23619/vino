@@ -10,6 +10,9 @@ use RoachPHP\Http\Response;
 use RoachPHP\Spider\BasicSpider;
 use RoachPHP\Spider\ParseResult;
 use RoachPHP\Downloader\Middleware\UserAgentMiddleware;
+use RoachPHP\Roach;
+
+Roach::startSpider(VinoWineSpider::class);
 
 class VinoWineSpider extends BasicSpider
 {

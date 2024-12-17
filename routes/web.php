@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\CellarController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CellarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +20,7 @@ Route::get('/', function () {
 
 
 route::get('/spider', [App\Http\Controllers\SpiderController::class, 'index'])->name('spider');
-Route::get('/cellier', [CellarController::class, 'index'])->name('cellar.index');
+
 Route::delete('supprimer/cellier/{cellar}', [CellarController::class, 'destroy'])->name('cellar.delete');
 
 // Affiche la liste des celliers
