@@ -12,9 +12,8 @@ class CellarController extends Controller
      */
     public function index()
     {
-        // Récupérer tous les celliers de la base de données
-        $cellars = Cellar::all();
-    
+		  $user_id = 3;
+		  $cellars = Cellar::select()->where('user_id', $user_id)->orderBy('name')->get();
         // Retourner la vue avec la liste des celliers
         return view('cellars.index', compact('cellars'));
     }
@@ -27,7 +26,6 @@ class CellarController extends Controller
     {
         return view('cellars.create');
     }
-    
 
     /**
      * Store a newly created resource in storage.
@@ -51,7 +49,6 @@ class CellarController extends Controller
     
         return redirect()->route('cellars.index')->with('success', 'Cellier ajouté avec succès!');
     }
-    
 
     /**
      * Display the specified resource.
@@ -73,7 +70,6 @@ class CellarController extends Controller
     
         return view('cellars.edit', compact('cellar'));
     }
-    
 
     /**
      * Update the specified resource in storage.
@@ -106,6 +102,9 @@ class CellarController extends Controller
      */
     public function destroy(Cellar $cellar)
     {
-        //
+    $cellar->delete();
+
+		return	redirect()->route('cellar.index')->with('succes', 'Cellier supprimé avec succès');
+
     }
 }
