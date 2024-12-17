@@ -6,9 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>{{ config('app.name') }} - @yield('title')</title>
 	<link rel="stylesheet" href="{{ asset('css/main.css') }}">
-
 	<script src="{{ asset('js/logout.js') }}" defer></script>
-
 	<script type="module" src="{{ asset('js/main.js') }}"></script>
 
 </head>
@@ -22,7 +20,7 @@
 	</main>
 	<footer>
 		<nav class="nav-menu">
-			<a href="" class="nav-menu__item">
+			<a href="{{ route('cellar.index') }}" class="nav-menu__item">
 				<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
 					<g id="Barrels_storage">
 						<path
