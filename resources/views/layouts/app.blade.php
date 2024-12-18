@@ -6,9 +6,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>{{ config('app.name') }} - @yield('title')</title>
 	<link rel="stylesheet" href="{{ asset('css/main.css') }}">
-
-	<script src="{{ asset('js/logout.js') }}" defer></script>
-
 	<script type="module" src="{{ asset('js/main.js') }}"></script>
 
 </head>
@@ -20,7 +17,9 @@
 	<main>
 		@yield('content')
 	</main>
+	@auth
 	<footer>
+		
 		<nav class="nav-menu">
 			<a href="" class="nav-menu__item">
 				<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
@@ -70,45 +69,17 @@
 					<path
 						d="M560 192l-101.6 .002l-93.11-179.1c-6.062-11.72-20.61-16.37-32.36-10.22c-11.78 6.094-16.34 20.59-10.22 32.34l81.61 156.9H171.7l81.61-156.9C259.4 23.32 254.9 8.822 243.1 2.728C231.3-3.397 216.8 1.228 210.7 12.95l-93.11 179.1L16 192c-8.836 0-16 7.164-16 15.1v32c0 8.836 7.164 15.1 16 15.1h23.11l45.75 205.9C91.37 491.2 117.3 512 147.3 512h281.3c29.1 0 55.97-20.83 62.48-50.12l45.75-205.9H560c8.838 0 16-7.164 16-15.1v-32C576 199.2 568.8 192 560 192zM192 432c0 8.834-7.166 15.1-16 15.1c-8.832 0-16-7.166-16-15.1V304c0-8.834 7.168-15.1 16-15.1c8.834 0 16 7.166 16 15.1V432zM304 432c0 8.834-7.166 15.1-16 15.1c-8.832 0-16-7.165-16-15.1V304c0-8.834 7.168-15.1 16-15.1c8.834 0 16 7.166 16 15.1V432zM416 432c0 8.834-7.166 15.1-16 15.1c-8.832 0-16-7.166-16-15.1V304c0-8.834 7.168-15.1 16-15.1c8.834 0 16 7.166 16 15.1V432z" />
 				</svg>Liste</a>
-			<!-- <a href="{{ route('login') }}" class="nav-menu__item">
+			<a href="" class="nav-menu__item">
 				<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 					<title>Icone avatar</title>
 					<circle cx="12" cy="8" fill="#fefef2" r="4" />
 					<path d="M20,19v1a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V19a6,6,0,0,1,6-6h4A6,6,0,0,1,20,19Z"
 						fill="#fefef2" />
-				</svg>Profile</a> -->
-				@auth
-    <!-- Profile link when logged in -->
-    <a href="{{ route('user.profile') }}" class="nav-menu__item">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <title>Icone avatar</title>
-            <circle cx="12" cy="8" fill="#fefef2" r="4" />
-            <path d="M20,19v1a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V19a6,6,0,0,1,6-6h4A6,6,0,0,1,20,19Z" fill="#fefef2" />
-        </svg>Profil
-    </a>
-
-    <!-- Logout button -->
-    <a href="{{ route('logout') }}" class="nav-menu__item logout-link">
-        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-            <title>Logout</title>
-            <path d="M502.6 233.4l-176-160A24 24 0 0 0 288 96v72H176c-8.8 0-16 7.2-16 16v144c0 8.8 7.2 16 16 16h112v72a24 24 0 0 0 38.6 18.6l176-160c9.6-8.7 9.6-23.5 0-32.2z" />
-        </svg>Déconnexion
-    </a>
-    <!-- Hidden logout form -->
-    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-        @csrf
-    </form>
-@else
-    <!-- Show Login link when not authenticated -->
-    <a href="{{ route('login') }}" class="nav-menu__item">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <title>Icone avatar</title>
-            <circle cx="12" cy="8" fill="#fefef2" r="4" />
-            <path d="M20,19v1a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V19a6,6,0,0,1,6-6h4A6,6,0,0,1,20,19Z" fill="#fefef2" />
-        </svg>Connexion
-    </a>
-@endauth
+				</svg>Profile</a>
+	
 
 		</nav>
+	
 	</footer>
+	@endauth
 </body>

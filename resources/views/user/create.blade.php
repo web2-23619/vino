@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Enregistrement')
 @section('content')
-@if ($errors->any())
+<!-- @if ($errors->any())
     <div>
         <ul>
             @foreach ($errors->all() as $error)
@@ -9,12 +9,9 @@
             @endforeach
         </ul>
     </div>
-@endif
+@endif -->
 
 <section class="register-page">
-    <div class="logo">
-        <img src="{{ asset('images/logo.png') }}" alt="Vino Logo">
-    </div>
     <h2 class="register-header">Enregistrement</h2>
     <form class="register-form" action="{{ route('user.store') }}" method="POST">
         @csrf 
