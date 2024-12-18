@@ -12,12 +12,12 @@
         @csrf
         @method('PUT')
 
-        <div>
+        <div class="form">
             <label for="username">Nom</label>
             <input type="text" id="username" name="username" value="{{ $user->username }}" required>
         </div>
 
-        <div>
+        <div class="form">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" value="{{ $user->email }}" required>
         </div>

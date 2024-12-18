@@ -17,7 +17,9 @@
 	<main>
 		@yield('content')
 	</main>
+	@auth
 	<footer>
+		
 		<nav class="nav-menu">
 			<a href="" class="nav-menu__item">
 				<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
@@ -77,5 +79,7 @@
 	
 
 		</nav>
+	
 	</footer>
+	@endauth
 </body>
