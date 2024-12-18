@@ -6,6 +6,29 @@
     <header class="profile-header">
         <h2 class="username">{{$user->username}}</h2>
     </header>
+    <div class="menu-deroulant">
+    <input type="checkbox" id="menu-toggle" aria-label="bouton pour ouvrir menu des actions">
+
+    <ul class="menu-deroulant__contenu">
+        <li>
+            <a href="{{ route('user.edit', $user->id) }}">Modifier</a>
+        </li>
+        <li>
+            <form action="{{ route('user.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer ?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="menu-button">Supprimer</button>
+            </form>
+        </li>
+        <li>
+            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Déconnexion</a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
+        </li>
+    </ul>
+</div>
+
 
     <!-- Stats Section -->
     <div class="profile-stats">

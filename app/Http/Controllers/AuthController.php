@@ -24,7 +24,7 @@ class AuthController extends Controller
      */
     public function create()
     {
-        return view('auth.create');
+        return view('welcome');
     }
 
     /**
@@ -41,7 +41,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
     
             // Redirect to the profile page
-            return redirect()->route('profile')->with('success', 'Connexion réussie!');
+            return redirect()->route('user.profile')->with('success', 'Connexion réussie!');
         }
     
         return back()->withErrors([
@@ -78,10 +78,12 @@ class AuthController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        Session::flush();
         Auth::logout();
-        return redirect(route('login'));
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('welcome');
     }
 }
