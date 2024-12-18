@@ -46,10 +46,36 @@ class AuthController extends Controller
         }
     
         return back()->withErrors([
-            'email' => 'Les informations d’identification fournies sont incorrectes.',
+            'email' => 'Les informations d\'identification fournies sont incorrectes.',
         ]);
     }
 
+	/**
+	 * used to return token for token based authentification
+	 */
+	public function apiLogin(Request $request)
+	{
+		$credentials = $request->validate([
+			'email' => ['required', 'email'],
+			'password' => ['required'],
+		]);
+
+		if (Auth::attempt($credentials)) {
+			$user = Auth::user();
+
+			// creer un token pour sanctum
+			$token = $user->createToken('Vino')->plainTextToken;
+
+			return response()->json([
+				'message' => 'Login successful',
+				'token' => $token,
+			]);
+		}
+
+		return response()->json([
+			'message' => 'Informations d\'autentification invalides',
+		], 401);
+	}
     
 
     /**
@@ -86,4 +112,17 @@ class AuthController extends Controller
 
         return redirect()->route('welcome')->with('success', 'Déconnexion réussie!');
     }
+
+	/**
+	 * destroy api token
+	 */
+	public function apiLogout(Request $request)
+	{
+		// Revoke the token that was used to authenticate the user
+		$request->user()->tokens->each(function ($token) {
+			$token->delete();
+		});
+
+		return response()->json(['message' => 'Logged out successfully']);
+	}
 }

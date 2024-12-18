@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('js', asset('js/pages/login.js'))
 @section('title', 'Ajouter cellier')
 @section('content')
 <section class="login-page">

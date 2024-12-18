@@ -1,0 +1,76 @@
+.card_purchase {
+    display: flex;
+    gap: var(--espace-micro);
+    align-items: center;
+
+    h3 {
+        font-family: var(--police-accent);
+        font-size: var(--police-s);
+    }
+}
+
+.card_purchase__metainfo {
+    font-size: var(--police-s);
+    color: var(--fonce);
+}
+
+.card_purchase > picture {
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    display: block;
+    height: 10vw;
+
+    img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+}
+
+.card_purchase > section {
+    flex-grow: 1;
+    align-self: stretch;
+    flex-shrink: 1;
+}
+
+.card_purchase > section > header {
+    text-align: initial;
+    margin-bottom: var(--espace-micro);
+}
+
+.card_purchase header > * + * {
+    margin-top: var(--espace-nano);
+}
+
+.card_purchase section > div {
+    display: flex;
+    gap: var(--espace-micro);
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card_purchase__actions {
+    font-family: var(--police-regular);
+
+    display: flex;
+    gap: var(--espace-micro);
+    align-items: center;
+    justify-content: center;
+
+    button {
+        padding: var(--espace-nano);
+        transition-property: transform;
+        transition-duration: var(--duree-x-rapide);
+        transition-timing-function: ease-in-out;
+    }
+
+    button:active {
+        transform: scale(0.95);
+    }
+}
+
+.card_purchase + .card_purchase {
+    margin-top: var(--espace-s);
+}

@@ -22,7 +22,7 @@
 	<footer>
 		@if(isset($addButton))
 		<div>
-			<a href="{{ route('cellar.create') }}" class="btn-add">✚ Ajouter un Cellier</a>
+			<a href="{{ route('cellar.create') }}" class="btn-add">✚ {{$addButton}}</a>
 		</div>
 		@endif
 		<nav class="nav-menu">
