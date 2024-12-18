@@ -32,21 +32,3 @@
     box-sizing: border-box;
 	text-align: center;
 }
-
-button.btn {
-    width: 100%;
-    padding: var(--espace-nano);
-    background-color: var(--contraste-fonce);
-    color: var(--clair);
-    font-size: var(--police-std);
-	font-family: var(--police-regular);
-    text-align: center;
-    border-radius: var(--rayon-s);
-    cursor: pointer;
-    transition: background-color var(--duree-std);
-}
-
-button.btn:hover {
-    background-color: var(--contraste);
-    color: var(--clair);
-}

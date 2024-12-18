@@ -5,7 +5,7 @@
 
 	<div style="width: 300px; height: 150px; background-color: #ccc; border: 1px solid #000;"></div>
 
-	<form class="login-form" action="{{ route('login') }}" method="POST">
+	<form class="form" action="{{ route('login') }}" method="POST">
 		@csrf
 		<div class="form-group">
 			<label for="email">Email</label>
@@ -15,15 +15,15 @@
 			<label for="password">Mot de passe</label>
 			<input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
 		</div>
-		<div class="forgot-password">
+		<div>
 			<a href="{{ route('user.forgot') }}">Mot de passe oublié ?</a>
+			<button type="submit" class="btn">Connexion</button>
 		</div>
-		<button type="submit" class="btn">Connexion</button>
-
-		<div class="register-prompt">
-			<p>Pas encore membre ?</p>
-			<a href="{{ route('user.create') }}" class="btn">Enregistrement</a>
 
 	</form>
+	<div class="register-prompt">
+		<p>Pas encore membre ?</p>
+		<a href="{{ route('user.create') }}" class="btn">Enregistrement</a>
+
 </section>
 @endsection

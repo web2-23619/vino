@@ -13,7 +13,7 @@
 
 <section class="register-page">
     <h2 class="register-header">Enregistrement</h2>
-    <form class="register-form" action="{{ route('user.store') }}" method="POST">
+    <form class="form" action="{{ route('user.store') }}" method="POST">
         @csrf 
         <div class="form-group">
             <label for="username">Nom</label>
