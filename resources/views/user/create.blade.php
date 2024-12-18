@@ -1,18 +1,20 @@
 @extends('layouts.app')
 @section('title', 'Enregistrement')
 @section('content')
-<!-- @if ($errors->any())
-    <div>
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif -->
 
 <section class="register-page">
     <h2 class="register-header">Enregistrement</h2>
+    @if(session('success'))
+        <div class="alerte alerte_succes">
+            <p>{{ session('success') }}</p>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alerte alerte_erreur">
+            <p>{{ session('error') }}</p>
+        </div>
+    @endif
     <form class="register-form" action="{{ route('user.store') }}" method="POST">
         @csrf 
         <div class="form-group">
