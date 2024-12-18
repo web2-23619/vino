@@ -19,8 +19,25 @@
 	</div>
 	@endif
 	@forelse($purchases as $purchase)
-	<article class="cellier">
-		<p>{{$purchase->id}}</p>
+	<article class="card_purchase">
+		<picture>
+			<img src="{{$purchase->bottle->image_url}}" alt="">
+		</picture>
+		<section>
+			<header>
+				<p class="card_purchase__metainfo">{{$purchase->bottle->type}}</p>
+				<h3>{{$purchase->bottle->name}}</h3>
+				<p class="card_purchase__metainfo">{{$purchase->bottle->volume}} ml | {{$purchase->bottle->country}}</p>
+			</header>
+			<div>
+				<p>$ {{$purchase->bottle->price}} / un</p>
+				<div class="card_purchase__actions">
+					<button>-</button>
+					<span>{{$purchase->quantity}}</span>
+					<button>+</button>
+				</div>
+			</div>
+		</section>
 	</article>
 	@empty
 	<p>Aucune bouteilles à acheter</p>

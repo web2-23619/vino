@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Bottle;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,4 +16,9 @@ class Purchase extends Model
 		'bottle_id',
 		'quantity',
 	];
+
+	public function bottle()
+	{
+		return $this->belongsTo(Bottle::class);
+	}
 }
