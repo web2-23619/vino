@@ -20,29 +20,34 @@ use App\Http\Controllers\SpiderController;
 */
 
 Route::get('/', function () {
-    return view('layouts/app');
-});
+    return view('welcome');
+})->name('welcome');
 
 route::get('/spider', [App\Http\Controllers\SpiderController::class, 'index'])->name('spider');
 
 
 Route::middleware('auth')->group(function(){
-    Route::get('/users', [UserController::class, 'index'])->name('user.index');
     Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
+    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('user.destroy');
+    Route::put('/users/{user}', [UserController::class, 'update'])->name('user.update');
 });
+// Registration Routes
 Route::get('/registration', [UserController::class, 'create'])->name('user.create');
 Route::post('/registration', [UserController::class, 'store'])->name('user.store');
 
+// Authentication Routes
+Route::get('/login', [AuthController::class, 'create'])->name('login');
+Route::post('/login', [AuthController::class, 'store'])->name('login.store');
+Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
 
+// Profile Page (requires login)
+Route::middleware('auth')->get('/profile', [UserController::class, 'profile'])->name('user.profile');
 
 Route::get('/password/forgot', [UserController::class, 'forgot'])->name('user.forgot');
 Route::post('/password/forgot', [UserController::class, 'email'])->name('user.email');
 Route::get('/password/reset/{user}/{token}', [UserController::class, 'reset'])->name('user.reset');
 Route::put('/password/reset/{user}/{token}', [UserController::class, 'resetUpdate'])->name('user.reset.update');
-
-Route::get('/login', [AuthController::class, 'create'])->name('login');
-Route::post('/login', [AuthController::class, 'store'])->name('login.store');
-Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
 
 Route::delete('supprimer/cellier/{cellar}', [CellarController::class, 'destroy'])->name('cellar.delete');
 
