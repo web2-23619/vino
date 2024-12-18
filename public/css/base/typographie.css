@@ -3,6 +3,6 @@ h2 {
 	font-size: var(--police-l);
 }
 
-p {
+p, label, input {
 	font-family: var(--police-regular);
 }

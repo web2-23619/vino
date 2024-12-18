@@ -17,9 +17,12 @@
     margin-bottom: var(--espace-s);
 }
 .register-prompt {
-    text-align: center;
-    margin-top: var(--espace-s); /* Adjust spacing using your variable */
-    padding: var(--espace-nano) 0; /* Vertical padding */
+	display: flex;
+	flex-direction: column;
+	gap: var(--espace-nano);
+	align-items: center;
+	justify-content: center;
+
     font-family: var(--police-regular); /* Consistent font style */
 }
 
@@ -27,19 +30,4 @@
     font-size: var(--police-std);
     color: var(--fonce); 
     margin-bottom: var(--espace-nano); 
-}
-
-.register-prompt .btn {
-    display: inline-block;
-    padding: var(--espace-nano) var(--espace-xs); 
-    background-color: var(--contraste-fonce);
-    color: var(--clair); 
-    text-decoration: none; 
-    border-radius: var(--rayon-s);
-    transition: background-color var(--duree-std); 
-}
-.register-prompt .btn:hover {
-    background-color: var(--contraste); 
-    color: var(--clair); 
-   
 }

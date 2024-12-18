@@ -1,4 +1,7 @@
 .nav-menu{
+	background-color: var(--fonce);
+	padding: var(--espace-m);
+
 	display: flex;
 	flex-direction: row;
 	gap: var(--espace-xs);
