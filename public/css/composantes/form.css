@@ -14,15 +14,13 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    margin-bottom: var(--espace-m);
-    margin-top:var(--espace-m) ;
     text-align: center;
+	gap: var(--espace-micro);
 }
 
 .form-group label {
     font-size: var(--police-s);
     color: var(--fonce);
-    margin-bottom: var(--espace-nano);
 }
 
 .form-group input {
@@ -32,6 +30,7 @@
     border: var(--bordure-s) solid var(--fonce);
     border-radius: var(--rayon-s);
     box-sizing: border-box;
+	text-align: center;
 }
 
 button.btn {
@@ -40,8 +39,8 @@ button.btn {
     background-color: var(--contraste-fonce);
     color: var(--clair);
     font-size: var(--police-std);
+	font-family: var(--police-regular);
     text-align: center;
-    border: none;
     border-radius: var(--rayon-s);
     cursor: pointer;
     transition: background-color var(--duree-std);
