@@ -33,7 +33,7 @@ async function deletePurchaseItem(event) {
         },
     });
 
-	//FIXME: optimser pour eviter repetition. modifier classe Alerte
+    //FIXME: optimser pour eviter repetition. modifier classe Alerte
 
     if (response.ok) {
         const gabarit = document.querySelector("template#alerte");
@@ -43,11 +43,12 @@ async function deletePurchaseItem(event) {
 
         document.querySelector("[data-js='header']").after(alert);
 
-
         purchaseItem.remove();
 
         const alertHTML = document.querySelector(".alerte");
         alertHTML.classList.add("alerte_succes");
+
+        new Alerte(alertHTML);
     } else {
         const gabarit = document.querySelector("template#alerte");
         let alert = gabarit.content.cloneNode(true);
@@ -58,5 +59,7 @@ async function deletePurchaseItem(event) {
 
         const alertHTML = document.querySelector(".alerte");
         alertHTML.classList.add("alerte_erreur");
+
+        new Alerte(alertHTML);
     }
 }
