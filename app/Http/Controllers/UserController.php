@@ -18,10 +18,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::select('id', 'username', 'email', 'isAdmin')
-                     ->orderBy('username')
-                     ->get();
-        return view('user.index', ['users' => $users]);
+       //
     }
 
     /**
@@ -54,7 +51,7 @@ class UserController extends Controller
             $user->password = Hash::make($request->password);
             $user->save();
            
-            return redirect()->route('user.profile')->with('success', 'Utilisateur créé avec succès!');
+            return redirect()->route('welcome')->with('success', 'Utilisateur créé avec succès!');
         }
 
         public function profile()
@@ -68,7 +65,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('user.edit', ['user' => $user]);
     }
 
     /**
@@ -76,16 +73,36 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-      //
+      
+        $request->validate([
+            'username' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+        ]);
+    
+    
+        $user->username = $request->input('username');
+        $user->email = $request->input('email');
+        $user->save();
+    
+        return redirect()->route('user.profile')->with('success', 'Profil mis à jour avec succès!');
     }
+    
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(User $user)
     {
-       //
+        if (auth()->user()->id !== $user->id) {
+            return redirect()->route('user.profile')->withErrors('Vous ne pouvez supprimer que votre propre compte.');
+        }
+    
+        $user->delete();
+        Auth::logout();
+    
+        return redirect()->route('welcome')->with('success', 'Compte supprimé avec succès.');
     }
+    
 
     public function forgot()
     {

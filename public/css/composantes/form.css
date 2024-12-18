@@ -1,0 +1,53 @@
+/* form.css - Centralized Form Styles */
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--espace-s); 
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto; 
+}
+
+.form-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--espace-m);
+    margin-top:var(--espace-m) ;
+    text-align: center;
+}
+
+.form-group label {
+    font-size: var(--police-s);
+    color: var(--fonce);
+    margin-bottom: var(--espace-nano);
+}
+
+.form-group input {
+    width: 100%;
+    padding: var(--espace-nano);
+    font-size: var(--police-std);
+    border: var(--bordure-s) solid var(--fonce);
+    border-radius: var(--rayon-s);
+    box-sizing: border-box;
+}
+
+button.btn {
+    width: 100%;
+    padding: var(--espace-nano);
+    background-color: var(--contraste-fonce);
+    color: var(--clair);
+    font-size: var(--police-std);
+    text-align: center;
+    border: none;
+    border-radius: var(--rayon-s);
+    cursor: pointer;
+    transition: background-color var(--duree-std);
+}
+
+button.btn:hover {
+    background-color: var(--contraste);
+    color: var(--clair);
+}
