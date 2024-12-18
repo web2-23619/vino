@@ -6,6 +6,13 @@
 	<header data-js="header">
 		<h2>Liste d'achat</h2>
 	</header>
+	<template id="alerte">
+		<div class="alerte">
+			<p>{{ session('erreur') }}</p>
+			<button data-js-action="fermer">x</button>
+		</div>
+	</template>
+
 	@if(session('succes'))
 	<div class="alerte alerte_succes">
 		<p>{{ session('succes') }}</p>
@@ -19,7 +26,8 @@
 	</div>
 	@endif
 	@forelse($purchases as $purchase)
-	<article class="card_purchase">
+	<article class="card_purchase" data-js-id="{{$purchase->id}}">
+		<button class="btn" data-js-action="supprimer">X</button>
 		<picture>
 			<img src="{{$purchase->bottle->image_url}}" alt="">
 		</picture>

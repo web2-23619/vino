@@ -21,7 +21,6 @@
 						<button type="submit" class="menu-button">Supprimer</button>
 					</form>
 				</li>
-
 				<li>
 					<a data-js-action="logout" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Déconnexion</a>
 					<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
