@@ -27,7 +27,10 @@ function afficherModaleSupressionCellier(event) {
     const cellierID = declencheur.dataset.jsCellier;
     const cellierNom = declencheur.dataset.jsName;
 
-    console.log(cellierNom);
+    const modale = new ModaleAction(cellierID, cellierNom, "supprimerCellier", "supprimer", "cellier");
 
-    const modale = new ModaleAction(cellierID, cellierNom);
+	const articleHTML = declencheur.closest("article");
+	const dropdown = articleHTML.querySelector("[type='checkbox']")
+	console.log(dropdown);
+	dropdown.checked = false;
 }
