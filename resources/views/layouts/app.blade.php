@@ -6,7 +6,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>{{ config('app.name') }} - @yield('title')</title>
 	<link rel="stylesheet" href="{{ asset('css/main.css') }}">
-	<script type="module" src="{{ asset('js/main.js') }}"></script>
+	<script src="{{ asset('js/logout.js') }}" defer></script>
+	<script type="module" src="@yield('js')"></script>
 
 </head>
 
@@ -19,9 +20,13 @@
 	</main>
 	@auth
 	<footer>
-		
+		@if(isset($addButton))
+		<div>
+			<a href="{{ route('cellar.create') }}" class="btn-add">✚ Ajouter un Cellier</a>
+		</div>
+		@endif
 		<nav class="nav-menu">
-			<a href="" class="nav-menu__item">
+			<a href="{{ route('cellar.index') }}" class="nav-menu__item">
 				<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
 					<g id="Barrels_storage">
 						<path
@@ -76,10 +81,7 @@
 					<path d="M20,19v1a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V19a6,6,0,0,1,6-6h4A6,6,0,0,1,20,19Z"
 						fill="#fefef2" />
 				</svg>Profile</a>
-	
-
 		</nav>
-	
 	</footer>
 	@endauth
 </body>

@@ -49,21 +49,12 @@ Route::post('/password/forgot', [UserController::class, 'email'])->name('user.em
 Route::get('/password/reset/{user}/{token}', [UserController::class, 'reset'])->name('user.reset');
 Route::put('/password/reset/{user}/{token}', [UserController::class, 'resetUpdate'])->name('user.reset.update');
 
+
+Route::get('/cellier', [CellarController::class, 'index'])->name('cellar.index');
+Route::get('/creer/cellier', [CellarController::class, 'create'])->name('cellar.create');
+Route::post('/creer/cellier', [CellarController::class, 'store'])->name('cellar.store');
+Route::get('/modifier/cellier/{cellar}', [CellarController::class, 'edit'])->name('cellar.edit');
+Route::put('/modifier/cellier/{cellar}', [CellarController::class, 'update'])->name('cellar.update');
 Route::delete('supprimer/cellier/{cellar}', [CellarController::class, 'destroy'])->name('cellar.delete');
-
-// Affiche la liste des celliers
-Route::get('/cellier', [CellarController::class, 'index'])->name('cellars.index');
-
-// Affiche le formulaire de création d'un nouveau cellier
-Route::get('/create/cellier', [CellarController::class, 'create'])->name('cellars.create');
-    
-// Enregistre un nouveau cellier
-Route::post('/create/cellier', [CellarController::class, 'store'])->name('cellars.store');
-
-// Affiche le formulaire d'édition pour un cellier spécifique
-Route::get('/edit/cellier/{cellar}', [CellarController::class, 'edit'])->name('cellars.edit');
-
-// Met à jour un cellier spécifique
-Route::put('/edit/cellier/{cellar}', [CellarController::class, 'update'])->name('cellars.update');
 
 

@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('js', asset('js/pages/celliers.js'))
 @section('title', 'Celliers')
 @section('content')
 <section>
@@ -23,7 +24,7 @@
 		<div class="menu-deroulant">
 			<input type="checkbox" aria-label="bouton pour ouvrir menu des actions">
 			<ul class="menu-deroulant__contenu">
-				<!-- <li><a class="button" href="">Modifier</a></li> -->
+				<a href="{{ route('cellar.edit', $cellar->id) }}">Modifier</a>
 				<li data-js-action="supprimerCellier" data-js-cellier="{{ $cellar->id }}" data-js-Name="{{$cellar->name}}">Supprimer</li>
 			</ul>
 		</div>
@@ -31,6 +32,7 @@
 	@empty
 	<p>Aucun cellier</p>
 	@endforelse
+	<!-- Bouton Ajouter Cellier sticky -->
 </section>
 <!-- Template pour l'utilisation des modales, ne pas supprimer-->
 <template id="supprimerCellier">

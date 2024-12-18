@@ -15,7 +15,7 @@ class CellarController extends Controller
 		  $user_id = 3;
 		  $cellars = Cellar::select()->where('user_id', $user_id)->orderBy('name')->get();
         // Retourner la vue avec la liste des celliers
-        return view('cellars.index', compact('cellars'));
+        return view('cellar.index', ['cellars'=>$cellars, 'addButton' => true]);
     }
     
 
@@ -24,7 +24,7 @@ class CellarController extends Controller
      */
     public function create()
     {
-        return view('cellars.create');
+        return view('cellar.create');
     }
 
     /**
@@ -47,7 +47,7 @@ class CellarController extends Controller
     
         $cellar->save();
     
-        return redirect()->route('cellars.index')->with('success', 'Cellier ajouté avec succès!');
+        return redirect()->route('cellar.index')->with('success', 'Cellier ajouté avec succès!');
     }
 
     /**
@@ -68,7 +68,7 @@ class CellarController extends Controller
         //     return redirect()->route('cellars.index')->with('error', 'Accès non autorisé!');
         // }
     
-        return view('cellars.edit', compact('cellar'));
+        return view('cellar.edit', compact('cellar'));
     }
 
     /**
@@ -93,7 +93,7 @@ class CellarController extends Controller
             'quantity' => $request->input('quantity'),
         ]);
     
-        return redirect()->route('cellars.index')->with('success', 'Cellier modifié avec succès!');
+        return redirect()->route('cellar.index')->with('success', 'Cellier modifié avec succès!');
     }
     
 
