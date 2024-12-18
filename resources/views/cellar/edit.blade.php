@@ -5,7 +5,7 @@
 	<header>
 		<h2>Modifier le Cellier</h2>
 	</header>
-	<form action="{{ route('cellar.update', $cellar->id) }}" method="POST" class="register-form">
+	<form action="{{ route('cellar.update', $cellar->id) }}" method="POST" class="form">
 		@csrf
 		@method('PUT')
 		<div class="form-group">

@@ -6,7 +6,7 @@
 		<h2>Ajouter un Cellier</h2>
 	</header>
 
-	<form action="{{ route('cellar.store') }}" method="POST" class="register-form">
+	<form action="{{ route('cellar.store') }}" method="POST" class="form">
 		@csrf
 		<div class="form-group">
 			<label for="name">Nom:</label>
@@ -22,7 +22,7 @@
 			<div>{{ $message }}</div>
 			@enderror
 		</div>
-			<button type="submit" class="btn">Ajouter</button>
+		<button type="submit" class="btn">Ajouter</button>
 	</form>
 </section>
 @endsection
