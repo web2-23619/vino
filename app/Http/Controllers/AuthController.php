@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 
 
@@ -80,10 +81,9 @@ class AuthController extends Controller
      */
     public function destroy(Request $request)
     {
+        Session::flush();
         Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
 
-        return redirect()->route('welcome');
+        return redirect()->route('welcome')->with('success', 'Déconnexion réussie!');
     }
 }
