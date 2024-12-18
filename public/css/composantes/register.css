@@ -1,23 +1,14 @@
-/* Styling for the Registration Page without a Container */
 .register-page {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     min-height: 100vh;
-    background-color: var(--clair); /* Light background */
+    background-color: var(--clair);
     padding: var(--espace-m);
     font-family: var(--police-regular);
 }
 
-/* Logo Styling */
-.logo img {
-    max-width: 120px;
-    height: auto;
-    margin-bottom: var(--espace-s);
-}
-
-/* Header Styling */
 .register-header {
     text-align: center;
     font-family: var(--police-accent);
@@ -25,47 +16,30 @@
     color: var(--tres-fonce);
     margin-bottom: var(--espace-s);
 }
-
-/* Form Fields */
-.register-form {
-    width: 100%;
-    max-width: 300px; /* Adjust width for responsiveness */
-}
-
-.form-group {
-    margin-bottom: var(--espace-s);
-}
-
-label {
-    display: block;
-    font-size: var(--police-s);
-    color: var(--fonce);
-    margin-bottom: var(--espace-nano);
-}
-
-input {
-    width: 100%;
-    padding: var(--espace-nano);
-    font-size: var(--police-std);
-    border: var(--bordure-s) solid var(--fonce);
-    border-radius: var(--rayon-m);
-}
-
-/* Submit Button */
-button.btn {
-    display: block;
-    width: 100%;
-    padding: var(--espace-nano);
-    background-color: var(--contraste-fonce);
-    color: var(--clair);
-    font-size: var(--police-std);
+.register-prompt {
     text-align: center;
-    border: none;
-    border-radius: var(--rayon-m);
-    cursor: pointer;
-    transition: background-color var(--duree-std);
+    margin-top: var(--espace-s); /* Adjust spacing using your variable */
+    padding: var(--espace-nano) 0; /* Vertical padding */
+    font-family: var(--police-regular); /* Consistent font style */
 }
 
-button.btn:hover {
-    background-color: var(--clair);
+.register-prompt p {
+    font-size: var(--police-std);
+    color: var(--fonce); 
+    margin-bottom: var(--espace-nano); 
+}
+
+.register-prompt .btn {
+    display: inline-block;
+    padding: var(--espace-nano) var(--espace-xs); 
+    background-color: var(--contraste-fonce);
+    color: var(--clair); 
+    text-decoration: none; 
+    border-radius: var(--rayon-s);
+    transition: background-color var(--duree-std); 
+}
+.register-prompt .btn:hover {
+    background-color: var(--contraste); 
+    color: var(--clair); 
+   
 }

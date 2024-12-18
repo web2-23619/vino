@@ -1,89 +1,20 @@
-
 .login-page {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     min-height: 100vh;
-    background-color: var(--clair); 
-    padding: var(--espace-s); 
-    font-family: var(--police-regular); 
+    background-color: var(--clair);
+    padding: var(--espace-s);
+    font-family: var(--police-regular);
 }
 
-/* Logo Styling */
-.logo img {
+.login-page .logo img {
     max-width: 120px;
-    height: auto;
-    margin-bottom: var(--espace-s); 
+    margin-bottom: var(--espace-s);
 }
-
-/* Form container */
-.login-form {
-    width: 100%;
-    max-width: 300px; 
-}
-
-.form-group {
-    margin-bottom: var(--espace-xs); 
-    text-align: center;
-    padding: var(--espace-xs);
-}
-
-label {
-    display: block;
-    font-size: var(--police-s); 
-    margin-bottom: var(--espace-micro); 
-    color: var(--fonce);
-}
-
-input {
-    width: 100%;
-    padding: var(--espace-nano) var(--espace-micro); 
-    font-size: var(--police-std); 
-    border: var(--bordure-s) solid var(--fonce); 
-    border-radius: var(--rayon-s); 
-    box-sizing: border-box;
-}
-
-input:focus {
-    outline: none;
-    border-color: var(--contraste);
-    box-shadow: 0 0 5px var(--contraste);
-}
-
-/* Buttons */
-button.btn {
-    display: block;
-    width: 100%;
-    padding: var(--espace-micro); 
-    background-color: var(--contraste-fonce); 
-    color: var(--clair); 
-    text-align: center;
-    border: none;
-    border-radius: var(--rayon-s); 
-    font-size: var(--police-std); 
-    font-family: var(--police-accent);
-    cursor: pointer;
-    transition: background-color var(--duree-std); 
-}
-
-button.btn:hover {
-    background-color: var(--clair); 
-}
-
-/* Links */
 .forgot-password, .register {
     margin-top: var(--espace-nano); 
     text-align: center;
     padding: var(--espace-nano);
-}
-
-.register a, .forgot-password a {
-    color: var(--contraste-fonce); 
-    text-decoration: none;
-    font-size: var(--police-std); 
-}
-
-.register a:hover, .forgot-password a:hover {
-    text-decoration: underline;
 }
