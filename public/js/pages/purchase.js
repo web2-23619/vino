@@ -36,30 +36,13 @@ async function deletePurchaseItem(event) {
     //FIXME: optimser pour eviter repetition. modifier classe Alerte
 
     if (response.ok) {
-        const gabarit = document.querySelector("template#alerte");
-        let alert = gabarit.content.cloneNode(true);
-        alert.querySelector("p").textContent =
-            "Erreur au retrait de la bouteille";
-
-        document.querySelector("[data-js='header']").after(alert);
+        const message = "Bouteille retirée avec succès";
 
         purchaseItem.remove();
 
-        const alertHTML = document.querySelector(".alerte");
-        alertHTML.classList.add("alerte_succes");
-
-        new Alerte(alertHTML);
+        new Alerte(null, message, "succes");
     } else {
-        const gabarit = document.querySelector("template#alerte");
-        let alert = gabarit.content.cloneNode(true);
-        alert.querySelector("p").textContent =
-            "Erreur au retrait de la bouteille";
-
-        document.querySelector("[data-js='header']").after(alert);
-
-        const alertHTML = document.querySelector(".alerte");
-        alertHTML.classList.add("alerte_erreur");
-
-        new Alerte(alertHTML);
+        const message = "Erreur au retrait de la bouteille";
+        new Alerte(null, message, "erreur");
     }
 }
