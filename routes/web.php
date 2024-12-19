@@ -5,6 +5,9 @@ use App\Http\Controllers\CellarController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PurchaseController;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\SpiderController;
 use App\Http\Controllers\GoutteController;
 
 
@@ -26,12 +29,9 @@ Route::get('/', function () {
 route::get('/goutte', [App\Http\Controllers\GoutteController::class, 'index'])->name('goutte');
 
 
-Route::middleware('auth')->group(function(){
-    Route::get('/users', [UserController::class, 'index'])->name('user.index');
-    Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
-});
-Route::get('/registration', [UserController::class, 'create'])->name('user.create');
-Route::post('/registration', [UserController::class, 'store'])->name('user.store');
+Route::middleware('guest')->group(function(){
+	Route::get('/registration', [UserController::class, 'create'])->name('user.create');
+	Route::post('/registration', [UserController::class, 'store'])->name('user.store');
 
 	// Route connexion
 	Route::get('/login', [AuthController::class, 'create'])->name('login');
@@ -45,8 +45,9 @@ Route::post('/registration', [UserController::class, 'store'])->name('user.store
 });
 
 Route::middleware('auth')->group(function () {
+	Route::get('/users', [UserController::class, 'index'])->name('user.index');
+    Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
 
-	Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
 	Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
 	Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('user.destroy');
 	Route::put('/users/{user}', [UserController::class, 'update'])->name('user.update');
@@ -60,4 +61,7 @@ Route::middleware('auth')->group(function () {
 	Route::get('/modifier/cellier/{cellar}', [CellarController::class, 'edit'])->name('cellar.edit');
 	Route::put('/modifier/cellier/{cellar}', [CellarController::class, 'update'])->name('cellar.update');
 	Route::delete('supprimer/cellier/{cellar}', [CellarController::class, 'destroy'])->name('cellar.delete');
+
+	Route::get('/listeAchat', [PurchaseController::class, 'index'])->name('purchase.index');
+
 });
