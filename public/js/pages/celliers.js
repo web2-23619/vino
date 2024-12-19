@@ -28,6 +28,9 @@ function afficherModaleSupressionCellier(event) {
     const cellierNom = declencheur.dataset.jsName;
     const elToChange = declencheur.closest("article");
 
+    const dropdown = elToChange.querySelector(".menu-deroulant > input");
+    dropdown.checked = false;
+
     const modale = new ModaleAction(
         cellierID,
         cellierNom,
@@ -36,9 +39,4 @@ function afficherModaleSupressionCellier(event) {
         "cellier",
         elToChange
     );
-
-    const articleHTML = declencheur.closest("article");
-    const dropdown = articleHTML.querySelector(".menu-deroulant > input");
-    console.log(dropdown);
-    dropdown.checked = false;
 }

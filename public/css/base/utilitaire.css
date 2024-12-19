@@ -43,3 +43,7 @@
 .invisible {
     display: none;
 }
+
+.action-locked{
+	pointer-events: none;
+}

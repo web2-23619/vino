@@ -1,4 +1,3 @@
-import App from "./App.js";
 import Alerte from "./Alerte.js";
 
 class ModaleAction {
@@ -49,22 +48,28 @@ class ModaleAction {
             "[data-js-action='" + this.#action + "']"
         );
 
-        console.log(this.#btnAction);
-
         if (this.#action == "supprimer") {
             this.#btnAction.addEventListener(
                 "click",
                 this.#supprimer.bind(this)
             );
         }
+
+        //bloquer action sur background
+        document.querySelector("main").classList.add("action-locked");
+        document.querySelector("footer > div").classList.add("action-locked");
     }
 
     /**
      * Méthode privée pour afermer modale
      */
     #fermerModale() {
+        document.querySelector("main").classList.remove("action-locked");
+        document
+            .querySelector("footer > div")
+            .classList.remove("action-locked");
         this.#elementHTML.classList.add("remove");
-
+		
         setTimeout(() => {
             this.#elementHTML.remove();
         }, 2650);
@@ -83,7 +88,6 @@ class ModaleAction {
         );
 
         const top = document.querySelector("[data-js='header']");
-        console.log(top);
 
         if (response.ok) {
             const message = "Cellier supprimé avec succès";
