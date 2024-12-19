@@ -49,7 +49,7 @@ class Alerte {
     }
 
     #fermerAlerte() {
-        this.#elementHTML.classList.add("invisible");
+        this.#elementHTML.remove();
     }
 }
 
