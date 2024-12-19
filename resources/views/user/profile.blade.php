@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('js', asset('js/pages/profile.js'))
 @section('title', 'Mon Profil')
+
 @section('content')
 <section class="profile-page">
 	<!-- Header Section -->
@@ -43,45 +44,70 @@
 	</div>
 	@endif
 
+    <!-- Alerts -->
+    @if(session('succes'))
+        <div class="alerte alerte_succes">
+            <p>{{ session('succes') }}</p>
+            <button data-js-action="fermer">x</button>
+        </div>
+    @endif
+    @if(session('erreur'))
+        <div class="alerte alerte_erreur">
+            <p>{{ session('erreur') }}</p>
+            <button data-js-action="fermer">x</button>
+        </div>
+    @endif
 
-	<!-- Stats Section -->
-	<div class="profile-stats">
-		<div class="stat-item">
-			<p class="stat-number">2</p>
-			<p class="stat-label">Celliers</p>
-		</div>
-		<div class="stat-item">
-			<p class="stat-number">8</p>
-			<p class="stat-label">Bouteilles</p>
-		</div>
-		<div class="stat-item">
-			<p class="stat-number">3</p>
-			<p class="stat-label">À acheter</p>
-		</div>
-	</div>
+    <!-- Stats Section -->
+     <div class="profile-stats">
+        <div class="stat-item">
+            <p class="stat-number">2</p>
+            <p class="stat-label">Celliers</p>
+        </div>
+        <div class="stat-item">
+            <p class="stat-number">8</p>
+            <p class="stat-label">Bouteilles</p>
+        </div>
+        <div class="stat-item">
+            <p class="stat-number">3</p>
+            <p class="stat-label">À acheter</p>
+        </div>
+    </div> 
 
-	<!-- Placeholder for Bottles List -->
-	<div class="bottles-list">
-		<div class="bottle-item">
-			<div class="bottle-placeholder"></div>
-			<p class="bottle-name">Rouge | Shiraz</p>
-			<p class="bottle-desc">Importation privée 2024 <br> 750 ml | Italie</p>
-			<div class="bottle-quantity">
-				<button>-</button>
-				<span>2</span>
-				<button>+</button>
-			</div>
-		</div>
-		<div class="bottle-item">
-			<div class="bottle-placeholder"></div>
-			<p class="bottle-name">Rouge | Shiraz</p>
-			<p class="bottle-desc">Importation privée 2024 <br> 750 ml | Italie</p>
-			<div class="bottle-quantity">
-				<button>-</button>
-				<span>2</span>
-				<button>+</button>
-			</div>
-		</div>
-	</div>
-</section>
+    <!-- Bottles List -->
+    <!-- <div class="bottles-list">
+        @for($i = 0; $i < 2; $i++)
+        <div class="bottle-item">
+            <div class="bottle-placeholder"></div>
+            <div>
+                <p class="bottle-name">Rouge | Shiraz</p>
+                <p class="bottle-desc">Importation privée 2024 <br> 750 ml | Italie</p>
+            </div>
+            <div class="bottle-quantity">
+                <button>-</button>
+                <span>2</span>
+                <button>+</button>
+            </div>
+        </div>
+        @endfor
+    </div>
+</section> -->
+
+<!-- Confirmation Modal for Supprimer -->
+<template id="supprimerUser">
+    <div class="modale-action">
+        <p class="modale-action__message">
+            Êtes-vous sûr de vouloir supprimer votre profil, <span data-js-replace="nom">NOM</span> ?
+        </p>
+        <div class="modale-action__boutons">
+            <button data-js-action="annuler">Annuler</button>
+            <form method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit">Supprimer</button>
+            </form>
+        </div>
+    </div>
+</template>
+
 @endsection

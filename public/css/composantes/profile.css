@@ -7,12 +7,19 @@
 .profile-header {
     text-align: center;
     margin-bottom: var(--espace-s);
+
 }
 
 .profile-header h2 {
     font-family: var(--police-accent);
     font-size: var(--police-xl);
     font-style: italic;
+}
+.profile-header__container {
+    display: flex;
+    justify-content: space-between;
+  
+   
 }
 /* Stats Section */
 .profile-stats {
