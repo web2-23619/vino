@@ -27,9 +27,9 @@
 			<div>
 				<p>$ {{$purchase->bottle->price}} / un</p>
 				<div class="card_purchase__actions">
-					<button>-</button>
+					<button class="invisible">-</button>
 					<span>{{$purchase->quantity}}</span>
-					<button>+</button>
+					<button class="invisible">+</button>
 				</div>
 			</div>
 		</section>

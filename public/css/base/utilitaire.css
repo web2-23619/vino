@@ -36,7 +36,10 @@
 }
 
 .fade {
-    -webkit-animation: slide-bck-center 0.5s
-        cubic-bezier(0.47, 0, 0.745, 0.715) both;
+    -webkit-animation: slide-bck-center 0.5s cubic-bezier(0.47, 0, 0.745, 0.715)
+        both;
     animation: slide-bck-center 0.45s cubic-bezier(0.47, 0, 0.745, 0.715) both;
+}
+.invisible {
+    display: none;
 }
