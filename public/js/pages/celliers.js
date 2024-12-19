@@ -11,12 +11,12 @@ import ModaleAction from "../components/ModaleAction.js";
         new Alerte(alerte);
     }
 
-    const btnsSupprimerCellier = document.querySelectorAll(
-        "[data-js-action='supprimerCellier']"
+    const btnsModaleConfirmation = document.querySelectorAll(
+        "[data-js-action='afficherModaleConfirmation']"
     );
 
-    if (btnsSupprimerCellier) {
-        for (const btn of btnsSupprimerCellier) {
+    if (btnsModaleConfirmation) {
+        for (const btn of btnsModaleConfirmation) {
             btn.addEventListener("click", afficherModaleSupressionCellier);
         }
     }
@@ -26,11 +26,19 @@ function afficherModaleSupressionCellier(event) {
     const declencheur = event.target;
     const cellierID = declencheur.dataset.jsCellier;
     const cellierNom = declencheur.dataset.jsName;
+    const elToChange = declencheur.closest("article");
 
-    const modale = new ModaleAction(cellierID, cellierNom, "supprimerCellier", "supprimer", "cellier");
+    const modale = new ModaleAction(
+        cellierID,
+        cellierNom,
+        "supprimerCellier",
+        "supprimer",
+        "cellier",
+        elToChange
+    );
 
-	const articleHTML = declencheur.closest("article");
-	const dropdown = articleHTML.querySelector("[type='checkbox']")
-	console.log(dropdown);
-	dropdown.checked = false;
+    const articleHTML = declencheur.closest("article");
+    const dropdown = articleHTML.querySelector(".menu-deroulant > input");
+    console.log(dropdown);
+    dropdown.checked = false;
 }

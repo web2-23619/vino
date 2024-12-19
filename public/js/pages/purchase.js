@@ -33,8 +33,6 @@ async function deletePurchaseItem(event) {
         },
     });
 
-    //FIXME: optimser pour eviter repetition. modifier classe Alerte
-
     if (response.ok) {
         const message = "Bouteille retirée avec succès";
 

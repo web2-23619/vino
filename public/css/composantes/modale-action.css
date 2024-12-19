@@ -6,13 +6,13 @@
     }
 
     30% {
-        transform: translateY(0);
+        transform: translateY(3vw);
         opacity: 1;
         display: flex;
     }
 
     100% {
-        transform: translateY(0);
+        transform: translateY(3vw);
         opacity: 1;
         display: flex;
     }
