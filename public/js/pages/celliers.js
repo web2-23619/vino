@@ -1,9 +1,16 @@
-import App from "../components/App.js";
 import Alerte from "../components/Alerte.js";
 import ModaleAction from "../components/ModaleAction.js";
 
 (function () {
-    new App();
+    let menuOuvert = null;
+
+    const menusHTML = document.querySelectorAll(
+        ".menu-deroulant > [type='checkbox']"
+    );
+
+    for (const menu of menusHTML) {
+        menu.addEventListener("change", checkMenu);
+    }
 
     const alerte = document.querySelector(".alerte");
 
@@ -19,6 +26,21 @@ import ModaleAction from "../components/ModaleAction.js";
         for (const btn of btnsModaleConfirmation) {
             btn.addEventListener("click", afficherModaleSupressionCellier);
         }
+    }
+
+    function checkMenu(event) {
+        const trigger = event.target;
+
+        if (trigger.checked) {
+            if (menuOuvert !== null) {
+                menuOuvert.checked = false;
+            }
+            menuOuvert = trigger;
+        } else {
+            menuOuvert = null;
+        }
+
+        console.log(menuOuvert);
     }
 })();
 
