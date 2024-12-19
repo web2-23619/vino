@@ -1,39 +1,48 @@
 @extends('layouts.app')
+@section('js', asset('js/pages/profile.js'))
 @section('title', 'Mon Profil')
 
 @section('content')
 <section class="profile-page">
-    <!-- Header Section -->
-    <header class="profile-header">
-        <div class="profile-header__container">
-            <h2 class="username">{{ $user->username }}</h2>
-            
-            <!-- Menu Déroulant -->
-            <div class="menu-deroulant">
-                <input type="checkbox" aria-label="bouton pour ouvrir menu des actions">
-                <ul class="menu-deroulant__contenu">
-                    <li>
-                        <a href="{{ route('user.edit', $user->id) }}">Modifier</a>
-                    </li>
-                    <li
-                            data-js-action="supprimerUser" 
-                            data-js-name="{{ $user->username }}" 
-                            data-js-user-id="{{ $user->id }}">
-                            Supprimer
-                    </li>
-                    <li>
-                        <a href="{{ route('logout') }}" 
-                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            Déconnexion
-                        </a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </header>
+	<!-- Header Section -->
+	<header class="profile-header">
+		<h2 class="username">{{$user->username}}</h2>
+
+		<div class="menu-deroulant">
+			<input type="checkbox" aria-label="bouton pour ouvrir menu des actions">
+
+			<ul class="menu-deroulant__contenu">
+				<li>
+					<a href="{{ route('user.edit', $user->id) }}">Modifier</a>
+				</li>
+				<li>
+					<form action="{{ route('user.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer ?');">
+						@csrf
+						@method('DELETE')
+						<button type="submit" class="menu-button">Supprimer</button>
+					</form>
+				</li>
+				<li>
+					<a data-js-action="logout" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Déconnexion</a>
+					<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+						@csrf
+					</form>
+				</li>
+			</ul>
+		</div>
+	</header>
+	@if(session('succes'))
+	<div class="alerte alerte_succes">
+		<p>{{ session('succes') }}</p>
+		<button data-js-action="fermer">x</button>
+	</div>
+	@endif
+	@if(session('erreur'))
+	<div class="alerte alerte_erreur">
+		<p>{{ session('erreur') }}</p>
+		<button data-js-action="fermer">x</button>
+	</div>
+	@endif
 
     <!-- Alerts -->
     @if(session('succes'))

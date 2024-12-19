@@ -5,6 +5,7 @@ use App\Http\Controllers\CellarController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PurchaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\SpiderController;
 
@@ -63,4 +64,7 @@ Route::middleware('auth')->group(function () {
 	Route::get('/modifier/cellier/{cellar}', [CellarController::class, 'edit'])->name('cellar.edit');
 	Route::put('/modifier/cellier/{cellar}', [CellarController::class, 'update'])->name('cellar.update');
 	Route::delete('supprimer/cellier/{cellar}', [CellarController::class, 'destroy'])->name('cellar.delete');
+
+	Route::get('/listeAchat', [PurchaseController::class, 'index'])->name('purchase.index');
+
 });
