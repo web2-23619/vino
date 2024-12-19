@@ -1,0 +1,34 @@
+/* form.css - Centralized Form Styles */
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--espace-s); 
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto; 
+}
+
+.form-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+	gap: var(--espace-micro);
+}
+
+.form-group label {
+    font-size: var(--police-s);
+    color: var(--fonce);
+}
+
+.form-group input {
+    width: 100%;
+    padding: var(--espace-nano);
+    font-size: var(--police-std);
+    border: var(--bordure-s) solid var(--fonce);
+    border-radius: var(--rayon-s);
+    box-sizing: border-box;
+	text-align: center;
+}

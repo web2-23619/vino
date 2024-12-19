@@ -1,0 +1,20 @@
+.btn-add {
+    display: block;
+    max-width: fit-content;
+	max-height: fit-content;
+
+    padding: var(--espace-nano) var(--espace-s);
+    border-radius: var(--rayon-xl);
+    background-color: var(--contraste);
+
+    font-family: var(--police-regular);
+    color: var(--clair);
+
+    transition-property: transform;
+    transition-duration: var(--duree-x-rapide);
+    transition-timing-function: ease-in-out;
+}
+
+.btn-add:active {
+    transform: scale(0.98);
+}

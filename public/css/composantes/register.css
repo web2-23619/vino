@@ -1,23 +1,14 @@
-/* Styling for the Registration Page without a Container */
 .register-page {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     min-height: 100vh;
-    background-color: var(--clair); /* Light background */
+    background-color: var(--clair);
     padding: var(--espace-m);
     font-family: var(--police-regular);
 }
 
-/* Logo Styling */
-.logo img {
-    max-width: 120px;
-    height: auto;
-    margin-bottom: var(--espace-s);
-}
-
-/* Header Styling */
 .register-header {
     text-align: center;
     font-family: var(--police-accent);
@@ -25,47 +16,18 @@
     color: var(--tres-fonce);
     margin-bottom: var(--espace-s);
 }
+.register-prompt {
+	display: flex;
+	flex-direction: column;
+	gap: var(--espace-nano);
+	align-items: center;
+	justify-content: center;
 
-/* Form Fields */
-.register-form {
-    width: 100%;
-    max-width: 300px; /* Adjust width for responsiveness */
+    font-family: var(--police-regular); /* Consistent font style */
 }
 
-.form-group {
-    margin-bottom: var(--espace-s);
-}
-
-label {
-    display: block;
-    font-size: var(--police-s);
-    color: var(--fonce);
-    margin-bottom: var(--espace-nano);
-}
-
-input {
-    width: 100%;
-    padding: var(--espace-nano);
+.register-prompt p {
     font-size: var(--police-std);
-    border: var(--bordure-s) solid var(--fonce);
-    border-radius: var(--rayon-m);
-}
-
-/* Submit Button */
-button.btn {
-    display: block;
-    width: 100%;
-    padding: var(--espace-nano);
-    background-color: var(--contraste-fonce);
-    color: var(--clair);
-    font-size: var(--police-std);
-    text-align: center;
-    border: none;
-    border-radius: var(--rayon-m);
-    cursor: pointer;
-    transition: background-color var(--duree-std);
-}
-
-button.btn:hover {
-    background-color: var(--clair);
+    color: var(--fonce); 
+    margin-bottom: var(--espace-nano); 
 }

@@ -1,23 +1,25 @@
 import App from "./App.js";
 
 class ModaleAction {
-    #cellierID;
-    #cellierNom;
+    #id;
+    #displayName;
     #conteneurHTML;
     #btnAnnuler;
-	#btnSupprimer;
+	#btnAction;
     #gabarit;
     #elementHTML;
+	#action;
+	#model;
 
-    constructor(id, cellierNom) {
-        this.#cellierID = id;
-        this.#cellierNom = cellierNom;
+    constructor(id, name, template, action, model) {
+        this.#id = id;
+        this.#displayName = name;
+        this.#action = action;
+        this.#model = model;
         this.#conteneurHTML = document.querySelector("main");
-        this.#gabarit = document.querySelector("template#supprimerCellier");
+        this.#gabarit = document.querySelector(`[id='${template}']`);
         this.#elementHTML;
         this.#afficher();
-
-        console.log(cellierNom);
     }
 
     /**
@@ -26,7 +28,7 @@ class ModaleAction {
     #afficher() {
         let modale = this.#gabarit.content.cloneNode(true);
         modale.querySelector("[data-js-replace='nom']").textContent =
-            this.#cellierNom;
+            this.#displayName;
 
         this.#conteneurHTML.prepend(modale);
         this.#elementHTML = this.#conteneurHTML.firstElementChild;
@@ -40,10 +42,10 @@ class ModaleAction {
             this.#fermerModale.bind(this)
         );
 
-		this.#btnSupprimer = this.#elementHTML.querySelector("form");
+		this.#btnAction = this.#elementHTML.querySelector("form");
 
-		console.log(this.#btnSupprimer);
-		this.#btnSupprimer.action = App.instance.baseURL + "/supprimer/cellier/" + this.#cellierID; 
+		this.#btnAction.action =
+            App.instance.baseURL + "/" + this.#action + "/" + this.#model + "/" +  this.#id; 
     }
 
     /**
@@ -51,9 +53,11 @@ class ModaleAction {
      */
     #fermerModale() {
 
-		//FIXME: faire remonter modale avant de la retirer
+		this.#elementHTML.classList.add("remove");
 
-		this.#elementHTML.remove();
+        setTimeout(() => {
+            this.#elementHTML.remove();
+        }, 2650);
 	}
 }
 
