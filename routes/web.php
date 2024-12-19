@@ -5,7 +5,7 @@ use App\Http\Controllers\CellarController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\SpiderController;
+use App\Http\Controllers\GoutteController;
 
 
 /*
@@ -23,7 +23,7 @@ Route::get('/', function () {
     return view('layouts/app');
 });
 
-route::get('/spider', [App\Http\Controllers\SpiderController::class, 'index'])->name('spider');
+route::get('/goutte', [App\Http\Controllers\GoutteController::class, 'index'])->name('goutte');
 
 
 Route::middleware('auth')->group(function(){
