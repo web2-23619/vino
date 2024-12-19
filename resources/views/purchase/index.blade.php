@@ -12,19 +12,6 @@
 			<button data-js-action="fermer">x</button>
 		</div>
 	</template>
-
-	@if(session('succes'))
-	<div class="alerte alerte_succes">
-		<p>{{ session('succes') }}</p>
-		<button data-js-action="fermer">x</button>
-	</div>
-	@endif
-	@if(session('erreur'))
-	<div class="alerte alerte_erreur">
-		<p>{{ session('erreur') }}</p>
-		<button data-js-action="fermer">x</button>
-	</div>
-	@endif
 	@forelse($purchases as $purchase)
 	<article class="card_purchase" data-js-id="{{$purchase->id}}">
 		<button class="btn" data-js-action="supprimer">X</button>

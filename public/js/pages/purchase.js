@@ -38,7 +38,10 @@ async function deletePurchaseItem(event) {
     if (response.ok) {
         const message = "Bouteille retirée avec succès";
 
-        purchaseItem.remove();
+        purchaseItem.classList.add("fade");
+        setTimeout(() => {
+            purchaseItem.remove();
+        }, 500);
 
         new Alerte(null, message, "succes");
     } else {
