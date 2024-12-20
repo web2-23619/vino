@@ -66,7 +66,7 @@ Route::middleware('auth')->group(function () {
 	Route::delete('supprimer/cellier/{cellar}', [CellarController::class, 'destroy'])->name('cellar.delete');
 
 	Route::get('/mesBouteilles', [UserController::class, 'showBottles'])->name('user.showBottles');
-	Route::get('/cellier/{cellar}/bouteille', [CellarController::class, 'showBottles'])->name('user.showBottles');
+	Route::get('/cellier/{cellar}/bouteille', [CellarController::class, 'showBottles'])->name('cellar.showBottles');
 
 	Route::get('/listeAchat', [PurchaseController::class, 'index'])->name('purchase.index');
 
