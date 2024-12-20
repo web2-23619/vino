@@ -6,7 +6,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>{{ config('app.name') }} - @yield('title')</title>
 	<link rel="stylesheet" href="{{ asset('css/main.css') }}">
-	<script src="{{ asset('js/logout.js') }}" defer></script>
 	<script type="module" src="@yield('js')"></script>
 
 </head>
