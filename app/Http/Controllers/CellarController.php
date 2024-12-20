@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bottle;
 use App\Models\Cellar;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -104,7 +105,6 @@ class CellarController extends Controller
 	{
 		$cellar->delete();
 
-		// Return a response indicating success
 		return response()->json(['message' => 'Cellier supprimé avec succes'], 200);
 	}
 
@@ -129,5 +129,19 @@ class CellarController extends Controller
 
 		// Pass the bottles to the view
 		return view('bottle.byCellar', ['bottles'=>$bottles, 'cellar'=>$cellar]);
+	}
+
+	public function apiRemoveBottle($cellar_id, $bottle_id){
+
+		$cellar = Cellar::find($cellar_id);
+		$bottle = Bottle::find($bottle_id);
+
+		if($cellar && $bottle){
+			$cellar->bottles()->detach($bottle->id);
+			return response()->json(['message' => 'Bouteille retiré avec succès'], 200);
+		} else {
+			return response()->json(['message' => 'Erreur au retrait de la bouteille'], 400);
+		}
+
 	}
 }

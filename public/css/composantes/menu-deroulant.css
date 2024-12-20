@@ -3,6 +3,7 @@
 
     & [type="checkbox"] {
         appearance: none;
+        cursor: pointer;
         &::after {
             content: "⋮";
 			font-size: var(--police-std);
@@ -46,5 +47,7 @@
 
 		padding-inline: var(--espace-xs);
 		padding-block: var(--espace-micro);
+
+        cursor: pointer;
 	}
 }
