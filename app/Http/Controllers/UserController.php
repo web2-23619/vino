@@ -166,4 +166,38 @@ class UserController extends Controller
 
 		return redirect(route('user.forgot'))->withErrors('Token invalide ou expiré.');
 	}
+
+	/* afficher toute les bouteilles pour l'utilisateur connecté */
+	public function showBottles()
+	{
+		// Find the user by ID
+		$user = Auth::user();
+
+
+		// récupere tous les celliers et les bouteilles que chacun contient
+		$cellars = $user->cellars()->with(['bottles' => function ($query) {
+			$query->withPivot('quantity'); // Load the 'quantity' from the pivot table
+		}])->get();
+
+		// Flatten the bottles from all cellars into a single collection
+		$bottles = $cellars->flatMap(function ($cellar) {
+			return $cellar->bottles->map(function ($bottle) use ($cellar) {
+				return [
+					'cellarId' => $cellar->id,
+					'cellarName' => $cellar->name,
+					'bottleId' => $bottle->id,
+					'name' => $bottle->name,
+					'quantity' => $bottle->pivot->quantity, // Access the 'quantity' field in the pivot
+					'image_url' => $bottle->image_url,
+					'price' => $bottle->price,
+					'country' => $bottle->country,
+					'volume' => $bottle->volume,
+					'type' => $bottle->type,
+				];
+			});
+		});
+
+		// Pass the bottles to the view
+		return view('bottle.byUser', compact('bottles'));
+	}
 }

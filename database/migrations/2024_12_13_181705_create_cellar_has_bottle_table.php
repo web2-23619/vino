@@ -15,6 +15,7 @@ return new class extends Migration
 			$table->id();
 			$table->unsignedBigInteger('cellar_id');
 			$table->unsignedBigInteger('bottle_id');
+			$table->integer('quantity');
 			$table->foreign('cellar_id')->references('id')->on('cellars')->onDelete('cascade');
 			$table->foreign('bottle_id')->references('id')->on('bottles')->onDelete('cascade');
             $table->timestamps();
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cellier_a_bouteilles');
+        Schema::dropIfExists('cellar_has_bottles');
     }
 };
