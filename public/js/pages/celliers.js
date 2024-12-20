@@ -1,9 +1,16 @@
-import App from "../components/App.js";
 import Alerte from "../components/Alerte.js";
 import ModaleAction from "../components/ModaleAction.js";
 
 (function () {
-    new App();
+    let menuOuvert = null;
+
+    const menusHTML = document.querySelectorAll(
+        ".menu-deroulant > [type='checkbox']"
+    );
+
+    for (const menu of menusHTML) {
+        menu.addEventListener("change", checkMenu);
+    }
 
     const alerte = document.querySelector(".alerte");
 
@@ -11,14 +18,29 @@ import ModaleAction from "../components/ModaleAction.js";
         new Alerte(alerte);
     }
 
-    const btnsSupprimerCellier = document.querySelectorAll(
-        "[data-js-action='supprimerCellier']"
+    const btnsModaleConfirmation = document.querySelectorAll(
+        "[data-js-action='afficherModaleConfirmation']"
     );
 
-    if (btnsSupprimerCellier) {
-        for (const btn of btnsSupprimerCellier) {
+    if (btnsModaleConfirmation) {
+        for (const btn of btnsModaleConfirmation) {
             btn.addEventListener("click", afficherModaleSupressionCellier);
         }
+    }
+
+    function checkMenu(event) {
+        const trigger = event.target;
+
+        if (trigger.checked) {
+            if (menuOuvert !== null) {
+                menuOuvert.checked = false;
+            }
+            menuOuvert = trigger;
+        } else {
+            menuOuvert = null;
+        }
+
+        console.log(menuOuvert);
     }
 })();
 
@@ -26,11 +48,17 @@ function afficherModaleSupressionCellier(event) {
     const declencheur = event.target;
     const cellierID = declencheur.dataset.jsCellier;
     const cellierNom = declencheur.dataset.jsName;
+    const elToChange = declencheur.closest("article");
 
-    const modale = new ModaleAction(cellierID, cellierNom, "supprimerCellier", "supprimer", "cellier");
+    const dropdown = elToChange.querySelector(".menu-deroulant > input");
+    dropdown.checked = false;
 
-	const articleHTML = declencheur.closest("article");
-	const dropdown = articleHTML.querySelector("[type='checkbox']")
-	console.log(dropdown);
-	dropdown.checked = false;
+    const modale = new ModaleAction(
+        cellierID,
+        cellierNom,
+        "supprimerCellier",
+        "supprimer",
+        "cellier",
+        elToChange
+    );
 }

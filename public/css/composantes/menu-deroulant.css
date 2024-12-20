@@ -3,12 +3,12 @@
 
     & [type="checkbox"] {
         appearance: none;
+        cursor: pointer;
         &::after {
             content: "⋮";
 			font-size: var(--police-std);
 			font-weight: 600;
-			padding-left: var(--espace-micro);
-			padding-block: var(--espace-micro);
+			padding: var(--espace-micro);
         }
     }
 
@@ -20,6 +20,11 @@
     & [type="checkbox"]:checked  + .menu-deroulant__contenu {
         opacity: 1;
     }
+
+	& [type="checkbox"]:checked{
+		background-color: var(--contraste);
+		color: var(--clair);
+	}
 }
 .menu-deroulant__contenu {
     position: absolute;
@@ -42,5 +47,7 @@
 
 		padding-inline: var(--espace-xs);
 		padding-block: var(--espace-micro);
+
+        cursor: pointer;
 	}
 }

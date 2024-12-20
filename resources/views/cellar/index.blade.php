@@ -6,6 +6,12 @@
 	<header data-js="header">
 		<h2>Celliers</h2>
 	</header>
+	<template id="alerte">
+		<div class="alerte">
+			<p>{{ session('erreur') }}</p>
+			<button data-js-action="fermer">x</button>
+		</div>
+	</template>
 	@if(session('succes'))
 	<div class="alerte alerte_succes">
 		<p>{{ session('succes') }}</p>
@@ -20,12 +26,12 @@
 	@endif
 	@forelse($cellars as $cellar)
 	<article class="cellier">
-		<p>{{$cellar->name}}</p>
+		<a href="{{route('cellar.showBottles', $cellar->id)}}">{{$cellar->name}}</a>
 		<div class="menu-deroulant">
 			<input type="checkbox" aria-label="bouton pour ouvrir menu des actions">
 			<ul class="menu-deroulant__contenu">
 				<a href="{{ route('cellar.edit', $cellar->id) }}">Modifier</a>
-				<li data-js-action="supprimerCellier" data-js-cellier="{{ $cellar->id }}" data-js-Name="{{$cellar->name}}">Supprimer</li>
+				<li data-js-action="afficherModaleConfirmation" data-js-cellier="{{ $cellar->id }}" data-js-Name="{{$cellar->name}}">Supprimer</li>
 			</ul>
 		</div>
 	</article>
@@ -40,11 +46,7 @@
 		<p class="modale-action__message">Veuillez confirmer la supression du cellier <span data-js-replace="nom">NOM</span></p>
 		<div class="modale-action__boutons">
 			<button data-js-action="annuler">Annuler</button>
-			<form method="post">
-				@csrf
-				@method('DELETE')
-				<button type=" submit">Supprimer</button>
-			</form>
+			<button data-js-action="supprimer">Supprimer</button>
 		</div>
 	</div>
 </template>
