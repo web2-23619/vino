@@ -107,4 +107,27 @@ class CellarController extends Controller
 		// Return a response indicating success
 		return response()->json(['message' => 'Cellier supprimé avec succes'], 200);
 	}
+
+	public function showBottles(Cellar $cellar)
+	{
+		// récupere les bouteilles d'un cellier
+		$cellar = Cellar::with('bottles')->find($cellar->id);
+
+		// Flatten the bottles from all cellars into a single collection
+		$bottles = $cellar->bottles->map(function ($bottle) {
+			return [
+				'id' => $bottle->id,
+				'name' => $bottle->name,
+				'price' => $bottle->price,
+				'image_url' => $bottle->image_url,
+				'country' => $bottle->country,
+				'volume' => $bottle->volume,
+				'type' => $bottle->type,
+				'quantity' => $bottle->pivot->quantity,  // Access quantity from pivot table
+			];
+		});
+
+		// Pass the bottles to the view
+		return view('bottle.byCellar', ['bottles'=>$bottles, 'cellar'=>$cellar]);
+	}
 }

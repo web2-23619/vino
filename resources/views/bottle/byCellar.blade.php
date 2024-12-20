@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('js', asset('js/pages/bottleByUser.js'))
-@section('title', "Cellier")
+@section('js', asset('js/pages/bottleByCellar.js'))
+@section('title', "Mes bouteilles")
 @section('content')
 <section>
 	<header data-js="header">
-		<h2>Toutes mes bouteilles</h2>
+		<h2>{{$cellar->name}}</h2>
 	</header>
 	<template id="alerte">
 		<div class="alerte">
@@ -13,7 +13,7 @@
 		</div>
 	</template>
 	@forelse($bottles as $bottle)
-	<article class="card_bottle" data-js-key="{{$bottle['cellarId']}}|{{$bottle['bottleId']}}">
+	<article class="card_bottle" data-js-key="{{$cellar->id}}|{{$bottle['id']}}">
 		<button data-js-action="supprimer">
 			<svg enable-background="new 0 0 32 32" id="Glyph" version="1.1" viewBox="0 0 32 32" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 				<title>Icone de poubelle</title>
@@ -31,7 +31,6 @@
 				<p class="card_bottle__metainfo">{{$bottle['volume']}} ml | {{$bottle['country']}}</p>
 			</header>
 			<div>
-				<p>Cellier: {{$bottle['cellarName']}}</p>
 				<div class="card_bottle__actions">
 					<button class="">-</button>
 					<span>{{$bottle['quantity']}}</span>
@@ -41,7 +40,7 @@
 		</section>
 	</article>
 	@empty
-	<p>Aucune bouteilles dans ce cellier</p>
+	<p>Aucune bouteilles</p>
 	@endforelse
 </section>
 @endsection
