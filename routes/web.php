@@ -65,6 +65,8 @@ Route::middleware('auth')->group(function () {
 	Route::put('/modifier/cellier/{cellar}', [CellarController::class, 'update'])->name('cellar.update');
 	Route::delete('supprimer/cellier/{cellar}', [CellarController::class, 'destroy'])->name('cellar.delete');
 
+	Route::get('/mesBouteilles', [UserController::class, 'showBottles'])->name('user.showBottles');
+
 	Route::get('/listeAchat', [PurchaseController::class, 'index'])->name('purchase.index');
 
 });
