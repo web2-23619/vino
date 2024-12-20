@@ -1,35 +1,45 @@
 import App from "../components/App.js";
+import Alerte from "../components/Alerte.js";
+import ModaleAction from "../components/ModaleAction.js";
 
 (function () {
     new App();
 
-    const btnLogout = document.querySelector("[data-js-action='logout']");
+    const alerte = document.querySelector(".alerte");
+    if (alerte) {
+        new Alerte(alerte);
+    }
 
-    btnLogout.addEventListener("click", logout);
+    const btnsSupprimerUser = document.querySelectorAll(
+        "[data-js-action='supprimerUser']"
+    );
 
+    if (btnsSupprimerUser) {
+        btnsSupprimerUser.forEach((btn) => {
+            btn.addEventListener("click", afficherModaleSuppressionUser);
+        });
+    }
 })();
 
-async function logout() {
-    const token = localStorage.getItem("token");
+/**
+ * Function to display the confirmation modal for deleting a user.
+ */
+function afficherModaleSuppressionUser(event) {
+    const declencheur = event.currentTarget;
 
-    if (token) {
-        // Make the logout API request to revoke the token
-        const response = await fetch("/api/logout", {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${token}`, // Send the token in the header to authenticate the request
-                "Content-Type": "application/json",
-            },
-        });
+    // Extract user information from data attributes
+    const userID = declencheur.dataset.jsUserId;
+    const userName = declencheur.dataset.jsName;
 
-        const data = await response.json();
-        if (response.ok) {
-            // If successful, remove the token from localStorage
-            localStorage.removeItem("token");
-        } else {
-            alert("Error logging out");
-        }
-    } else {
-        alert("No token found");
-    }
+    // Log to verify correct data
+    console.log("Supprimer User ID:", userID, "Name:", userName);
+
+    // Create and display the modal using ModaleAction class
+    new ModaleAction(userID, userName, "supprimerUser", "supprimer", "user");
+
+    // Close the dropdown menu if it was open
+    const dropdownCheckbox = declencheur
+        .closest(".menu-deroulant")
+        .querySelector("[type='checkbox']");
+    if (dropdownCheckbox) dropdownCheckbox.checked = false;
 }

@@ -53,10 +53,19 @@ class UserController extends Controller
 	}
 
 	public function profile()
-	{
-		$user = auth()->user();
-		return view('user.profile', compact('user'));
-	}
+{
+    $user = auth()->user();
+
+    // Fetch the required counts dynamically
+    $cellarsCount = $user->cellars()->count(); 
+    // $bottlesCount = $user->cellars->reduce(function ($count, $cellar) {
+    //     return $count + $cellar->bottles()->count(); 
+    // }, 0);
+    $toBuyCount = $user->purchases()->sum('quantity'); // Total items to buy
+
+    return view('user.profile', compact('user', 'cellarsCount', 'toBuyCount'));
+}
+//'bottlesCount'
 
 	/**
 	 * Show the form for editing the specified resource.
@@ -89,17 +98,29 @@ class UserController extends Controller
 	/**
 	 * Remove the specified resource from storage.
 	 */
-	public function destroy(User $user)
-	{
-		if (auth()->user()->id !== $user->id) {
-			return redirect()->route('user.profile')->withErrors('Vous ne pouvez supprimer que votre propre compte.');
-		}
+	// public function destroy(User $user)
+	// {
+	// 	if (auth()->user()->id !== $user->id) {
+	// 		return redirect()->route('user.profile')->withErrors('Vous ne pouvez supprimer que votre propre compte.');
+	// 	}
 
-		$user->delete();
-		Auth::logout();
+	// 	$user->delete();
+	// 	Auth::logout();
 
-		return redirect()->route('welcome')->with('success', 'Compte supprimé avec succès.');
-	}
+	// 	return redirect()->route('welcome')->with('success', 'Compte supprimé avec succès.');
+	// }
+
+	public function destroy($userId)
+{
+    // Find the user by ID
+    $user = User::findOrFail($userId);
+
+    $user->delete();
+
+    // Return a JSON response indicating success
+    return response()->json(['message' => 'Utilisateur supprimé avec succès'], 200);
+}
+
 
 
 	public function forgot()
