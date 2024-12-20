@@ -48,7 +48,7 @@
 							d="M321.2127,54.3591a13.3054,13.3054,0,0,0-12.294-8.4243H203.1539a13.3025,13.3025,0,0,0-12.279,8.3847,203.8036,203.8036,0,0,0-7.981,23.64H329.1061A208.59,208.59,0,0,0,321.2127,54.3591Z" />
 					</g>
 				</svg>Celliers</a>
-			<a href="" class="nav-menu__item">
+			<a href="{{ route('user.showBottles') }}" class="nav-menu__item">
 				<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
 					<g id="Wine_bottle">
 						<path
