@@ -26,7 +26,7 @@
 	@endif
 	@forelse($cellars as $cellar)
 	<article class="cellier">
-		<p>{{$cellar->name}}</p>
+		<a href="{{route('cellar.showBottles', $cellar->id)}}">{{$cellar->name}}</a>
 		<div class="menu-deroulant">
 			<input type="checkbox" aria-label="bouton pour ouvrir menu des actions">
 			<ul class="menu-deroulant__contenu">
