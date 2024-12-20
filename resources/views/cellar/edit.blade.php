@@ -15,13 +15,13 @@
 			<div>{{ $message }}</div>
 			@enderror
 		</div>
-		<div class="form-group">
+		<!-- <div class="form-group">
 			<label for="quantity">Quantité:</label>
 			<input type="number" name="quantity" id="quantity" value="{{ old('quantity', $cellar->quantity) }}" required>
 			@error('quantity')
 			<div>{{ $message }}</div>
 			@enderror
-		</div>
+		</div> -->
 		<button type="submit" class="btn">Modifier</button>
 	</form>
 </section>

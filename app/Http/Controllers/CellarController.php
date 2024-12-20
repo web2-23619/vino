@@ -36,13 +36,13 @@ class CellarController extends Controller
 		// Validation des données du formulaire
 		$request->validate([
 			'name' => 'required|string|max:255',
-			'quantity' => 'required|integer|min:0',
+			// 'quantity' => 'required|integer|min:0',
 		]);
 
 		// Création du nouveau cellier
 		$cellar = new Cellar([
 			'name' => $request->input('name'),
-			'quantity' => $request->input('quantity'),
+			// 'quantity' => $request->input('quantity'),
 			'user_id' => Auth::user()->id,
 		]);
 
@@ -80,7 +80,7 @@ class CellarController extends Controller
 		// Validation des données du formulaire
 		$request->validate([
 			'name' => 'required|string|max:255',
-			'quantity' => 'required|integer|min:0',
+			// 'quantity' => 'required|integer|min:0',
 		]);
 
 
@@ -91,7 +91,7 @@ class CellarController extends Controller
 		// Mise à jour des données du cellier
 		$cellar->update([
 			'name' => $request->input('name'),
-			'quantity' => $request->input('quantity'),
+			// 'quantity' => $request->input('quantity'),
 		]);
 
 		return redirect()->route('cellar.index')->with('succes', 'Cellier modifié avec succès!');
@@ -104,6 +104,30 @@ class CellarController extends Controller
 	{
 		$cellar->delete();
 
-		return	redirect()->route('cellar.index')->with('succes', 'Cellier supprimé avec succès');
+		// Return a response indicating success
+		return response()->json(['message' => 'Cellier supprimé avec succes'], 200);
+	}
+
+	public function showBottles(Cellar $cellar)
+	{
+		// récupere les bouteilles d'un cellier
+		$cellar = Cellar::with('bottles')->find($cellar->id);
+
+		// Flatten the bottles from all cellars into a single collection
+		$bottles = $cellar->bottles->map(function ($bottle) {
+			return [
+				'id' => $bottle->id,
+				'name' => $bottle->name,
+				'price' => $bottle->price,
+				'image_url' => $bottle->image_url,
+				'country' => $bottle->country,
+				'volume' => $bottle->volume,
+				'type' => $bottle->type,
+				'quantity' => $bottle->pivot->quantity,  // Access quantity from pivot table
+			];
+		});
+
+		// Pass the bottles to the view
+		return view('bottle.byCellar', ['bottles'=>$bottles, 'cellar'=>$cellar]);
 	}
 }
