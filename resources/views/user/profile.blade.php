@@ -21,28 +21,16 @@
                     Supprimer
                 </li>
                 <li>
-                    <a data-js-action="logout" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Déconnexion</a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
-                </li>
+    <a data-js-action="logout" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Déconnexion</a>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
+</li>
+
+
             </ul>
         </div>
     </header>
-
-    <!-- Alerts -->
-    @if(session('succes'))
-        <div class="alerte alerte_succes">
-            <p>{{ session('succes') }}</p>
-            <button data-js-action="fermer">x</button>
-        </div>
-    @endif
-    @if(session('erreur'))
-        <div class="alerte alerte_erreur">
-            <p>{{ session('erreur') }}</p>
-            <button data-js-action="fermer">x</button>
-        </div>
-    @endif
 
     <div class="profile-stats">
     <div class="stat-item">

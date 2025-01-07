@@ -2,18 +2,6 @@
 @section('title', 'Reset Password')
 @section('content')
 
-<!-- Affichage des erreurs -->
-@if(!$errors->isEmpty())
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <ul>
-        @foreach($errors->all() as $error)
-            <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
-</div>
-@endif
-
 <!-- Formulaire Réinitialiser Mot de Passe -->
 <section>
     <header>

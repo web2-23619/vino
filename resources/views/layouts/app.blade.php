@@ -14,6 +14,21 @@
 	<header>
 		<h1>Vino</h1>
 	</header>
+	   <!-- Flash Messages -->
+	   @if(session('success'))
+        <div class="alerte alerte_succes">
+            <p>{{ session('success') }}</p>
+            <button data-js-action="fermer">x</button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alerte alerte_erreur">
+            <p>{{ session('error') }}</p>
+            <button data-js-action="fermer">x</button>
+        </div>
+    @endif
+	
 	<main>
 		@yield('content')
 	</main>
