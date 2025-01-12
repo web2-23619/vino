@@ -7,8 +7,8 @@ use App\Models\Bottle;
 
 class SearchController extends Controller
 {
-       /**
-     * Display the search page.
+    /**
+     * afficher la page
      *
      * @return \Illuminate\View\View
      */
@@ -18,40 +18,31 @@ class SearchController extends Controller
     }
 
     /**
-     * Handle the search request and display results.
+     * Traiter la demande de recherche et afficher les résultats.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\View\View
      */
     public function search(Request $request)
     {
-        // Validate the search input
+        // Valider l’entrée de recherche
         $request->validate([
-            'query' => 'required|string|max:255',
+            'query' => 'required|string|min:2|max:255',
         ]);
 
-        // Get the search query
+        // Obtenir la requête de recherche
         $query = $request->input('query');
 
-        // Search the database for matching bottles
+        // Rechercher dans la base de données des bouteilles correspondantes
         $results = Bottle::where('name', 'LIKE', "%{$query}%")
             ->orWhere('country', 'LIKE', "%{$query}%")
             ->orWhere('type', 'LIKE', "%{$query}%")
-            ->orderBy('name');
-        
-        // Fetch user's cellars for the dropdown
+            ->orderBy('name')
+            ->paginate(10);
 
-            $userCellars = auth()->user()->cellars;
+        // Récupérer les celliers de l’utilisatrice pour la liste déroulante
+        $userCellars = auth()->check() ? auth()->user()->cellars : [];
 
-            return view('search.results', [
-                'query' => $query,
-                'results' => $results,
-                'userCellars' => $userCellars,
-            ]);    
-           
-
-       
+        return view('search.results', compact('query', 'results', 'userCellars'));
     }
 }
-
-
