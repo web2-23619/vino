@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: flex-start;
     background-color: var(--clair);
-    padding: var(--espace-m);
+    margin: var(--espace-m);
     font-family: var(--police-regular);
 }
 
