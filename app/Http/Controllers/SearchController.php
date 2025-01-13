@@ -35,10 +35,12 @@ class SearchController extends Controller
 
         // Rechercher dans la base de données des bouteilles correspondantes
         $results = Bottle::where('name', 'LIKE', "%{$query}%")
-            ->orWhere('country', 'LIKE', "%{$query}%")
-            ->orWhere('type', 'LIKE', "%{$query}%")
-            ->orderBy('name')
-            ->paginate(10);
+        ->orWhere('country', 'LIKE', "%{$query}%")
+        ->orWhere('type', 'LIKE', "%{$query}%")
+        ->orWhere('price', 'LIKE', "%{$query}%")
+        ->orWhere('upc_saq', 'LIKE', "%{$query}%")
+        ->orderBy('name')
+        ->paginate(10);
 
         // Récupérer les celliers de l’utilisatrice pour la liste déroulante
         $userCellars = auth()->check() ? auth()->user()->cellars : [];
