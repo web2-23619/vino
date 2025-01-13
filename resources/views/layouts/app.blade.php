@@ -14,6 +14,21 @@
 	<header>
 		<h1>Vino</h1>
 	</header>
+	   <!-- Flash Messages -->
+	   @if(session('success'))
+        <div class="alerte alerte_succes">
+            <p>{{ session('success') }}</p>
+            <button data-js-action="fermer">x</button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alerte alerte_erreur">
+            <p>{{ session('error') }}</p>
+            <button data-js-action="fermer">x</button>
+        </div>
+    @endif
+	
 	<main>
 		@yield('content')
 	</main>
@@ -60,7 +75,7 @@
 					</g>
 				</svg>Bouteilles
 			</a>
-			<a href="" class="nav-menu__item">
+			<a href="{{ route('search.index') }}" class="nav-menu__item">
 				<svg enable-background="new 0 0 32 32" id="Glyph" version="1.1" viewBox="0 0 32 32" xml:space="preserve"
 					xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 					<path

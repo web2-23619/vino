@@ -7,9 +7,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PurchaseController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\SpiderController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\GoutteController;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -66,5 +65,8 @@ Route::middleware('auth')->group(function () {
 	Route::get('/cellier/{cellar}/bouteille', [CellarController::class, 'showBottles'])->name('cellar.showBottles');
 
 	Route::get('/listeAchat', [PurchaseController::class, 'index'])->name('purchase.index');
+
+	Route::get('/search', [SearchController::class, 'index'])->name('search.index');
+    Route::post('/search', [SearchController::class, 'search'])->name('search.results');
 
 });

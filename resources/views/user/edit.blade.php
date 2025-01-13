@@ -8,19 +8,6 @@
         <h2>Modifier Profil</h2>
     </header>
 
-    <!-- Display success and error messages -->
-    @if(session('success'))
-        <div class="alerte alerte_succes">
-            <p>{{ session('success') }}</p>
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="alerte alerte_erreur">
-            <p>{{ session('error') }}</p>
-        </div>
-    @endif
-
     <!-- Formulaire de modification -->
     <form action="{{ route('user.update', $user->id) }}" method="POST">
         @csrf

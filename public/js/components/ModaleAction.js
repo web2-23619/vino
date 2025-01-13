@@ -20,6 +20,12 @@ class ModaleAction {
         this.#elToChange = elToChange;
         this.#conteneurHTML = document.querySelector("main");
         this.#gabarit = document.querySelector(`[id='${template}']`);
+
+        if (!this.#gabarit) {
+            console.error(`Template with ID '${template}' not found.`);
+            return;
+        }
+
         this.#elementHTML;
         this.#afficher();
     }
@@ -39,50 +45,76 @@ class ModaleAction {
             "[data-js-action='annuler']"
         );
 
-        this.#btnAnnuler.addEventListener(
-            "click",
-            this.#fermerModale.bind(this)
-        );
-
-        this.#btnAction = this.#btnAnnuler = this.#elementHTML.querySelector(
-            "[data-js-action='" + this.#action + "']"
-        );
-
-        if (this.#action == "supprimer") {
-            this.#btnAction.addEventListener(
+        if (this.#btnAnnuler) {
+            this.#btnAnnuler.addEventListener(
                 "click",
-                this.#supprimer.bind(this)
+                this.#fermerModale.bind(this)
             );
         }
 
-        //bloquer action sur background
-        document.querySelector("main").classList.add("action-locked");
-        document.querySelector("footer > div").classList.add("action-locked");
+        this.#btnAction = this.#elementHTML.querySelector(
+            "[data-js-action='" + this.#action + "']"
+        );
+
+        if (this.#btnAction) {
+            if (this.#action === "supprimer") {
+                this.#btnAction.addEventListener(
+                    "click",
+                    this.#supprimer.bind(this)
+                );
+            } else if (this.#action === "deconnexion") {
+                this.#btnAction.addEventListener(
+                    "click",
+                    this.#deconnexion.bind(this)
+                );
+            }
+        }
+
+        // Vérifiez si des éléments existent avant d’appliquer des classes
+        const mainElement = document.querySelector("main");
+        const footerDiv = document.querySelector("footer > div");
+
+        if (mainElement) {
+            mainElement.classList.add("action-locked");
+        }
+        if (footerDiv) {
+            footerDiv.classList.add("action-locked");
+        }
     }
 
     /**
-     * Méthode privée pour afermer modale
+     * Méthode privée pour fermer la modale
      */
     #fermerModale() {
-        document.querySelector("main").classList.remove("action-locked");
-        document
-            .querySelector("footer > div")
-            .classList.remove("action-locked");
-        this.#elementHTML.classList.add("remove");
-		
-        setTimeout(() => {
-            this.#elementHTML.remove();
-        }, 2650);
+        const mainElement = document.querySelector("main");
+        const footerDiv = document.querySelector("footer > div");
+
+        if (mainElement) {
+            mainElement.classList.remove("action-locked");
+        }
+        if (footerDiv) {
+            footerDiv.classList.remove("action-locked");
+        }
+
+        if (this.#elementHTML) {
+            this.#elementHTML.classList.add("remove");
+
+            setTimeout(() => {
+                this.#elementHTML.remove();
+            }, 2650);
+        }
     }
 
+    /**
+     * Méthode privée pour supprimer
+     */
     async #supprimer() {
         const response = await fetch(
-            "/api/" + this.#action + "/" + this.#model + "/" + this.#id,
+            `/api/${this.#action}/${this.#model}/${this.#id}`,
             {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: "Bearer " + localStorage.getItem("token"), // ajouter token
                 },
             }
         );
@@ -90,18 +122,39 @@ class ModaleAction {
         const top = document.querySelector("[data-js='header']");
 
         if (response.ok) {
-            const message = "Cellier supprimé avec succès";
-            this.#elToChange.remove();
+            const message =
+                this.#model === "cellier"
+                    ? "Cellier supprimé avec succès"
+                    : "Utilisateur supprimé avec succès";
+            this.#elToChange?.remove();
 
             this.#elementHTML.remove();
             top.scrollIntoView();
             new Alerte(null, message, "succes");
         } else {
-            const message = "Erreur à la suppression du cellier";
+            const message =
+                this.#model === "cellier"
+                    ? "Erreur à la suppression du cellier"
+                    : "Erreur à la suppression de l'utilisateur";
             this.#elementHTML.remove();
             top.scrollIntoView();
             new Alerte(null, message, "erreur");
         }
+    }
+
+    /**
+     * Méthode privée pour déconnexion
+     */
+    #deconnexion() {
+        // Envoyer le formulaire de déconnexion masquée
+        const logoutForm = document.getElementById("logout-form");
+        if (logoutForm) {
+            logoutForm.submit();
+        } else {
+            console.error("Logout form not found.");
+        }
+
+        this.#fermerModale();
     }
 }
 
