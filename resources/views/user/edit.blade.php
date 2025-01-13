@@ -3,13 +3,13 @@
 @section('title', 'Modifier Profil')
 
 @section('content')
-<section>
+<section class="register-page">
     <header>
         <h2>Modifier Profil</h2>
     </header>
 
     <!-- Formulaire de modification -->
-    <form action="{{ route('user.update', $user->id) }}" method="POST">
+    <form class="form" action="{{ route('user.update', $user->id) }}" method="POST">
         @csrf
         @method('PUT')
 
