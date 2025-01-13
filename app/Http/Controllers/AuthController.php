@@ -12,43 +12,43 @@ use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+	/**
+	 * Display a listing of the resource.
+	 */
+	public function index()
+	{
+		//
+	}
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('welcome');
-    }
+	/**
+	 * Show the form for creating a new resource.
+	 */
+	public function create()
+	{
+		return view('welcome');
+	}
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
-    
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-    
-            // Redirect to the profile page
-            return redirect()->route('user.profile')->with('success', 'Connexion réussie!');
-        }
-    
-        return back()->withErrors([
-            'email' => 'Les informations d\'identification fournies sont incorrectes.',
-        ]);
-    }
+	/**
+	 * Store a newly created resource in storage.
+	 */
+	public function store(Request $request)
+	{
+		$credentials = $request->validate([
+			'email' => ['required', 'email'],
+			'password' => ['required'],
+		]);
+
+		if (Auth::attempt($credentials)) {
+			$request->session()->regenerate();
+
+			// Redirect to the profile page
+			return redirect()->route('user.profile')->with('success', 'Connexion réussie!');
+		}
+
+		return redirect(route('login'))
+			->withErrors(trans('auth.failed'))
+			->withInput();
+	}
 
 	/**
 	 * used to return token for token based authentification
@@ -76,42 +76,42 @@ class AuthController extends Controller
 			'message' => 'Informations d\'autentification invalides',
 		], 401);
 	}
-    
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+	/**
+	 * Display the specified resource.
+	 */
+	public function show(string $id)
+	{
+		//
+	}
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+	/**
+	 * Show the form for editing the specified resource.
+	 */
+	public function edit(string $id)
+	{
+		//
+	}
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Request $request)
-    {
-        Session::flush();
-        Auth::logout();
+	/**
+	 * Update the specified resource in storage.
+	 */
+	public function update(Request $request, string $id)
+	{
+		//
+	}
 
-        return redirect()->route('welcome')->with('success', 'Déconnexion réussie!');
-    }
+	/**
+	 * Remove the specified resource from storage.
+	 */
+	public function destroy(Request $request)
+	{
+		Session::flush();
+		Auth::logout();
+
+		return redirect()->route('welcome')->with('success', 'Déconnexion réussie!');
+	}
 
 	/**
 	 * destroy api token

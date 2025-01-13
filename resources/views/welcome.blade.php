@@ -10,6 +10,15 @@
 
 	<div>
 		<form class="form" action="{{ route('login') }}" method="POST">
+			@if(!$errors->isEmpty())
+			<div class="alerte alerte_erreur">
+				<ul>
+					@foreach($errors->all() as $error)
+					<li>{{ $error }}</li>
+					@endforeach
+				</ul><button data-js-action="fermer">x</button>
+			</div>
+			@endif
 			@csrf
 			<div class="form-group">
 				<label for="email">Email</label>
