@@ -1,5 +1,5 @@
 .login-page {
-    padding: var(--espace-m);
+    margin: var(--espace-m);
 }
 
 .login-page > div:not(.alerte){
