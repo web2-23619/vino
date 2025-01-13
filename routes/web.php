@@ -22,8 +22,12 @@ use App\Http\Controllers\GoutteController;
 */
 
 Route::get('/', function () {
-    return view('layouts/app');
-});
+	if (!Auth::check()) {
+		return view('welcome');;
+	} else {
+		return redirect()->route('cellar.index');
+	}
+})->name('welcome');
 
 route::get('/goutte', [App\Http\Controllers\GoutteController::class, 'index'])->name('goutte');
 
