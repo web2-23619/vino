@@ -11,6 +11,7 @@
         "laravel/framework": "^10.0",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
+        "masterminds/html5": "^2.9",
         "roach-php/core": "^3.0",
         "roach-php/laravel": "^3.1"
     },

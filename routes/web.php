@@ -7,9 +7,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PurchaseController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\SpiderController;
 use App\Http\Controllers\SearchController;
-
+use App\Http\Controllers\GoutteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,19 +21,14 @@ use App\Http\Controllers\SearchController;
 |
 */
 
-route::get('/spider', [App\Http\Controllers\SpiderController::class, 'index'])->name('spider');
-
 Route::get('/', function () {
-	if (!Auth::check()) {
-		return view('welcome');;
-	} else {
-		return redirect()->route('cellar.index');
-	}
-})->name('welcome');
+    return view('layouts/app');
+});
 
-Route::middleware('guest')->group(function () {
+route::get('/goutte', [App\Http\Controllers\GoutteController::class, 'index'])->name('goutte');
 
-	// Route enregistrement
+
+Route::middleware('guest')->group(function(){
 	Route::get('/registration', [UserController::class, 'create'])->name('user.create');
 	Route::post('/registration', [UserController::class, 'store'])->name('user.store');
 
@@ -50,8 +44,9 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+	Route::get('/users', [UserController::class, 'index'])->name('user.index');
+    Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
 
-	Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
 	Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
 	Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('user.destroy');
 	Route::put('/users/{user}', [UserController::class, 'update'])->name('user.update');
