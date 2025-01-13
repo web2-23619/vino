@@ -31,20 +31,27 @@
         </div>
     </article>
 
-    <!-- Profile Stats -->
-    <div class="profile-stats">
-        <div class="stat-item">
-            <p class="stat-number">{{ $cellarsCount }}</p>
-            <p class="stat-label">Celliers</p>
-        </div>
-
-      
-
-        <div class="stat-item">
-            <p class="stat-number">{{ $toBuyCount }}</p>
-            <p class="stat-label">À acheter</p>
-        </div>
+ <!-- Profile Stats -->
+<div class="profile-stats">
+    <!-- Cellars Count -->
+    <div class="stat-item">
+        <p class="stat-number">{{ $cellarsCount }}</p>
+        <p class="stat-label">Celliers</p>
     </div>
+
+    <!-- Bottles Count -->
+    <div class="stat-item">
+        <p class="stat-number">{{ $bottlesCount }}</p>
+        <p class="stat-label">Bouteilles</p>
+    </div>
+
+    <!-- To Buy Count -->
+    <div class="stat-item">
+        <p class="stat-number">{{ $toBuyCount }}</p>
+        <p class="stat-label">À acheter</p>
+    </div>
+</div>
+
 
     <!-- Confirmation Modal pour Supprimer -->
     <template id="supprimerUser">

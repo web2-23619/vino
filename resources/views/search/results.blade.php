@@ -24,39 +24,21 @@
                         {{ $bottle->volume }} ml | {{ $bottle->country }}<br />
                         {{ ucfirst($bottle->type) }} | {{ number_format($bottle->price, 2) }} $
                     </p>
-
-                    {{-- Display Cellar Info --}}
-                    @if($bottle->cellars->isNotEmpty())
-                        <p class="cellar-info">Présent dans :</p>
-                        <ul>
-                            @foreach($bottle->cellars as $cellar)
-                                <li>{{ $cellar->name }} (Quantité : {{ $cellar->pivot->quantity }})</li>
-                            @endforeach
-                        </ul>
-                    @else
-                        <p class="no-cellar-info">Aucun cellier associé.</p>
-                    @endif
                 </div>
 
                 {{-- Add Button and Dropdown --}}
                 <div class="result-actions">
-                        @csrf
-                        <button type="submit" class="btn">Ajouter</button>
-
-                        <select name="cellar_id" class="select-cellar">
-                            @foreach($userCellars as $cellar)
-                                <option value="{{ $cellar->id }}">{{ $cellar->name }}</option>
-                            @endforeach
-                            <option value="wishlist">Liste d'achat</option>
-                        </select>
-                    </form>
+                    <button type="button" class="btn btn-add">+</button>
+                    <select name="cellar_id" class="select-cellar">
+                        @foreach($userCellars as $cellar)
+                            <option value="{{ $cellar->id }}">{{ $cellar->name }}</option>
+                        @endforeach
+                        <option value="wishlist">Liste d'achat</option>
+                    </select>
                 </div>
             </div>
             @endforeach
         </div>
-
-        {{-- Pagination Links --}}
-        {{ $results->links() }}
     @endif
 </section>
 @endsection
