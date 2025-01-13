@@ -5,7 +5,8 @@
 
 a {
 	text-decoration: none;
-	font: inherit;
+	color: inherit;
+	font-family: inherit;
 }
 
 li {
