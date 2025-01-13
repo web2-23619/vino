@@ -21,11 +21,11 @@
 		@csrf
 		<div class="form-group">
 			<label for="username">Nom</label>
-			<input type="text" id="username" name="username" placeholder="Votre nom" required>
+			<input type="text" id="username" name="username" placeholder="Votre nom" value="{{ old('username') }}" required>
 		</div>
 		<div class="form-group">
 			<label for="email">Email</label>
-			<input type="email" id="email" name="email" placeholder="Votre email" required>
+			<input type="email" id="email" name="email" placeholder="Votre email" value="{{ old('email') }}" required>
 		</div>
 		<div class="form-group">
 			<label for="password">Mot de passe</label>
