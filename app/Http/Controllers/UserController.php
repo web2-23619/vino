@@ -53,19 +53,23 @@ class UserController extends Controller
 	}
 
 	public function profile()
-{
-    $user = auth()->user();
-
-    // Fetch the required counts dynamically
-    $cellarsCount = $user->cellars()->count(); 
-    // $bottlesCount = $user->cellars->reduce(function ($count, $cellar) {
-    //     return $count + $cellar->bottles()->count(); 
-    // }, 0);
-    $toBuyCount = $user->purchases()->sum('quantity'); // Total items to buy
-
-    return view('user.profile', compact('user', 'cellarsCount', 'toBuyCount'));
-}
-//'bottlesCount'
+	{
+		$user = auth()->user();
+	
+		// Fetch the required counts dynamically
+		$cellarsCount = $user->cellars()->count(); 
+	
+		// Calculate the total number of bottles in all cellars
+		$bottlesCount = $user->cellars->sum(function ($cellar) {
+			return $cellar->bottles->count();
+		});
+	
+		$toBuyCount = $user->purchases()->sum('quantity'); // Total items to buy
+	
+		// Pass all variables to the view
+		return view('user.profile', compact('user', 'cellarsCount', 'bottlesCount', 'toBuyCount'));
+	}
+	
 
 	/**
 	 * Show the form for editing the specified resource.
