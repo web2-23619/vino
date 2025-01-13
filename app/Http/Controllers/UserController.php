@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Cellar;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
@@ -48,6 +49,17 @@ class UserController extends Controller
 		$user->fill($request->all());
 		$user->password = Hash::make($request->password);
 		$user->save();
+
+		if($user->id){
+			//creer cellier par default à la création d'un utilisateur
+			$cellar = new Cellar([
+				'name' => 'Mon cellier',
+				// 'quantity' => $request->input('quantity'),
+				'user_id' => $user->id,
+			]);
+		}
+
+		$cellar->save();
 
 		return redirect()->route('welcome')->with('success', 'Utilisateur créé avec succès!');
 	}
