@@ -38,6 +38,12 @@
 			<a href="{{ route('cellar.create') }}" class="btn-add">✚ {{$addButton}}</a>
 		</div>
 		@endif
+		<!-- Ajouter un bouton "+ Bouteille" seulement sur la route 'cellar.showBottles' -->
+		@if(Route::currentRouteName() == 'cellar.showBottles')
+		<div>
+			<a href="{{ route('search.index') }}" class="btn-add">+ Bouteille</a>
+		</div>
+		@endif
 		<nav class="nav-menu">
 			<a href="{{ route('cellar.index') }}" class="nav-menu__item">
 				<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
