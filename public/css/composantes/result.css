@@ -3,11 +3,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--espace-s);
-    background-color: var(--clair);
-    border-radius: var(--rayon-m);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: var(--espace-s);
+    margin-bottom: var(--espace-l);
 }
 
 /* Style the bottle image */
@@ -35,8 +31,7 @@
 /* Style the dropdown */
 .select-cellar {
     border: 1px solid var(--fonce);
-    border-radius: var(--rayon-s);
-    padding: var(--espace-micro);
+    border-radius: var(--rayon-s); 
     font-size: var(--police-s);
     height: 36px;
 }
