@@ -28,3 +28,6 @@ Route::middleware('auth:sanctum')->delete('supprimer/achat/{purchase}', [Purchas
 Route::delete('/supprimer/utilisateur/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 Route::middleware('auth:sanctum')->delete('supprimer/cellier/{cellar}', [CellarController::class, 'destroy']);
 Route::middleware('auth:sanctum')->delete('retirer/{cellar_id}/{bottle_id}', [CellarController::class, 'apiRemoveBottle']);
+
+Route::middleware('auth:sanctum')->post('/add-bottle', [CellarController::class, 'addBottle']);
+
