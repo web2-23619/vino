@@ -15,7 +15,7 @@
 		<h1>Vino</h1>
 	</header>
 	<main>
-		<!-- Flash Messages -->
+		
 		@if(session('success'))
 		<div class="alerte alerte_succes">
 			<p>{{ session('success') }}</p>
