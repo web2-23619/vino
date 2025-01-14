@@ -1,4 +1,5 @@
 import Alerte from "./Alerte.js";
+import App from "./App.js";
 
 class ModaleAction {
     #id;
@@ -13,6 +14,8 @@ class ModaleAction {
     #model;
 
     constructor(id, name, template, action, model, elToChange = null) {
+		new App();
+
         this.#id = id;
         this.#displayName = name;
         this.#action = action;
@@ -86,15 +89,7 @@ class ModaleAction {
      * Méthode privée pour fermer la modale
      */
     #fermerModale() {
-        const mainElement = document.querySelector("main");
-        const footerDiv = document.querySelector("footer > div");
-
-        if (mainElement) {
-            mainElement.classList.remove("action-locked");
-        }
-        if (footerDiv) {
-            footerDiv.classList.remove("action-locked");
-        }
+		this.#déverouiller()
 
         if (this.#elementHTML) {
             this.#elementHTML.classList.add("remove");
@@ -106,11 +101,28 @@ class ModaleAction {
     }
 
     /**
+     * Méthode privée pour fermer déverouiller les acions
+     */
+    #déverouiller() {
+        const mainElement = document.querySelector("main");
+        const footerDiv = document.querySelector("footer > div");
+
+        if (mainElement) {
+            mainElement.classList.remove("action-locked");
+        }
+        if (footerDiv) {
+            footerDiv.classList.remove("action-locked");
+        }
+    }
+
+    /**
      * Méthode privée pour supprimer
      */
     async #supprimer() {
         const response = await fetch(
-            `/api/${this.#action}/${this.#model}/${this.#id}`,
+            `${App.instance.baseURL}/api/${this.#action}/${this.#model}/${
+                this.#id
+            }`,
             {
                 method: "DELETE",
                 headers: {
@@ -140,6 +152,8 @@ class ModaleAction {
             this.#elementHTML.remove();
             top.scrollIntoView();
             new Alerte(null, message, "erreur");
+
+           this.#déverouiller();
         }
     }
 
@@ -151,6 +165,7 @@ class ModaleAction {
         const logoutForm = document.getElementById("logout-form");
         if (logoutForm) {
             logoutForm.submit();
+			localStorage.removeItem('token');
         } else {
             console.error("Logout form not found.");
         }
