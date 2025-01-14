@@ -4,7 +4,7 @@
 
 @section('content')
 <section>
-    <!-- Header Section -->
+   
     <header data-js="header">
         <h2>Profile</h2>
     </header>
@@ -31,21 +31,21 @@
         </div>
     </article>
 
- <!-- Profile Stats -->
+ <!-- Stats de profil -->
 <div class="profile-stats">
-    <!-- Cellars Count -->
+    <!-- nombre de celliers -->
     <div class="stat-item">
         <p class="stat-number">{{ $cellarsCount }}</p>
         <p class="stat-label">Celliers</p>
     </div>
 
-    <!-- Bottles Count -->
+    <!-- nombre de bouteilles -->
     <div class="stat-item">
         <p class="stat-number">{{ $bottlesCount }}</p>
         <p class="stat-label">Bouteilles</p>
     </div>
 
-    <!-- To Buy Count -->
+    <!-- a acheter -->
     <div class="stat-item">
         <p class="stat-number">{{ $toBuyCount }}</p>
         <p class="stat-label">À acheter</p>

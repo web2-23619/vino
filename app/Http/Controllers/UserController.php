@@ -38,7 +38,7 @@ class UserController extends Controller
 	public function store(Request $request)
 	{
 
-		// Validate input
+		// Validation
 		$request->validate([
 			'username' => 'required|string|max:255',
 			'email' => 'required|email|unique:users,email',
@@ -54,7 +54,7 @@ class UserController extends Controller
 			//creer cellier par default à la création d'un utilisateur
 			$cellar = new Cellar([
 				'name' => 'Mon cellier',
-				// 'quantity' => $request->input('quantity'),
+				 'quantity' => $request->input('quantity'),
 				'user_id' => $user->id,
 			]);
 		}
@@ -69,17 +69,17 @@ class UserController extends Controller
 		$user = auth()->user();
 
 	
-		// Fetch the required counts dynamically
+		// Récupérer les comptes requis de manière dynamique
 		$cellarsCount = $user->cellars()->count(); 
 	
-		// Calculate the total number of bottles in all cellars
+		// Calculez le nombre total de bouteilles dans toutes les celliers
 		$bottlesCount = $user->cellars->sum(function ($cellar) {
-			return $cellar->bottles->count();
+			return $cellar->bottles->sum('pivot.quantity');
 		});
 	
-		$toBuyCount = $user->purchases()->sum('quantity'); // Total items to buy
+		$toBuyCount = $user->purchases()->sum('quantity'); 
 	
-		// Pass all variables to the view
+		
 		return view('user.profile', compact('user', 'cellarsCount', 'bottlesCount', 'toBuyCount'));
 	}
 
@@ -112,29 +112,15 @@ class UserController extends Controller
 	}
 
 
-	/**
-	 * Remove the specified resource from storage.
-	 */
-	// public function destroy(User $user)
-	// {
-	// 	if (auth()->user()->id !== $user->id) {
-	// 		return redirect()->route('user.profile')->withErrors('Vous ne pouvez supprimer que votre propre compte.');
-	// 	}
-
-	// 	$user->delete();
-	// 	Auth::logout();
-
-	// 	return redirect()->route('welcome')->with('success', 'Compte supprimé avec succès.');
-	// }
-
+	
 	public function destroy($userId)
 	{
-		// Find the user by ID
+		
 		$user = User::findOrFail($userId);
 
 		$user->delete();
 
-		// Return a JSON response indicating success
+		// Retourner une réponse JSON indiquant la réussite
 		return response()->json(['message' => 'Utilisateur supprimé avec succès'], 200);
 	}
 
@@ -208,16 +194,16 @@ class UserController extends Controller
 	/* afficher toute les bouteilles pour l'utilisateur connecté */
 	public function showBottles()
 	{
-		// Find the user by ID
+		
 		$user = Auth::user();
 
 
 		// récupere tous les celliers et les bouteilles que chacun contient
 		$cellars = $user->cellars()->with(['bottles' => function ($query) {
-			$query->withPivot('quantity'); // Load the 'quantity' from the pivot table
+			$query->withPivot('quantity'); 
 		}])->get();
 
-		// Flatten the bottles from all cellars into a single collection
+		// Aplatissez les bouteilles de toutes les caves en une seule collection
 		$bottles = $cellars->flatMap(function ($cellar) {
 			return $cellar->bottles->map(function ($bottle) use ($cellar) {
 				return [
@@ -225,7 +211,7 @@ class UserController extends Controller
 					'cellarName' => $cellar->name,
 					'bottleId' => $bottle->id,
 					'name' => $bottle->name,
-					'quantity' => $bottle->pivot->quantity, // Access the 'quantity' field in the pivot
+					'quantity' => $bottle->pivot->quantity, 
 					'image_url' => $bottle->image_url,
 					'price' => $bottle->price,
 					'country' => $bottle->country,
@@ -235,7 +221,7 @@ class UserController extends Controller
 			});
 		});
 
-		// Pass the bottles to the view
+		
 		return view('bottle.byUser', compact('bottles'));
 	}
 }
