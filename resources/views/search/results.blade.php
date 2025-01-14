@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@section('js', asset('js/pages/search.js'))
 
 @section('title', 'Résultats de Recherche')
 
@@ -26,7 +25,7 @@
                     </div>
 
                     {{-- Add Button and Dropdown --}}
-                    <div class="result-actions">
+                     <!--<div class="result-actions">
                         <button type="button" class="btn-add" data-bottle-id="{{ $bottle->id }}">+</button>
                         <select name="cellar_id" class="select-cellar">
                             @foreach($userCellars as $cellar)
@@ -34,7 +33,7 @@
                             @endforeach
                             <option value="wishlist">Liste d'achat</option>
                         </select>
-                    </div>
+                    </div>-->
                 </div>
             @endforeach
         </div>

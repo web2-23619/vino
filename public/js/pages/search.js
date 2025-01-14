@@ -1,19 +1,19 @@
-import App from "../components/App.js";
-import Alerte from "../components/Alerte.js";
+//import App from "../components/App.js";
+//import Alerte from "../components/Alerte.js";
 
-(function () {
-    new App();
+//(function () {
+   // new App();
 
-    const alerte = document.querySelector(".alerte");
-    if (alerte) {
-        new Alerte(alerte);
-    }
+    //const alerte = document.querySelector(".alerte");
+    //if (alerte) {
+        //new Alerte(alerte);
+    //}
 
     // Get all "Ajouter" buttons
-    const addButtons = document.querySelectorAll(".btn-add");
-    for (const button of addButtons) {
-        button.addEventListener("click", addBottleToCellar);
-    }
-})();
+  //  const addButtons = document.querySelectorAll(".btn-add");
+   // for (const button of addButtons) {
+        //button.addEventListener("click", addBottleToCellar);
+   // }
+//})();
 
 
