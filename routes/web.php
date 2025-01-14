@@ -69,6 +69,11 @@ Route::middleware('auth')->group(function () {
 
 	Route::get('/mesBouteilles', [UserController::class, 'showBottles'])->name('user.showBottles');
 	Route::get('/cellier/{cellar}/bouteille', [CellarController::class, 'showBottles'])->name('cellar.showBottles');
+	
+	Route::get('/cellier/bouteille/ajouter/{bottle_id}', [SearchController::class, 'showAddBottleForm'])->name('bottle.add');
+	Route::post('/cellier/bouteille/ajouter', [SearchController::class, 'addBottle'])->name('bottle.add.submit');
+
+
 
 	Route::get('/listeAchat', [PurchaseController::class, 'index'])->name('purchase.index');
 

@@ -22,6 +22,7 @@
                             {{ $bottle->volume }} ml | {{ $bottle->country }}<br />
                             {{ ucfirst($bottle->type) }} | {{ number_format($bottle->price, 2) }} $
                         </p>
+                        <a href="{{ route('bottle.add', ['bottle_id' => $bottle->id]) }}" class="btn-add">Ajouter</a>
                     </div>
 
                     {{-- Add Button and Dropdown --}}
