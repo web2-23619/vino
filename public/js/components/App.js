@@ -2,8 +2,6 @@ import Alerte from "./Alerte.js";
 
 export default class App {
     static #instance;
-    #alerte;
-    #btnsSupprimerCellier;
 
     //Permet d'accéder à l'instance de la classe de n'importe où dans le code en utilisant App.instance
     static get instance() {
@@ -22,13 +20,15 @@ export default class App {
     }
 
     async removeBottleFromCellar(event) {
+		new App();
+
         const trigger = event.target;
 
         const bouteille = trigger.closest("article");
         const key = bouteille.dataset.jsKey;
         const ids = key.split("|");
 
-        const response = await fetch(`/api/retirer/${ids[0]}/${ids[1]}`, {
+        const response = await fetch(`${App.instance.baseURL}/api/retirer/${ids[0]}/${ids[1]}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
