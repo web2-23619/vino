@@ -20,13 +20,15 @@ export default class App {
     }
 
     async removeBottleFromCellar(event) {
+		new App();
+
         const trigger = event.target;
 
         const bouteille = trigger.closest("article");
         const key = bouteille.dataset.jsKey;
         const ids = key.split("|");
 
-        const response = await fetch(`/api/retirer/${ids[0]}/${ids[1]}`, {
+        const response = await fetch(`${App.instance.baseURL}/api/retirer/${ids[0]}/${ids[1]}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
