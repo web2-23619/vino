@@ -1,7 +1,10 @@
 import Alerte from "../components/Alerte.js";
 import ModaleAction from "../components/ModaleAction.js";
+import App from "../components/App.js";
 
 (function () {
+    new App();
+
     let menuOuvert = null;
 
     const menusHTML = document.querySelectorAll(
@@ -41,8 +44,8 @@ import ModaleAction from "../components/ModaleAction.js";
         }
     }
 
-	function afficherModaleSupressionCellier(event) {
-		menuOuvert = null;
+    function afficherModaleSupressionCellier(event) {
+        menuOuvert = null;
 
         const declencheur = event.target;
         const cellierID = declencheur.dataset.jsCellier;
@@ -61,8 +64,4 @@ import ModaleAction from "../components/ModaleAction.js";
             elToChange
         );
     }
-
-
-
 })();
-

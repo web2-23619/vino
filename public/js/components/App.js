@@ -2,8 +2,6 @@ import Alerte from "./Alerte.js";
 
 export default class App {
     static #instance;
-    #alerte;
-    #btnsSupprimerCellier;
 
     //Permet d'accéder à l'instance de la classe de n'importe où dans le code en utilisant App.instance
     static get instance() {

@@ -25,13 +25,16 @@ async function deletePurchaseItem(event) {
     const purchaseItem = trigger.closest("article");
     const id = purchaseItem.dataset.jsId;
 
-    const response = await fetch(`/api/supprimer/achat/${id}`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"), // ajouter token
-        },
-    });
+    const response = await fetch(
+        `${App.instance.baseURL}/api/supprimer/achat/${id}`,
+        {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + localStorage.getItem("token"), // ajouter token
+            },
+        }
+    );
 
     if (response.ok) {
         const message = "Bouteille retirée avec succès";

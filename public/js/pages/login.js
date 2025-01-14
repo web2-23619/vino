@@ -19,7 +19,7 @@ async function login() {
     const email = document.querySelector("[name='email']").value;
     const password = document.querySelector("[name='password']").value;
 
-    const response = await fetch("/api/login", {
+    const response = await fetch(`${App.instance.baseURL}/api/login`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
