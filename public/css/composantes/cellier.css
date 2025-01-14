@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: space-between;
 
-    :is(a, a:visited) {
+    > :is(a, a:visited) {
         font-size: var(--police-m);
 		font-family: var(--police-regular);
 

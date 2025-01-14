@@ -41,7 +41,7 @@
 		</section>
 	</article>
 	@empty
-	<p>Aucune bouteilles dans ce cellier</p>
+	<p>Aucune bouteille</p>
 	@endforelse
 </section>
 @endsection

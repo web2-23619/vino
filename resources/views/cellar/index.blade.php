@@ -30,7 +30,7 @@
 		<div class="menu-deroulant">
 			<input type="checkbox" aria-label="bouton pour ouvrir menu des actions">
 			<ul class="menu-deroulant__contenu">
-				<a href="{{ route('cellar.edit', $cellar->id) }}">Modifier</a>
+				<li><a href="{{ route('cellar.edit', $cellar->id) }}">Modifier</a></li>
 				<li data-js-action="afficherModaleConfirmation" data-js-cellier="{{ $cellar->id }}" data-js-Name="{{$cellar->name}}">Supprimer</li>
 			</ul>
 		</div>

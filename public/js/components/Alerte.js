@@ -49,7 +49,10 @@ class Alerte {
     }
 
     #fermerAlerte() {
-        this.#elementHTML.remove();
+        this.#elementHTML.classList.add("alerte_remove");
+        setTimeout(() => {
+            this.#elementHTML.remove();
+        }, 400);
     }
 }
 

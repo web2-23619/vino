@@ -33,29 +33,29 @@ route::get('/goutte', [App\Http\Controllers\GoutteController::class, 'index'])->
 
 
 Route::middleware('guest')->group(function(){
-	Route::get('/registration', [UserController::class, 'create'])->name('user.create');
-	Route::post('/registration', [UserController::class, 'store'])->name('user.store');
+	Route::get('/enregistrement', [UserController::class, 'create'])->name('user.create');
+	Route::post('/enregistrement', [UserController::class, 'store'])->name('user.store');
 
 	// Route connexion
-	Route::get('/login', [AuthController::class, 'create'])->name('login');
-	Route::post('/login', [AuthController::class, 'store'])->name('login.store');
+	Route::get('/connexion', [AuthController::class, 'create'])->name('login');
+	Route::post('/connexion', [AuthController::class, 'store'])->name('login.store');
 
 	// Route mot de passe oublié
-	Route::get('/password/forgot', [UserController::class, 'forgot'])->name('user.forgot');
-	Route::post('/password/forgot', [UserController::class, 'email'])->name('user.email');
-	Route::get('/password/reset/{user}/{token}', [UserController::class, 'reset'])->name('user.reset');
-	Route::put('/password/reset/{user}/{token}', [UserController::class, 'resetUpdate'])->name('user.reset.update');
+	Route::get('/motdepasse/oublie', [UserController::class, 'forgot'])->name('user.forgot');
+	Route::post('/motdepasse/oublie', [UserController::class, 'email'])->name('user.email');
+	Route::get('/motdepasse/reintialiser/{user}/{token}', [UserController::class, 'reset'])->name('user.reset');
+	Route::put('/motdepasse/reintialiser/{user}/{token}', [UserController::class, 'resetUpdate'])->name('user.reset.update');
 });
 
 Route::middleware('auth')->group(function () {
-	Route::get('/users', [UserController::class, 'index'])->name('user.index');
+	Route::get('/utilisateur', [UserController::class, 'index'])->name('user.index');
     Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
 
-	Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
-	Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('user.destroy');
-	Route::put('/users/{user}', [UserController::class, 'update'])->name('user.update');
+	Route::get('/utilisateurs/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
+	Route::delete('/utilisateurs/{user}', [UserController::class, 'destroy'])->name('user.destroy');
+	Route::put('/utilisateurs/{user}', [UserController::class, 'update'])->name('user.update');
 
-	Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
+	Route::post('/deconnexion', [AuthController::class, 'destroy'])->name('logout');
 	Route::middleware('auth')->get('/profile', [UserController::class, 'profile'])->name('user.profile');
 
 	Route::get('/cellier', [CellarController::class, 'index'])->name('cellar.index');
@@ -70,7 +70,7 @@ Route::middleware('auth')->group(function () {
 
 	Route::get('/listeAchat', [PurchaseController::class, 'index'])->name('purchase.index');
 
-	Route::get('/search', [SearchController::class, 'index'])->name('search.index');
-    Route::post('/search', [SearchController::class, 'search'])->name('search.results');
+	Route::get('/recherche', [SearchController::class, 'index'])->name('search.index');
+    Route::post('/recherche', [SearchController::class, 'search'])->name('search.results');
 
 });
