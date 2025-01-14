@@ -115,6 +115,7 @@ class ModaleAction {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: "Bearer " + localStorage.getItem("token"), // ajouter token
                 },
             }
         );

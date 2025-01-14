@@ -39,26 +39,30 @@ import ModaleAction from "../components/ModaleAction.js";
         } else {
             menuOuvert = null;
         }
-
-        console.log(menuOuvert);
     }
+
+	function afficherModaleSupressionCellier(event) {
+		menuOuvert = null;
+
+        const declencheur = event.target;
+        const cellierID = declencheur.dataset.jsCellier;
+        const cellierNom = declencheur.dataset.jsName;
+        const elToChange = declencheur.closest("article");
+
+        const dropdown = elToChange.querySelector(".menu-deroulant > input");
+        dropdown.checked = false;
+
+        const modale = new ModaleAction(
+            cellierID,
+            cellierNom,
+            "supprimerCellier",
+            "supprimer",
+            "cellier",
+            elToChange
+        );
+    }
+
+
+
 })();
 
-function afficherModaleSupressionCellier(event) {
-    const declencheur = event.target;
-    const cellierID = declencheur.dataset.jsCellier;
-    const cellierNom = declencheur.dataset.jsName;
-    const elToChange = declencheur.closest("article");
-
-    const dropdown = elToChange.querySelector(".menu-deroulant > input");
-    dropdown.checked = false;
-
-    const modale = new ModaleAction(
-        cellierID,
-        cellierNom,
-        "supprimerCellier",
-        "supprimer",
-        "cellier",
-        elToChange
-    );
-}
