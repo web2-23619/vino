@@ -1,12 +1,18 @@
 import App from "../components/App.js";
+import Alerte from "../components/Alerte.js";
 
 (function () {
-	new App();
+    new App();
 
-	const loginFormHTML = document.querySelector("form");
+    const alerte = document.querySelector(".alerte");
 
-	loginFormHTML.addEventListener("submit", login);
+    if (alerte) {
+        new Alerte(alerte);
+    }
 
+    const loginFormHTML = document.querySelector("form");
+
+    loginFormHTML.addEventListener("submit", login);
 })();
 
 async function login() {
@@ -28,8 +34,8 @@ async function login() {
 
     if (response.ok) {
         // sauvegarder token dans le local storage
-		localStorage.setItem("token", data.token);
+        localStorage.setItem("token", data.token);
     } else {
-		console.log('login fail')
+        console.log("login fail");
     }
 }

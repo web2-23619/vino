@@ -33,27 +33,29 @@ route::get('/goutte', [App\Http\Controllers\GoutteController::class, 'index'])->
 
 
 Route::middleware('guest')->group(function(){
-	Route::get('/registration', [UserController::class, 'create'])->name('user.create');
-	Route::post('/registration', [UserController::class, 'store'])->name('user.store');
+	Route::get('/enregistrement', [UserController::class, 'create'])->name('user.create');
+	Route::post('/enregistrement', [UserController::class, 'store'])->name('user.store');
 
 	// Route connexion
 	Route::get('/connexion', [AuthController::class, 'create'])->name('login');
 	Route::post('/connexion', [AuthController::class, 'store'])->name('login.store');
 
 	// Route mot de passe oublié
-	Route::get('/mot de passe/oublie', [UserController::class, 'forgot'])->name('user.forgot');
-	Route::post('/mot de passe/oublie', [UserController::class, 'email'])->name('user.email');
-	Route::get('/mot de passe/reset/{utilisateur}/{token}', [UserController::class, 'reset'])->name('user.reset');
-	Route::put('/mot de passe/reset/{utilisateur}/{token}', [UserController::class, 'resetUpdate'])->name('user.reset.update');
+
+	Route::get('/motdepasse/oublie', [UserController::class, 'forgot'])->name('user.forgot');
+	Route::post('/motdepasse/oublie', [UserController::class, 'email'])->name('user.email');
+	Route::get('/motdepasse/reintialiser/{user}/{token}', [UserController::class, 'reset'])->name('user.reset');
+	Route::put('/motdepasse/reintialiser/{user}/{token}', [UserController::class, 'resetUpdate'])->name('user.reset.update');
 });
 
 Route::middleware('auth')->group(function () {
-	Route::get('/utilisateurs', [UserController::class, 'index'])->name('user.index');
+	Route::get('/utilisateur', [UserController::class, 'index'])->name('user.index');
     Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
 
-	Route::get('/utilisateur/{user}/modifier', [UserController::class, 'edit'])->name('user.edit');
-	Route::delete('/utilisateur/{utilisateur}', [UserController::class, 'destroy'])->name('user.destroy');
-	Route::put('/utilisateurs/{utilisateur}', [UserController::class, 'update'])->name('user.update');
+	Route::get('/utilisateurs/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
+	Route::delete('/utilisateurs/{user}', [UserController::class, 'destroy'])->name('user.destroy');
+	Route::put('/utilisateurs/{user}', [UserController::class, 'update'])->name('user.update');
+
 
 	Route::post('/deconnexion', [AuthController::class, 'destroy'])->name('logout');
 	Route::middleware('auth')->get('/profile', [UserController::class, 'profile'])->name('user.profile');

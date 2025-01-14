@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Cellar;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
@@ -49,12 +50,24 @@ class UserController extends Controller
 		$user->password = Hash::make($request->password);
 		$user->save();
 
+		if($user->id){
+			//creer cellier par default à la création d'un utilisateur
+			$cellar = new Cellar([
+				'name' => 'Mon cellier',
+				// 'quantity' => $request->input('quantity'),
+				'user_id' => $user->id,
+			]);
+		}
+
+		$cellar->save();
+
 		return redirect()->route('welcome')->with('success', 'Utilisateur créé avec succès!');
 	}
 
 	public function profile()
 	{
 		$user = auth()->user();
+
 	
 		// Fetch the required counts dynamically
 		$cellarsCount = $user->cellars()->count(); 
@@ -69,7 +82,7 @@ class UserController extends Controller
 		// Pass all variables to the view
 		return view('user.profile', compact('user', 'cellarsCount', 'bottlesCount', 'toBuyCount'));
 	}
-	
+
 
 	/**
 	 * Show the form for editing the specified resource.
@@ -115,15 +128,15 @@ class UserController extends Controller
 	// }
 
 	public function destroy($userId)
-{
-    // Find the user by ID
-    $user = User::findOrFail($userId);
+	{
+		// Find the user by ID
+		$user = User::findOrFail($userId);
 
-    $user->delete();
+		$user->delete();
 
-    // Return a JSON response indicating success
-    return response()->json(['message' => 'Utilisateur supprimé avec succès'], 200);
-}
+		// Return a JSON response indicating success
+		return response()->json(['message' => 'Utilisateur supprimé avec succès'], 200);
+	}
 
 
 

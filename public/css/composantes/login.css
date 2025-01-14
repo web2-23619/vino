@@ -1,4 +1,8 @@
 .login-page {
+    margin: var(--espace-m);
+}
+
+.login-page > div:not(.alerte){
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -9,16 +13,32 @@
     font-family: var(--police-regular);
 }
 
-.login-page .logo img {
-    max-width: 120px;
-    margin-bottom: var(--espace-s);
-}
-
-.login-page > form > div {
+.login-page form > div {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 
     gap: var(--espace-micro);
+
+	a {
+		color: var(--fonce);
+		font-size: var(--police-s);
+	}
+}
+
+.login-page picture {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+
+    margin-bottom: var(--espace-m);
+
+    img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 }
