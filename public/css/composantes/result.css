@@ -1,0 +1,37 @@
+/* Adjust result item layout */
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--espace-l);
+}
+
+/* Style the bottle image */
+.result-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: var(--rayon-s);
+}
+
+/* Adjust details section */
+.result-details {
+    flex-grow: 1;
+    padding-left: var(--espace-s);
+}
+
+/* Adjust button and dropdown alignment */
+.result-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--espace-nano);
+}
+
+
+/* Style the dropdown */
+.select-cellar {
+    border: 1px solid var(--fonce);
+    border-radius: var(--rayon-s); 
+    font-size: var(--police-s);
+    height: 36px;
+}

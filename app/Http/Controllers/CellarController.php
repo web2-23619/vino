@@ -144,4 +144,38 @@ class CellarController extends Controller
 		}
 
 	}
+
+	// fonction pour ajouter la bouteille dans la page de recherche
+	//public function addBottle(Request $request)
+	//{
+		// Validate the request
+		//$request->validate([
+			//'bottle_id' => 'required|exists:bottles,id',
+			//'cellar_id' => 'required',
+		//]);
+	
+		// Check if the user is authenticated
+		//if (!auth()->check()) {
+			//return response()->json(['message' => 'Utilisateur non authentifié.'], 401);
+		//}
+	
+		//$user = auth()->user();
+	
+		//if ($request->cellar_id === 'wishlist') {
+			//return response()->json(['message' => 'Bouteille ajoutée à la liste d\'achat!']);
+		//} else {
+			//$cellar = Cellar::where('id', $request->cellar_id)
+				//->where('user_id', $user->id)
+				//->first();
+
+			//if (!$cellar) {
+				//return response()->json(['message' => 'Cellier non trouvé.'], 404);
+			//}
+	
+			//$cellar->bottles()->attach($request->bottle_id, ['quantity' => 1]);
+	
+			//return response()->json(['message' => 'Bouteille ajoutée au cellier!']);
+		//}
+	//}
+	
 }

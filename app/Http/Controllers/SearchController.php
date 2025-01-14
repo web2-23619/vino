@@ -40,7 +40,7 @@ class SearchController extends Controller
         ->orWhere('price', 'LIKE', "%{$query}%")
         ->orWhere('upc_saq', 'LIKE', "%{$query}%")
         ->orderBy('name')
-        ->paginate(10);
+        ->get();
 
         // Récupérer les celliers de l’utilisatrice pour la liste déroulante
         $userCellars = auth()->check() ? auth()->user()->cellars : [];
