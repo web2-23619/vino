@@ -1,3 +1,4 @@
+/* Register Page Styles */
 .register-page {
     display: flex;
     flex-direction: column;
@@ -15,18 +16,18 @@
     color: var(--tres-fonce);
     margin-bottom: var(--espace-s);
 }
-.register-prompt {
-	display: flex;
-	flex-direction: column;
-	gap: var(--espace-nano);
-	align-items: center;
-	justify-content: center;
 
-    font-family: var(--police-regular); /* Consistent font style */
+.register-prompt {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-nano);
+    align-items: center;
+    justify-content: center;
+    font-family: var(--police-regular);
 }
 
 .register-prompt p {
     font-size: var(--police-std);
-    color: var(--fonce); 
-    margin-bottom: var(--espace-nano); 
+    color: var(--fonce);
+    margin-bottom: var(--espace-nano);
 }

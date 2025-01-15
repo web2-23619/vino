@@ -10,7 +10,7 @@
     <p class="result-count">
         {{ $resultCount }} {{ Str::plural('résultat', $resultCount) }} trouvé{{ $resultCount > 1 ? 's' : '' }}.
     </p>
-    {{-- bar de recherche --}}
+    {{-- barre de recherche --}}
     @include('search.form')
     
     @if($results->isEmpty())
@@ -29,7 +29,7 @@
                             {{ $bottle->volume }} ml | {{ $bottle->country }}<br />
                             {{ ucfirst($bottle->type) }} | {{ number_format($bottle->price, 2) }} $
                         </p>
-                        <div class="result-button-container">
+                        <div class="result-button">
                             <a href="{{ route('bottle.add', ['bottle_id' => $bottle->id]) }}" class="btn-add">Ajouter</a>
                             <a href="{{ route('achat.add', ['bottle_id' => $bottle->id]) }}" class="btn-add">
                                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
