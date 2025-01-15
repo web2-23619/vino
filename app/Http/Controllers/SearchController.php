@@ -45,13 +45,29 @@ class SearchController extends Controller
         ->get();
 
         // Récupérer les celliers de l’utilisatrice pour la liste déroulante
-        $userCellars = auth()->check() ? auth()->user()->cellars : [];
+         $userCellars = auth()->check() ? auth()->user()->cellars : [];
 
-        return view('search.results', compact('query', 'results', 'userCellars'));
+        $resultCount = $results->count();
+
+        return view('search.results', compact('query', 'results','resultCount', 'userCellars'));
     }
-
-
-
+   
+    public function autocomplete(Request $request)
+    {
+        $query = $request->get('query'); 
+    
+       
+        $results = Bottle::where('name', 'LIKE', "%{$query}%")
+            ->orWhere('country', 'LIKE', "%{$query}%")
+            ->orWhere('type', 'LIKE', "%{$query}%")
+            ->distinct()
+            ->take(10)
+            ->pluck('name');
+    
+        return response()->json($results);
+    }
+    
+    
     public function addBottle(Request $request)
     {
         // Validation de la requête
@@ -85,10 +101,8 @@ class SearchController extends Controller
     
     public function showAddBottleForm($bottle_id)
 {
-    // Récupérer la bouteille par ID
+    
     $bottle = Bottle::findOrFail($bottle_id);
-
-    // Récupérer les celliers de l'utilisateur connecté
     $userCellars = Auth::user()->cellars;
 
     // Retourner la vue pour le formulaire d'ajout de la bouteille
