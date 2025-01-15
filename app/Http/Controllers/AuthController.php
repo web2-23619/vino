@@ -113,6 +113,11 @@ class AuthController extends Controller
 		return redirect()->route('welcome')->with('success', 'Déconnexion réussie!');
 	}
 
+	public function deletedUser(){
+
+		return redirect()->route('welcome')->with('success', 'Utilisateur supprimé!');
+	}
+
 	/**
 	 * destroy api token
 	 */

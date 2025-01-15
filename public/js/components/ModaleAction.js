@@ -61,10 +61,17 @@ class ModaleAction {
 
         if (this.#btnAction) {
             if (this.#action === "supprimer") {
-                this.#btnAction.addEventListener(
-                    "click",
-                    this.#supprimer.bind(this)
-                );
+                if (this.#model === "utilisateur") {
+                    this.#btnAction.addEventListener(
+                        "click",
+                        this.#supprimerUtilisateur.bind(this)
+                    );
+                } else {
+                    this.#btnAction.addEventListener(
+                        "click",
+                        this.#supprimer.bind(this)
+                    );
+                }
             } else if (this.#action === "deconnexion") {
                 this.#btnAction.addEventListener(
                     "click",
@@ -122,7 +129,7 @@ class ModaleAction {
         const csrfToken = document
             .querySelector('meta[name="csrf-token"]')
             .getAttribute("content");
-		
+
         const response = await fetch(
             `${App.instance.baseURL}/api/${this.#action}/${this.#model}/${
                 this.#id
@@ -140,20 +147,14 @@ class ModaleAction {
         const top = document.querySelector("[data-js='header']");
 
         if (response.ok) {
-            const message =
-                this.#model === "cellier"
-                    ? "Cellier supprimé avec succès"
-                    : "Utilisateur supprimé avec succès";
+            const message = "Cellier supprimé avec succès";
             this.#elToChange?.remove();
 
             this.#elementHTML.remove();
             top.scrollIntoView();
             new Alerte(null, message, "succes");
         } else {
-            const message =
-                this.#model === "cellier"
-                    ? "Erreur à la suppression du cellier"
-                    : "Erreur à la suppression de l'utilisateur";
+            const message = "Erreur à la suppression du cellier";
             this.#elementHTML.remove();
             top.scrollIntoView();
             new Alerte(null, message, "erreur");
@@ -163,14 +164,79 @@ class ModaleAction {
     }
 
     /**
+     * Méthode privée pour supprimer utilisateur
+     */
+    async #supprimerUtilisateur() {
+        const csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content");
+
+        try {
+            const response = await fetch(
+                `${App.instance.baseURL}/api/${this.#action}/${this.#model}/${
+                    this.#id
+                }`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization:
+                            "Bearer " + localStorage.getItem("token"), // ajouter token
+                        "X-CSRF-TOKEN": csrfToken,
+                    },
+                }
+            );
+
+            if (response.ok) {
+                this.#fermerModale();
+                const tokenDelete = await fetch(
+                    `${App.instance.baseURL}/api/logout`,
+                    {
+                        "Content-Type": "application/json",
+                        method: "POST",
+                        headers: {
+                            "X-CSRF-TOKEN": csrfToken,
+                        },
+                    }
+                );
+                localStorage.removeItem("token");
+				window.location.href = `${App.instance.baseURL}/utilisateurSupprime`
+            } else {
+                const message = "Erreur à la suppression de l'utilisateur";
+
+                const top = document.querySelector("[data-js='header']");
+                top.scrollIntoView();
+                new Alerte(null, message, "erreur");
+                this.#fermerModale();
+            }
+        } catch (error) {
+            const message = "Erreur à la suppression de l'utilisateur";
+
+            const top = document.querySelector("[data-js='header']");
+            top.scrollIntoView();
+            new Alerte(null, message, "erreur");
+            this.#fermerModale();
+        }
+    }
+
+    /**
      * Méthode privée pour déconnexion
      */
-    #deconnexion() {
+    async #deconnexion() {
+        const csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content");
         // Envoyer le formulaire de déconnexion masquée
         const logoutForm = document.getElementById("logout-form");
         if (logoutForm) {
-            logoutForm.submit();
+            const response = await fetch(`${App.instance.baseURL}/api/logout`, {
+                method: "GET",
+                headers: {
+                    "X-CSRF-TOKEN": csrfToken,
+                },
+            });
             localStorage.removeItem("token");
+            logoutForm.submit();
         } else {
             console.error("Logout form not found.");
         }

@@ -1,11 +1,18 @@
 @extends('layouts.app')
-
+@section('js', asset('js/pages/search.js'))
 @section('title', 'Résultats de Recherche')
 
 @section('content')
 <section class="search-results-page">
     <h2 class="search-header">Résultats pour "{{ $query }}"</h2>
 
+    {{-- nombres des resultats --}}
+    <p class="result-count">
+        {{ $resultCount }} {{ Str::plural('résultat', $resultCount) }} trouvé{{ $resultCount > 1 ? 's' : '' }}.
+    </p>
+    {{-- bar de recherche --}}
+    @include('search.form')
+    
     @if($results->isEmpty())
         <p class="no-results">Aucune bouteille trouvée.</p>
     @else

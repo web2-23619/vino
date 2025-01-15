@@ -31,7 +31,6 @@ Route::get('/', function () {
 
 route::get('/goutte', [App\Http\Controllers\GoutteController::class, 'index'])->name('goutte');
 
-
 Route::middleware('guest')->group(function(){
 	Route::get('/enregistrement', [UserController::class, 'create'])->name('user.create');
 	Route::post('/enregistrement', [UserController::class, 'store'])->name('user.store');
@@ -82,5 +81,9 @@ Route::middleware('auth')->group(function () {
 
 	Route::get('/recherche', [SearchController::class, 'index'])->name('search.index');
     Route::post('/recherche', [SearchController::class, 'search'])->name('search.results');
+	Route::get('/recherche-autocomplete', [SearchController::class, 'autocomplete'])->name('search.autocomplete');
+
 
 });
+
+Route::get('/utilisateurSupprime', [AuthController::class, 'deletedUser']);
