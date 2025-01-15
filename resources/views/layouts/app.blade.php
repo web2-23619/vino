@@ -38,8 +38,13 @@
 			<a href="{{ route('cellar.create') }}" class="btn-add">✚ {{$addButton}}</a>
 		</div>
 		@endif
+		@if(isset($addBottle))
+			<div>
+				<a href="{{ route('search.index') }}" class="btn-add">✚ {{$addBottle}}</a>
+			</div>
+		@endif
 		<!-- Ajouter un bouton "+ Bouteille" seulement sur la route 'cellar.showBottles' -->
-		@if(Route::currentRouteName() == 'cellar.showBottles')
+		@if(Route::currentRouteName() == 'cellar.showBottles' || Route::currentRouteName() == 'purchase.index')
 		<div>
 			<a href="{{ route('search.index') }}" class="btn-add">+ Bouteille</a>
 		</div>
