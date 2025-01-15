@@ -15,27 +15,35 @@ import Alerte from "../components/Alerte.js";
     loginFormHTML.addEventListener("submit", login);
 })();
 
-async function login() {
-    const email = document.querySelector("[name='email']").value;
-    const password = document.querySelector("[name='password']").value;
+async function login(event) {
+    event.preventDefault();
 
-    const response = await fetch(`${App.instance.baseURL}/api/login`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            email: email,
-            password: password,
-        }),
-    });
+    try {
+		const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const email = document.querySelector("[name='email']").value;
+        const password = document.querySelector("[name='password']").value;
 
-    const data = await response.json();
+        const response = await fetch(`${App.instance.baseURL}/api/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": csrfToken,
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password,
+            }),
+        });
 
-    if (response.ok) {
-        // sauvegarder token dans le local storage
-        localStorage.setItem("token", data.token);
-    } else {
-        console.log("login fail");
+        const data = await response.json();
+
+        if (response.ok) {
+            // sauvegarder token dans le local storage
+            localStorage.setItem("token", data.token);
+        }
+    } catch (error) {
+        console.log(error);
+    } finally {
+        document.querySelector("form").submit();
     }
 }
