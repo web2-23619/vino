@@ -27,6 +27,12 @@
     gap: var(--espace-nano);
 }
 
+.result-button-container {
+    display: flex;
+    align-items: center;
+    gap: var(--espace-nano);
+}
+
 
 /* Style the dropdown */
 .select-cellar {
