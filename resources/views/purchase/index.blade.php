@@ -25,11 +25,11 @@
 				<p class="card_purchase__metainfo">{{$purchase->bottle->volume}} ml | {{$purchase->bottle->country}}</p>
 			</header>
 			<div>
-				<p>$ {{$purchase->bottle->price}} / un</p>
+				<p>$ {{$purchase->bottle->price}}</p>
 				<div class="card_purchase__actions">
-					<button class="invisible">-</button>
-					<span>{{$purchase->quantity}}</span>
-					<button class="invisible">+</button>
+					<button data-js-action = "reduire">-</button>
+					<span data-js-quantite = "quantite">{{$purchase->quantity}}</span>
+					<button data-js-action = "augmenter">+</button>
 				</div>
 			</div>
 		</section>

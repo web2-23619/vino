@@ -4,6 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 	<title>{{ config('app.name') }} - @yield('title')</title>
 	<link rel="stylesheet" href="{{ asset('css/main.css') }}">
 	<script type="module" src="@yield('js')"></script>
@@ -38,8 +39,13 @@
 			<a href="{{ route('cellar.create') }}" class="btn-add">✚ {{$addButton}}</a>
 		</div>
 		@endif
+		@if(isset($addBottle))
+			<div>
+				<a href="{{ route('search.index') }}" class="btn-add">✚ {{$addBottle}}</a>
+			</div>
+		@endif
 		<!-- Ajouter un bouton "+ Bouteille" seulement sur la route 'cellar.showBottles' -->
-		@if(Route::currentRouteName() == 'cellar.showBottles')
+		@if(Route::currentRouteName() == 'cellar.showBottles' || Route::currentRouteName() == 'purchase.index')
 		<div>
 			<a href="{{ route('search.index') }}" class="btn-add">+ Bouteille</a>
 		</div>
