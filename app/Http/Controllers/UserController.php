@@ -54,7 +54,6 @@ class UserController extends Controller
 			//creer cellier par default à la création d'un utilisateur
 			$cellar = new Cellar([
 				'name' => 'Mon cellier',
-				 'quantity' => $request->input('quantity'),
 				'user_id' => $user->id,
 			]);
 		}
@@ -117,7 +116,6 @@ class UserController extends Controller
 	{
 		
 		$user = User::findOrFail($userId);
-
 		$user->delete();
 
 		// Retourner une réponse JSON indiquant la réussite

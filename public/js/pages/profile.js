@@ -37,7 +37,7 @@ function afficherModaleSuppressionUser(event) {
     const userName = declencheur.dataset.jsName;
 
     // Créer et afficher la modale à l’aide de la classe ModaleAction
-    new ModaleAction(userID, userName, "supprimerUser", "supprimer", "user");
+    new ModaleAction(userID, userName, "supprimerUser", "supprimer", "utilisateur");
 
     // Fermez le menu déroulant s’il était ouvert
     const dropdownCheckbox = declencheur.closest(".menu-deroulant").querySelector("[type='checkbox']");

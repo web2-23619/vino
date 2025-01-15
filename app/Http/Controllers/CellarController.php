@@ -145,6 +145,38 @@ class CellarController extends Controller
 
 	}
 
+	/**
+	 * Update the quantity of a bottle in a cellar
+	 */	
+	public function updateQuantityApi(Request $request, $cellarId, $bottleId){
+
+		$request->validate([
+			'quantity' => 'required|integer|min:0',
+		]);    
+
+    	$cellar = Auth::user()->cellars()->find($cellarId);
+    	if (!$cellar) {
+        	return response()->json(['error' => 'Cellier non trouvé ou accès non autorisé'], 404);
+    	}
+
+    	// Vérification si la bouteille est dans ce cellier
+    	$bottle = $cellar->bottles()->where('bottle_id', $bottleId)->first();
+    	if (!$bottle) {
+        	return response()->json(['error' => 'Bouteille non trouvée dans ce cellier'], 404);
+    	}
+
+    	// Mettre à jour la quantité dans la table pivot
+    	$bottle->pivot->quantity = $request->input('quantity');
+    	$bottle->pivot->save();
+
+    	// Retourner la réponse avec la nouvelle quantité mise à jour
+    	return response()->json([
+        	'message' => 'Quantité mise à jour avec succès',
+        	'quantity' => $bottle->pivot->quantity,
+    	]);
+	}
+
+
 	// fonction pour ajouter la bouteille dans la page de recherche
 	//public function addBottle(Request $request)
 	//{
