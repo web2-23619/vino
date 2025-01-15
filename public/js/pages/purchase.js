@@ -37,6 +37,10 @@ async function deletePurchaseItem(event) {
     const purchaseItem = trigger.closest("article");
     const id = purchaseItem.dataset.jsId;
 
+    const csrfToken = document
+        .querySelector('meta[name="csrf-token"]')
+        .getAttribute("content");
+
     const response = await fetch(
         `${App.instance.baseURL}/api/supprimer/achat/${id}`,
         {
@@ -44,6 +48,7 @@ async function deletePurchaseItem(event) {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: "Bearer " + localStorage.getItem("token"), // ajouter token
+                "X-CSRF-TOKEN": csrfToken,
             },
         }
     );
