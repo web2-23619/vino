@@ -20,7 +20,7 @@ export default class App {
     }
 
     async removeBottleFromCellar(event) {
-		new App();
+        new App();
 
         const trigger = event.target;
 
@@ -28,13 +28,21 @@ export default class App {
         const key = bouteille.dataset.jsKey;
         const ids = key.split("|");
 
-        const response = await fetch(`${App.instance.baseURL}/api/retirer/${ids[0]}/${ids[1]}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + localStorage.getItem("token"), // ajouter token
-            },
-        });
+        const csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content");
+
+        const response = await fetch(
+            `${App.instance.baseURL}/api/retirer/${ids[0]}/${ids[1]}`,
+            {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + localStorage.getItem("token"), // ajouter token
+                    "X-CSRF-TOKEN": csrfToken,
+                },
+            }
+        );
 
         if (response.ok) {
             const message = "Bouteille retirée avec succès";
