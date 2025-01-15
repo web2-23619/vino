@@ -1,43 +1,58 @@
-/* Adjust result item layout */
-.result-item {
+.results-list {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--espace-l);
+    flex-direction: column;
+    gap: var(--espace-s);
+    padding: var(--espace-m);
 }
 
-/* Style the bottle image */
+.result-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--espace-s);
+    background-color: var(--clair);
+   
+}
+
 .result-image {
     width: 80px;
     height: 80px;
     object-fit: cover;
     border-radius: var(--rayon-s);
+    margin-right: var(--espace-m);
 }
 
-/* Adjust details section */
 .result-details {
     flex-grow: 1;
-    padding-left: var(--espace-s);
+    padding-right: var(--espace-m);
 }
 
-/* Adjust button and dropdown alignment */
-.result-actions {
-    display: flex;
-    align-items: center;
-    gap: var(--espace-nano);
+.result-name {
+    font-family: var(--police-accent);
+    font-size: var(--police-m);
+    margin-bottom: var(--espace-nano);
 }
 
-.result-button-container {
-    display: flex;
-    align-items: center;
-    gap: var(--espace-nano);
-}
-
-
-/* Style the dropdown */
-.select-cellar {
-    border: 1px solid var(--fonce);
-    border-radius: var(--rayon-s); 
+.result-info {
+    font-family: var(--police-regular);
     font-size: var(--police-s);
-    height: 36px;
+    color: var(--fonce);
+}
+
+.result-button {
+    display: flex;
+    gap: var(--espace-s);
+}
+
+.result-count {
+    margin-top: var(--espace-m);
+    margin-bottom: var(--espace-m);
+}
+.select-cellar {
+    width: 100%;
+    padding: var(--espace-nano);
+    font-size: var(--police-std);
+    border: var(--bordure-s) solid var(--fonce);
+    border-radius: var(--rayon-s);
+    box-sizing: border-box;
 }
