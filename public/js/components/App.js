@@ -17,6 +17,7 @@ export default class App {
         }
 
         this.baseURL = "http://localhost:8000";
+		this.token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     }
 
     async removeBottleFromCellar(event) {
@@ -28,10 +29,6 @@ export default class App {
         const key = bouteille.dataset.jsKey;
         const ids = key.split("|");
 
-        const csrfToken = document
-            .querySelector('meta[name="csrf-token"]')
-            .getAttribute("content");
-
         const response = await fetch(
             `${App.instance.baseURL}/api/retirer/${ids[0]}/${ids[1]}`,
             {
@@ -39,7 +36,7 @@ export default class App {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: "Bearer " + localStorage.getItem("token"), // ajouter token
-                    "X-CSRF-TOKEN": csrfToken,
+                    "X-CSRF-TOKEN": App.instance.token,
                 },
             }
         );

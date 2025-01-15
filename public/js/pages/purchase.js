@@ -32,6 +32,7 @@ async function deletePurchaseItem(event) {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: "Bearer " + localStorage.getItem("token"), // ajouter token
+                "X-CSRF-TOKEN": App.instance.token,
             },
         }
     );
