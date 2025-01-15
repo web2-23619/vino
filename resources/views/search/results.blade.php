@@ -24,17 +24,6 @@
                         </p>
                         <a href="{{ route('bottle.add', ['bottle_id' => $bottle->id]) }}" class="btn-add">Ajouter</a>
                     </div>
-
-                    {{-- Add Button and Dropdown --}}
-                     <!--<div class="result-actions">
-                        <button type="button" class="btn-add" data-bottle-id="{{ $bottle->id }}">+</button>
-                        <select name="cellar_id" class="select-cellar">
-                            @foreach($userCellars as $cellar)
-                                <option value="{{ $cellar->id }}">{{ $cellar->name }}</option>
-                            @endforeach
-                            <option value="wishlist">Liste d'achat</option>
-                        </select>
-                    </div>-->
                 </div>
             @endforeach
         </div>

@@ -41,7 +41,7 @@ class AuthController extends Controller
 		if (Auth::attempt($credentials)) {
 			$request->session()->regenerate();
 
-			// Redirect to the profile page
+			
 			return redirect()->route('user.profile')->with('success', 'Connexion réussie!');
 		}
 
@@ -118,7 +118,7 @@ class AuthController extends Controller
 	 */
 	public function apiLogout(Request $request)
 	{
-		// Revoke the token that was used to authenticate the user
+		// Révoquez le jeton qui a été utilisé pour authentifier l'utilisateur
 		$request->user()->tokens->each(function ($token) {
 			$token->delete();
 		});
