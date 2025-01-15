@@ -14,7 +14,7 @@ class ModaleAction {
     #model;
 
     constructor(id, name, template, action, model, elToChange = null) {
-		new App();
+        new App();
 
         this.#id = id;
         this.#displayName = name;
@@ -89,7 +89,7 @@ class ModaleAction {
      * Méthode privée pour fermer la modale
      */
     #fermerModale() {
-		this.#déverouiller()
+        this.#déverouiller();
 
         if (this.#elementHTML) {
             this.#elementHTML.classList.add("remove");
@@ -119,6 +119,10 @@ class ModaleAction {
      * Méthode privée pour supprimer
      */
     async #supprimer() {
+        const csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content");
+		
         const response = await fetch(
             `${App.instance.baseURL}/api/${this.#action}/${this.#model}/${
                 this.#id
@@ -128,6 +132,7 @@ class ModaleAction {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: "Bearer " + localStorage.getItem("token"), // ajouter token
+                    "X-CSRF-TOKEN": csrfToken,
                 },
             }
         );
@@ -153,7 +158,7 @@ class ModaleAction {
             top.scrollIntoView();
             new Alerte(null, message, "erreur");
 
-           this.#déverouiller();
+            this.#déverouiller();
         }
     }
 
@@ -165,7 +170,7 @@ class ModaleAction {
         const logoutForm = document.getElementById("logout-form");
         if (logoutForm) {
             logoutForm.submit();
-			localStorage.removeItem('token');
+            localStorage.removeItem("token");
         } else {
             console.error("Logout form not found.");
         }
