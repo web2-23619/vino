@@ -72,6 +72,9 @@ Route::middleware('auth')->group(function () {
 	Route::get('/cellier/bouteille/ajouter/{bottle_id}', [SearchController::class, 'showAddBottleForm'])->name('bottle.add');
 	Route::post('/cellier/bouteille/ajouter', [SearchController::class, 'addBottle'])->name('bottle.add.submit');
 
+	Route::get('/listeAchat/bouteille/ajouter/{bottle_id}', [PurchaseController::class, 'showAddBottleForm'])->name('achat.add');
+	Route::post('/listeAchat/bouteille/ajouter', [PurchaseController::class, 'addBottle'])->name('achat.add.submit');
+
 
 
 	Route::get('/listeAchat', [PurchaseController::class, 'index'])->name('purchase.index');
