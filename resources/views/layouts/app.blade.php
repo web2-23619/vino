@@ -7,7 +7,7 @@
 	<title>{{ config('app.name') }} - @yield('title')</title>
 	<link rel="stylesheet" href="{{ asset('css/main.css') }}">
 	<script type="module" src="@yield('js')"></script>
-
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>
