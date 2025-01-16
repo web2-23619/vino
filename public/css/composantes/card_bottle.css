@@ -32,12 +32,14 @@
     flex-shrink: 0;
 
     display: block;
-    height: 10vw;
+    height: auto;
+    max-height: var(--espace-l);
+    width: var(--espace-xl);
 
     img {
         display: block;
         width: 100%;
-        height: 100%;
+        height: auto;
         object-fit: contain;
     }
 }
