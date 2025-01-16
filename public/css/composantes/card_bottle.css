@@ -34,7 +34,7 @@
     display: block;
     height: auto;
     max-height: var(--espace-l);
-    width: var(--espace-xl);
+    width: var(--espace-l); 
 
     img {
         display: block;
@@ -93,5 +93,5 @@
 }
 
 .card_bottle + .card_bottle {
-    margin-top: var(--espace-s);
+    margin-top: var(--espace-m);
 }
