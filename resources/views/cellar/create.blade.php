@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Ajouter cellier')
 @section('content')
-<section class="register-page">
+<section class="login-page">
 	<header>
 		<h2>Ajouter un Cellier</h2>
 	</header>
