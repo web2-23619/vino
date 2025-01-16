@@ -1,6 +1,6 @@
-<form class="search-form" action="{{ route('search.results') }}" method="POST">
+<form class="form-group" action="{{ route('search.results') }}" method="POST">
     @csrf
-    <div class="form-group">
+    <div >
         <input
             type="text"
             id="search"
