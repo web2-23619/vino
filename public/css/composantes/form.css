@@ -1,12 +1,9 @@
-/* form.css - Centralized Form Styles */
-
 .form {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--espace-m);
-    padding: var(--espace-m);
-    background-color: var(--clair);
+   background-color: var(--clair);
  
 }
 .form-group select,
@@ -22,3 +19,4 @@
  
     font-weight: bold;
 }
+

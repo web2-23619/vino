@@ -4,9 +4,12 @@
 
 @section('content')
 <section>
-    <header>
-        <h2>Résultats pour "{{ $query }}"</h2>
-    </header>
+  
+        <div class="result" >
+            <header>
+                <h2>Résultats pour "{{ $query }}"</h2>
+            </header>
+       
 
     {{-- nombres des resultats --}}
     <p>
@@ -16,8 +19,10 @@
     {{-- barre de recherche --}}
     @include('search.form')
 
+    </div>
+
     @if($results->isEmpty())
-        <p>Aucune bouteille trouvée.</p>
+        <p>Aucune bouteille trouvée</p>
     @else
         @foreach($results as $bottle)
         <article class="card_bottle" data-js-key="{{$bottle['id']}}">

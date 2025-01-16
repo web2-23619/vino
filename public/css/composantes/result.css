@@ -15,8 +15,8 @@
 }
 
 .result-image {
-    width: 80px;
-    height: 80px;
+    width: var(--espace-l);
+    height: var(--espace-l);
     object-fit: cover;
     border-radius: var(--rayon-s);
     margin-right: var(--espace-m);
@@ -44,9 +44,20 @@
     gap: var(--espace-s);
 }
 
-.result-count {
-    margin-top: var(--espace-m);
-    margin-bottom: var(--espace-m);
+.result > p {
+    margin-bottom: var(--espace-xs); 
+}
+
+.result header h2 {
+    margin-bottom: var(--espace-xs);
+    word-wrap: break-word; 
+    overflow-wrap: break-word;
+}
+
+.result p {
+    margin-top: var(--espace-xs); 
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 .select-cellar {
     width: 100%;
@@ -56,3 +67,5 @@
     border-radius: var(--rayon-s);
     box-sizing: border-box;
 }
+
+

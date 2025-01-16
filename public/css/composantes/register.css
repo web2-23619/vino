@@ -1,20 +1,9 @@
-
-.register-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    background-color: var(--clair);
-    margin: var(--espace-m);
-    font-family: var(--police-regular);
-}
-
 .register-header {
     text-align: center;
     font-family: var(--police-accent);
     font-size: var(--police-xl);
     color: var(--tres-fonce);
-    margin-bottom: var(--espace-s);
+    margin-bottom: var(--espace-l);
 }
 
 .register-prompt {
@@ -27,7 +16,4 @@
 
  }
 
-.register-page form input::placeholder {
-    text-align: center; 
-  
-}
+ 

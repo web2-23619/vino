@@ -9,9 +9,4 @@
     font-family: var(--police-accent);
 }
 
-.search-form input::placeholder {
-    text-align: center; 
-}
-
-
 

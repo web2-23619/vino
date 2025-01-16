@@ -49,9 +49,7 @@
     }
 }
 
-.login-page form input::placeholder {
-    text-align: center; 
-}
+
 
 .login-page .register-prompt {
     display: flex;
