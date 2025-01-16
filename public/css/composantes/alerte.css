@@ -81,9 +81,12 @@
 .alerte {
 	  align-items: center;
     display: flex;
+    gap: var(--espace-s);
     width: fit-content;
-    left: 0;
-    right: 0;
+    margin-top: var(--espace-micro);
+    top: 0;
+    left: var(--espace-micro);
+    right: var(--espace-micro);
     margin-inline: auto;
     justify-content: center;
     position: fixed;

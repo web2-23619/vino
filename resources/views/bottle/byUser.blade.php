@@ -33,9 +33,9 @@
 			<div>
 				<p>Cellier: {{$bottle['cellarName']}}</p>
 				<div class="card_bottle__actions">
-					<button class="">-</button>
-					<span>{{$bottle['quantity']}}</span>
-					<button class="">+</button>
+					<button data-js-action = "reduire">-</button>
+					<span data-js-quantite = "quantite">{{$bottle['quantity']}}</span>
+					<button data-js-action = "augmenter">+</button>
 				</div>
 			</div>
 		</section>

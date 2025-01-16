@@ -102,20 +102,18 @@ class PurchaseController extends Controller
 		$existingPurchase = Purchase::where('user_id', $user->id)
 									->where('bottle_id', $request->input('bottle_id'))
 									->first();
-	
 		if ($existingPurchase) {
-			// Mettre à jour la quantité
-			$existingPurchase->quantity += $request->input('quantity');
-			$existingPurchase->save();
-		} else {
+			return redirect()->route('purchase.index')
+				->with('error', 'Cette bouteille est déjà dans votre liste d\'achat.');
+		} 
 			// Créer une nouvelle bouteille si elle n'existe pas dans la liste
-			Purchase::create([
-				'user_id' => $user->id,
-				'bottle_id' => $request->input('bottle_id'),
-				'quantity' => $request->input('quantity'),
-			]);
-		}
-	
+		Purchase::create([
+			'user_id' => $user->id,
+			'bottle_id' => $request->input('bottle_id'),
+			'quantity' => $request->input('quantity'),
+		]);
+		
+		session()->forget('add_bottle_source');
 		return redirect()->route('purchase.index')->with('success', 'Bouteille ajoutée ou mise à jour avec succès!');
 	}
 
