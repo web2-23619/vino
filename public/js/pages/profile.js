@@ -19,7 +19,7 @@ import ModaleAction from "../components/ModaleAction.js";
         });
     }
 
-    // Deconnextion modale
+    // Deconnexion modale
     const btnLogout = document.querySelector("[data-js-action='afficherModaleDeconnexion']");
     if (btnLogout) {
         btnLogout.addEventListener("click", afficherModaleDeconnexion);

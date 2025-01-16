@@ -43,10 +43,12 @@
 <!-- Template pour l'utilisation des modales, ne pas supprimer-->
 <template id="supprimerCellier">
 	<div class="modale-action">
-		<p class="modale-action__message">Veuillez confirmer la supression du cellier <span data-js-replace="nom">NOM</span></p>
-		<div class="modale-action__boutons">
-			<button data-js-action="annuler">Annuler</button>
-			<button data-js-action="supprimer">Supprimer</button>
+		<div class="modale-action__conteneur">
+			<p class="modale-action__message">Veuillez confirmer la supression du cellier <span data-js-replace="nom">NOM</span></p>
+			<div class="modale-action__boutons">
+				<button data-js-action="annuler">Annuler</button>
+				<button data-js-action="supprimer">Supprimer</button>
+			</div>
 		</div>
 	</div>
 </template>
