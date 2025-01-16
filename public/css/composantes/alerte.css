@@ -85,8 +85,8 @@
     width: fit-content;
     margin-top: var(--espace-micro);
     top: 0;
-    left: 0;
-    right: 0;
+    left: 10px;
+    right: 10px;
     margin-inline: auto;
     justify-content: center;
     position: fixed;
