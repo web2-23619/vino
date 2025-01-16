@@ -29,13 +29,16 @@
 				<label for="password">Mot de passe</label>
 				<input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
 			</div>
-			<div>
+			<div class="register-prompt">
 				<a href="{{ route('user.forgot') }}">Mot de passe oublié ?</a>
 				<button type="submit" class="btn">Connexion</button>
 			</div>
 
 		</form>
+		
+
 		<div class="register-prompt">
+		
 			<p>Pas encore membre ?</p>
 			<a href="{{ route('user.create') }}" class="btn">Enregistrement</a>
 		</div>

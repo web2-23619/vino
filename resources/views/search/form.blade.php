@@ -6,6 +6,7 @@
             id="search"
             name="query"
             placeholder="Entrez votre recherche"
+            minlength="2" 
             value="{{ request('query') }}"
             required
             autocomplete="off"

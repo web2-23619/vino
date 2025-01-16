@@ -1,4 +1,4 @@
-/* Register Page Styles */
+
 .register-page {
     display: flex;
     flex-direction: column;
@@ -20,14 +20,14 @@
 .register-prompt {
     display: flex;
     flex-direction: column;
-    gap: var(--espace-nano);
+    gap: var(--espace-xs);
     align-items: center;
     justify-content: center;
     font-family: var(--police-regular);
-}
 
-.register-prompt p {
-    font-size: var(--police-std);
-    color: var(--fonce);
-    margin-bottom: var(--espace-nano);
+ }
+
+.register-page form input::placeholder {
+    text-align: center; 
+  
 }

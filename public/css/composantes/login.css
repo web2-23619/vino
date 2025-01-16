@@ -5,9 +5,10 @@
 .login-page > div:not(.alerte){
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items:stretch;
     justify-content: flex-start;
-    gap: var(--espace-l);
+    gap: var(--espace-m);
+    padding: var(--espace-m);
 
     background-color: var(--clair);
     font-family: var(--police-regular);
@@ -16,16 +17,21 @@
 .login-page form > div {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-
-    gap: var(--espace-micro);
+  
+    margin: var(--espace-micro);
+    width: 100%;
 
 	a {
 		color: var(--fonce);
 		font-size: var(--police-s);
 	}
 }
+
+.login-page form label {
+    margin-bottom: var(--espace-micro); }
+
 
 .login-page picture {
     display: block;
@@ -41,4 +47,21 @@
         height: 100%;
         object-fit: cover;
     }
+}
+
+.login-page form input::placeholder {
+    text-align: center; 
+}
+
+.login-page .register-prompt {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+    gap: var(--espace-xs);
+    text-align: center;
+}
+
+.login-page .register-prompt a {
+    font-size: var(--police-std); 
 }

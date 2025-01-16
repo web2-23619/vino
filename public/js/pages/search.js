@@ -3,14 +3,13 @@ import App from "../components/App.js";
 (function () {
     new App();
 
-    // Get the search input element
+    // Obtenir l’élément d’entrée de recherche
     const searchInput = document.querySelector("#search");
 
     if (searchInput) {
-        // Fetch the autocomplete suggestions when the input is focused
         fetchSuggestions();
 
-        // Handle the input event for inline autocomplete
+        //inline autocomplete
         searchInput.addEventListener("input", handleAutocomplete);
     }
 
@@ -21,7 +20,7 @@ import App from "../components/App.js";
         try {
             const response = await fetch("/recherche-autocomplete?query=");
             const data = await response.json();
-            window.suggestions = data.map((item) => item); // Store suggestions globally
+            window.suggestions = data.map((item) => item.toLowerCase()); 
         } catch (error) {
             console.error("Erreur lors de la récupération des suggestions :", error);
         }
@@ -31,19 +30,23 @@ import App from "../components/App.js";
      * Handle the inline autocomplete logic
      */
     function handleAutocomplete(event) {
-        const inputValue = event.target.value.toLowerCase();
+        const inputValue = event.target.value.trim().toLowerCase();
 
-        if (!window.suggestions) return;
+        if (!window.suggestions || inputValue.length < 2) return;
 
-        // Find the first matching suggestion
-        const match = window.suggestions.find((item) =>
-            item.toLowerCase().startsWith(inputValue)
+        // Filtre pour les correspondances strictes (condition startsWith)
+        const matches = window.suggestions.filter((item) =>
+            item.startsWith(inputValue)
         );
 
-        if (match && inputValue.length > 0) {
-            // Autofill the input field with the matched suggestion
+        if (matches.length > 0) {
+            // Utiliser la première correspondance pour le remplissage automatique
+            const match = matches[0];
             event.target.value = match;
             event.target.setSelectionRange(inputValue.length, match.length);
+        } else {
+            // S’il n’y a pas de correspondance stricte, effacez l’entrée
+            event.target.setSelectionRange(inputValue.length, inputValue.length);
         }
     }
 })();
