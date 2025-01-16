@@ -11,7 +11,7 @@
 
 	<article class="profile">
 		<h3>{{ $user->username }}</h3>
-		
+
 		<template id="alerte">
 			<div class="alerte">
 				<p>{{ session('erreur') }}</p>
@@ -63,12 +63,14 @@
 	<!-- Confirmation Modal pour Supprimer -->
 	<template id="supprimerUser">
 		<div class="modale-action">
-			<p class="modale-action__message">
-				Êtes-vous sûr de vouloir supprimer votre profil, <span data-js-replace="nom">NOM</span> ?
-			</p>
-			<div class="modale-action__boutons">
-				<button data-js-action="annuler">Annuler</button>
-				<button data-js-action="supprimer">Supprimer</button>
+			<div class="modale-action__conteneur">
+				<p class="modale-action__message">
+					Êtes-vous sûr de vouloir supprimer votre profil, <span data-js-replace="nom">NOM</span> ?
+				</p>
+				<div class="modale-action__boutons">
+					<button data-js-action="annuler">Annuler</button>
+					<button data-js-action="supprimer">Supprimer</button>
+				</div>
 			</div>
 		</div>
 	</template>
@@ -76,12 +78,14 @@
 	<!-- Confirmation Modal pour Deconnexion -->
 	<template id="deconnexionUser">
 		<div class="modale-action">
-			<p class="modale-action__message">
-				Êtes-vous sûr de vouloir vous déconnecter, <span data-js-replace="nom">NOM</span> ?
-			</p>
-			<div class="modale-action__boutons">
-				<button data-js-action="annuler">Annuler</button>
-				<button data-js-action="deconnexion">Déconnexion</button>
+			<div class="modale-action__conteneur">
+				<p class="modale-action__message">
+					Êtes-vous sûr de vouloir vous déconnecter, <span data-js-replace="nom">NOM</span> ?
+				</p>
+				<div class="modale-action__boutons">
+					<button data-js-action="annuler">Annuler</button>
+					<button data-js-action="deconnexion">Déconnexion</button>
+				</div>
 			</div>
 		</div>
 	</template>
