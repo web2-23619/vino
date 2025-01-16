@@ -2,7 +2,7 @@
 @section('js', asset('js/pages/login.js'))
 @section('title', 'Ajouter cellier')
 @section('content')
-<section class="login-page">
+<section class="page">
 
 	<picture>
 		<img src="{{asset('img/cellar.jpg')}}" alt="cellier de bouteille">
@@ -29,7 +29,7 @@
 				<label for="password">Mot de passe</label>
 				<input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
 			</div>
-			<div class="register-prompt">
+			<div class="page-prompt">
 				<a href="{{ route('user.forgot') }}">Mot de passe oublié ?</a>
 				<button type="submit" class="btn">Connexion</button>
 			</div>
@@ -37,7 +37,7 @@
 		</form>
 		
 
-		<div class="register-prompt">
+		<div class="page-prompt">
 		
 			<p>Pas encore membre ?</p>
 			<a href="{{ route('user.create') }}" class="btn">Enregistrement</a>

@@ -2,9 +2,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--espace-m);
-   background-color: var(--clair);
- 
+    gap: var(--espace-s);
+    background-color: var(--clair);
 }
 .form-group select,
 .form-group input {
@@ -14,9 +13,7 @@
     box-sizing: border-box;
 }
 
-
 .form-group label {
- 
+    margin-bottom: var(--espace-micro);
     font-weight: bold;
 }
-

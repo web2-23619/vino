@@ -1,11 +1,11 @@
-.login-page {
+.page {
     margin: var(--espace-m);
 }
 
-.login-page > div:not(.alerte){
+.page > div:not(.alerte) {
     display: flex;
     flex-direction: column;
-    align-items:stretch;
+    align-items: stretch;
     justify-content: flex-start;
     gap: var(--espace-m);
 
@@ -13,26 +13,23 @@
     font-family: var(--police-regular);
 }
 
-.login-page form > div {
+.page form > div {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-  
+
     margin: var(--espace-micro);
     width: 100%;
 
-	a {
-		color: var(--fonce);
-		font-size: var(--police-s);
-	}
+    a {
+        color: var(--fonce);
+        font-size: var(--police-s);
+    }
 }
 
-.login-page form label {
-    margin-bottom: var(--espace-micro); }
 
-
-.login-page picture {
+.page picture {
     display: block;
     width: 100%;
     aspect-ratio: 16/9;
@@ -48,17 +45,16 @@
     }
 }
 
-
-
-.login-page .register-prompt {
+.page .page-prompt {
     display: flex;
     flex-direction: column;
-    align-items: center; 
-    justify-content: center; 
+    align-items: center;
+    justify-content: center;
     gap: var(--espace-xs);
     text-align: center;
+    font-family: var(--police-regular);
 }
 
-.login-page .register-prompt a {
-    font-size: var(--police-std); 
+.page .page-prompt a {
+    font-size: var(--police-std);
 }
