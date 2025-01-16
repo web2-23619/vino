@@ -2,7 +2,7 @@
 	background-color: var(--contraste-fonce);
 	color: var(--clair);
 	border: none;
-
+    background-color: var(--contraste);
 	width: var(--espace-m);
 	height: var(--espace-m);
 	display: flex;
@@ -13,9 +13,6 @@
 	transition: background-color var(--duree-std);
 }
 
-.btn-search:hover {
-	background-color: var(--contraste);
-}
 
 .btn-search svg {
 	width: var(--police-m);
