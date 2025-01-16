@@ -44,7 +44,7 @@
 			</div>
 		@endif
 		<!-- Ajouter un bouton "+ Bouteille" seulement sur la route 'cellar.showBottles' -->
-		@if(Route::currentRouteName() == 'cellar.showBottles' || Route::currentRouteName() == 'purchase.index')
+		@if(Route::currentRouteName() == 'cellar.showBottles' || Route::currentRouteName() == 'purchase.index'|| Route::currentRouteName() == 'user.showBottles')
 		<div>
 			<a href="{{ route('search.index') }}" class="btn-add">+ Bouteille</a>
 		</div>
