@@ -46,6 +46,7 @@ body > footer {
 section > header {
     text-align: center;
     margin-bottom: var(--espace-m);
+    margin-top: var(--espace-m);
 
     position: relative;
 }
