@@ -4,7 +4,7 @@
 @section('content')
 
 <!-- Formulaire Réinitialiser Mot de Passe -->
-<section class="login-page">
+<section class="page">
 	@if(!$errors->isEmpty())
 	<div class="alerte alerte_erreur">
 		<ul>
@@ -35,7 +35,7 @@
 		</div>
 
 		<!-- Bouton Soumettre -->
-		<div class="register-prompt">
+		<div class="page-prompt">
 			<button type="submit" class="btn">Réinitialiser le mot de passe</button>
 		</div>
 	</form>

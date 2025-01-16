@@ -3,7 +3,7 @@
 @section('title', 'Modifier Profil')
 
 @section('content')
-<section class="login-page">
+<section class="page">
     <header>
         <h2>Modifier Profil</h2>
     </header>
