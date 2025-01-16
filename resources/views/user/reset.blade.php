@@ -4,7 +4,7 @@
 @section('content')
 
 <!-- Formulaire Réinitialiser Mot de Passe -->
-<section class="register-page">
+<section class="login-page">
 	@if(!$errors->isEmpty())
 	<div class="alerte alerte_erreur">
 		<ul>
