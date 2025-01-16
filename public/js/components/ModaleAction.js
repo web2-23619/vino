@@ -153,6 +153,7 @@ class ModaleAction {
             this.#elementHTML.remove();
             top.scrollIntoView();
             new Alerte(null, message, "succes");
+            this.#déverouiller();
         } else {
             const message = "Erreur à la suppression du cellier";
             this.#elementHTML.remove();

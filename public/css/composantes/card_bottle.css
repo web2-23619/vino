@@ -2,6 +2,7 @@
     display: flex;
     gap: var(--espace-micro);
     align-items: center;
+    height: max-content;
 
     h3 {
         font-family: var(--police-accent);
@@ -30,23 +31,19 @@
 .card_bottle > picture {
     flex-grow: 0;
     flex-shrink: 0;
-
     display: block;
-    height: auto;
-    max-height: var(--espace-l);
-    width: var(--espace-l); 
+    width: 90px;
 
     img {
         display: block;
-        width: 100%;
-        height: auto;
+        max-width: 100%;
+        height: 100%;
         object-fit: contain;
     }
 }
 
 .card_bottle > section {
     flex-grow: 1;
-    align-self: stretch;
     flex-shrink: 1;
 }
 

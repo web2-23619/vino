@@ -42,19 +42,25 @@
 	<div class="profile-stats">
 		<!-- nombre de celliers -->
 		<div class="stat-item">
-			<p class="stat-number">{{ $cellarsCount }}</p>
+			<a href="{{ route('cellar.index') }}">
+				<p class="stat-number">{{ $cellarsCount }}</p>
+			</a>
 			<p class="stat-label">Celliers</p>
 		</div>
 
 		<!-- nombre de bouteilles -->
 		<div class="stat-item">
-			<p class="stat-number">{{ $bottlesCount }}</p>
-			<p class="stat-label">Bouteilles</p>
+			<a href="{{ route('user.showBottles', $user->id) }}">
+				<p class="stat-number">{{ $bottlesCount }}</p>
+			</a>
+				<p class="stat-label">Bouteilles</p>
 		</div>
 
 		<!-- a acheter -->
 		<div class="stat-item">
-			<p class="stat-number">{{ $toBuyCount }}</p>
+			<a href="{{ route('purchase.index') }}">
+				<p class="stat-number">{{ $toBuyCount }}</p>
+			</a>
 			<p class="stat-label">À acheter</p>
 		</div>
 	</div>
