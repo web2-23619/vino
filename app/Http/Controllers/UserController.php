@@ -222,4 +222,48 @@ class UserController extends Controller
 		
 		return view('bottle.byUser', compact('bottles'));
 	}
+
+	public function updateQuantityApi(Request $request){
+
+    	$request->validate([
+        	'bottles' => 'required|array',
+        	'bottles.*.cellarId' => 'required|integer|exists:cellars,id',
+        	'bottles.*.bottleId' => 'required|integer|exists:bottles,id',
+        	'bottles.*.quantity' => 'required|integer|min:0',
+    	]);
+
+    	$user = Auth::user();
+    	$updatedBottles = [];
+
+    	foreach ($request->input('bottles') as $bottleData) {
+        	// Vérification du cellier
+        	$cellar = $user->cellars()->find($bottleData['cellarId']);
+        	if (!$cellar) {
+            	return response()->json(['error' => 'Cellier non trouvé ou accès non autorisé'], 404);
+        	}
+
+        	// Vérification de la bouteille dans le cellier
+        	$bottle = $cellar->bottles()->where('bottle_id', $bottleData['bottleId'])->first();
+        	if (!$bottle) {
+            	return response()->json(['error' => 'Bouteille non trouvée dans ce cellier'], 404);
+        	}
+
+        	// Mise à jour de la quantité dans la table pivot
+        	$bottle->pivot->quantity = $bottleData['quantity'];
+        	$bottle->pivot->save();
+
+        	// Ajout des bouteilles mises à jour à la réponse
+        	$updatedBottles[] = [
+            	'bottleId' => $bottle->id,
+            	'quantity' => $bottle->pivot->quantity,
+            	'cellarId' => $cellar->id,
+        	];
+    	}
+
+    	return response()->json([
+        	'message' => 'Quantité(s) mise(s) à jour avec succès',
+        	'updatedBottles' => $updatedBottles,
+    	]);
+	}
+
 }
