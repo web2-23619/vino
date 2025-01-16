@@ -9,4 +9,17 @@
     font-family: var(--police-accent);
 }
 
+.search-container {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	gap: var(--espace-micro);
+}
 
+.search-container input {
+	flex: 1;
+	padding: var(--espace-nano);
+	border: var(--bordure-s) solid var(--contraste-faible);
+	border-radius: var(--rayon-m);
+	box-sizing: border-box;
+}

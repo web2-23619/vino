@@ -1,0 +1,23 @@
+.btn-search {
+	background-color: var(--contraste-fonce);
+	color: var(--clair);
+	border: none;
+
+	width: var(--espace-m);
+	height: var(--espace-m);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	padding: var(--espace-nano);
+	transition: background-color var(--duree-std);
+}
+
+.btn-search:hover {
+	background-color: var(--contraste);
+}
+
+.btn-search svg {
+	width: var(--police-m);
+	height: var(--police-m);
+}
