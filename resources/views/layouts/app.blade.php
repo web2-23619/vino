@@ -12,10 +12,12 @@
 
 <body>
 	<header>
-		<h1>Vino</h1>
+		<h1>
+			<picture class="logo"><img src="{{ asset('img/SVG/logo.svg') }}" alt=""></picture>
+		</h1>
 	</header>
 	<main>
-		
+
 		@if(session('success'))
 		<div class="alerte alerte_succes">
 			<p>{{ session('success') }}</p>
@@ -39,9 +41,9 @@
 		</div>
 		@endif
 		@if(isset($addBottle))
-			<div>
-				<a href="{{ route('search.index') }}" class="btn-add">✚ {{$addBottle}}</a>
-			</div>
+		<div>
+			<a href="{{ route('search.index') }}" class="btn-add">✚ {{$addBottle}}</a>
+		</div>
 		@endif
 		<!-- Ajouter un bouton "+ Bouteille" seulement sur la route 'cellar.showBottles' -->
 		@if(Route::currentRouteName() == 'cellar.showBottles' || Route::currentRouteName() == 'purchase.index')
