@@ -8,7 +8,6 @@
     align-items:stretch;
     justify-content: flex-start;
     gap: var(--espace-m);
-    padding: var(--espace-m);
 
     background-color: var(--clair);
     font-family: var(--police-regular);
