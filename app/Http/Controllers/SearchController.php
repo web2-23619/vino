@@ -52,20 +52,20 @@ class SearchController extends Controller
         return view('search.results', compact('query', 'results','resultCount', 'userCellars'));
     }
    
-    public function autocomplete(Request $request)
-    {
-        $query = $request->get('query'); 
+    // public function autocomplete(Request $request)
+    // {
+    //     $query = $request->get('query'); 
     
        
-        $results = Bottle::where('name', 'LIKE', "%{$query}%")
-            ->orWhere('country', 'LIKE', "%{$query}%")
-            ->orWhere('type', 'LIKE', "%{$query}%")
-            ->distinct()
-            ->take(10)
-            ->pluck('name');
+    //     $results = Bottle::where('name', 'LIKE', "%{$query}%")
+    //         ->orWhere('country', 'LIKE', "%{$query}%")
+    //         ->orWhere('type', 'LIKE', "%{$query}%")
+    //         ->distinct()
+    //         ->take(10)
+    //         ->pluck('name');
     
-        return response()->json($results);
-    }
+    //     return response()->json($results);
+    // }
     
     
     public function addBottle(Request $request)
