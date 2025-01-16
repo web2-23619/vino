@@ -3,7 +3,7 @@
 @section('js', asset('js/pages/createuser.js'))
 @section('content')
 
-<section class="register-page">
+<section class="login-page">
 	<h2 class="register-header">Enregistrement</h2>
 
 	@if(!$errors->isEmpty())
@@ -17,7 +17,7 @@
 	</div>
 	@endif
 
-	<form class="register-form form" action="{{ route('user.store') }}" method="POST">
+	<form class="form" action="{{ route('user.store') }}" method="POST">
 		@csrf
 		<div class="form-group">
 			<label for="username">Nom</label>
@@ -31,7 +31,7 @@
 			<label for="password">Mot de passe</label>
 			<input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
 		</div>
-		<div>
+		<div class="register-prompt">
 			<button type="submit" class="btn">Enregistrer</button>
 		</div>
 	</form>
