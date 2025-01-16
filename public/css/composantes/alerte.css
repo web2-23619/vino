@@ -79,9 +79,15 @@
 
 
 .alerte {
+	  align-items: center;
     display: flex;
-	align-items: center;
-    justify-content: space-between;
+    width: fit-content;
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+    justify-content: center;
+    position: fixed;
+    z-index: 1000;
 
     border-radius: var(--rayon-m);
     padding-inline: var(--espace-xs);

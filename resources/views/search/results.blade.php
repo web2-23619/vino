@@ -3,18 +3,26 @@
 @section('title', 'Résultats de Recherche')
 
 @section('content')
-<section class="search-results-page">
-    <h2 class="search-header">Résultats pour "{{ $query }}"</h2>
+<section>
+  
+        <div class="result" >
+            <header>
+                <h2>Résultats pour "{{ $query }}"</h2>
+            </header>
+       
 
     {{-- nombres des resultats --}}
-    <p class="result-count">
+    <p>
         {{ $resultCount }} {{ Str::plural('résultat', $resultCount) }} trouvé{{ $resultCount > 1 ? 's' : '' }}.
     </p>
+    
     {{-- barre de recherche --}}
     @include('search.form')
-    
+
+    </div>
+
     @if($results->isEmpty())
-        <p class="no-results">Aucune bouteille trouvée.</p>
+        <p>Aucune bouteille trouvée</p>
     @else
         <div class="results-list">
             @foreach($results as $bottle)
@@ -34,8 +42,9 @@
                         </div>
                     </div>
                 </div>
-            @endforeach
-        </div>
+            </section>
+        </article>
+        @endforeach
     @endif
 </section>
 @endsection
