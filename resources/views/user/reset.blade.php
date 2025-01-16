@@ -35,7 +35,7 @@
 		</div>
 
 		<!-- Bouton Soumettre -->
-		<div>
+		<div class="register-prompt">
 			<button type="submit" class="btn">Réinitialiser le mot de passe</button>
 		</div>
 	</form>
