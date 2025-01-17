@@ -1,3 +1,6 @@
+.result {
+    margin-bottom: var(--espace-xs); 
+}
 .results-list {
     display: flex;
     flex-direction: column;
@@ -58,6 +61,7 @@
     margin-top: var(--espace-xs); 
     word-wrap: break-word;
     overflow-wrap: break-word;
+   
 }
 .select-cellar {
     width: 100%;

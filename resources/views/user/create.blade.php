@@ -3,8 +3,10 @@
 @section('js', asset('js/pages/createuser.js'))
 @section('content')
 
-<section class="login-page">
-	<h2 class="register-header">Enregistrement</h2>
+<section class="page">
+	<header>
+		<h2 class="register-header">Enregistrement</h2>
+	</header>
 
 	@if(!$errors->isEmpty())
 	<div class="alerte alerte_erreur">
@@ -31,7 +33,7 @@
 			<label for="password">Mot de passe</label>
 			<input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
 		</div>
-		<div class="register-prompt">
+		<div class="page-prompt">
 			<button type="submit" class="btn">Enregistrer</button>
 		</div>
 	</form>

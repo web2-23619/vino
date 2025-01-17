@@ -3,7 +3,7 @@
 @section('title', 'Mot de passe oublié')
 @section('content')
 
-<section class="login-page">
+<section class="page">
 	@if(!$errors->isEmpty())
 	<div class="alerte alerte_erreur">
 		<ul>
@@ -14,7 +14,7 @@
 		</ul><button data-js-action="fermer">x</button>
 	</div>
 	@endif
-	<header class="login-header">
+	<header>
 		<h2>Mot de passe oublié</h2>
 	</header>
 	<form method="POST" action="{{ route('user.email') }}" class="login-form form">

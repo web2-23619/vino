@@ -3,7 +3,7 @@
 @section('title', 'Ajouter une bouteille')
 
 @section('content')
-<section class="login-page">
+<section class="page">
 
 
     <header>

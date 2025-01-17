@@ -8,8 +8,7 @@
 
 @import url(composantes/nav-menu.css);
 
-@import url(composantes/login.css);
-@import url(composantes/register.css);
+@import url(composantes/page.css);
 @import url(composantes/profile.css);
 @import url(composantes/form.css);
 @import url(composantes/btn.css);
