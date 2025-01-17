@@ -14,6 +14,7 @@
     <form class="form" action="{{ route('bottle.add.submit') }}" method="POST" id="addBottleForm">
         @csrf
         <input type="hidden" name="bottle_id" value="{{ $bottle->id }}">
+        <input type="hidden" name="cellar_id" value="{{ session('cellar_id') }}">
         <input type="hidden" name="source" value="{{ $source }}">
 
         <!-- Sélectionner un cellier parmi les celliers de l'utilisateur -->
@@ -28,7 +29,6 @@
                             {{ $cellar->name }}
                         </option>
                     @endforeach
-                    <!-- Ajouter l'option pour la liste d'achat -->
                     <option value="wishlist">Liste d'achat</option>
                 @elseif($source == 'listeAchat')
                     <!-- Si la source est 'listeAchat', afficher uniquement l'option pour la liste d'achat -->
@@ -39,10 +39,9 @@
                         <option value="{{ $cellar->id }}">{{ $cellar->name }}</option>
                     @endforeach
                 @elseif($source == 'cellier' && session('cellar_id'))
-                    <!-- Si la source est 'cellier', afficher le cellier sélectionné en premier -->
                     <option value="{{ session('cellar_id') }}" selected>{{ $selectedCellarName }}</option>
                     @foreach ($userCellars as $cellar)
-                        @if($cellar->id != session('cellar_id'))  <!-- Exclure le cellier déjà sélectionné -->
+                        @if($cellar->id != session('cellar_id'))  
                             <option value="{{ $cellar->id }}">{{ $cellar->name }}</option>
                         @endif
                     @endforeach
@@ -61,7 +60,7 @@
             <input type="number" name="quantity" id="quantity" min="1" required>
         </div>
 
-        <button type="submit" class="btn">Ajouter au cellier</button>
+        <button type="submit" class="btn">Ajouter</button>
     </form>
 </section>
 @endsection
