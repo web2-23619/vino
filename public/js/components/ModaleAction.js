@@ -96,7 +96,6 @@ class ModaleAction {
      * Méthode privée pour fermer la modale
      */
     #fermerModale() {
-		console.log('fermer modale');
         this.#déverouiller();
         this.#elementHTML.remove();
     }
@@ -123,38 +122,43 @@ class ModaleAction {
         const csrfToken = document
             .querySelector('meta[name="csrf-token"]')
             .getAttribute("content");
-
-        const response = await fetch(
-            `${App.instance.baseURL}/api/${this.#action}/${this.#model}/${
-                this.#id
-            }`,
-            {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "Bearer " + localStorage.getItem("token"), // ajouter token
-                    "X-CSRF-TOKEN": csrfToken,
-                },
-            }
-        );
-
         const top = document.querySelector("[data-js='header']");
+        try {
+            const response = await fetch(
+                `${App.instance.baseURL}/api/${this.#action}/${this.#model}/${
+                    this.#id
+                }`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization:
+                            "Bearer " + localStorage.getItem("token"), // ajouter token
+                        "X-CSRF-TOKEN": csrfToken,
+                    },
+                }
+            );
 
-        if (response.ok) {
-            const message = "Cellier supprimé avec succès";
-            this.#elToChange?.remove();
+            const reponseJson = await response.json();
+            const message = reponseJson.message;
+            const type = "succes";
+
+            if (response.ok) {
+                this.#elToChange?.remove();
+            } else {
+                type = "erreur";
+            }
 
             this.#elementHTML.remove();
             top.scrollIntoView();
-            new Alerte(null, message, "succes");
+            new Alerte(null, message, type);
             this.#déverouiller();
-        } else {
-            const message = "Erreur à la suppression du cellier";
+        } catch (error) {
+            console.log(error);
+            const message = "Erreur. Veuillez réessayer plus tard";
             this.#elementHTML.remove();
             top.scrollIntoView();
             new Alerte(null, message, "erreur");
-
-            this.#déverouiller();
         }
     }
 
