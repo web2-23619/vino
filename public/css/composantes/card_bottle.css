@@ -11,7 +11,7 @@
     }
 
     svg {
-        width: 18px;
+        width: 12px;
         color: var(--tres-fonce);
 
 		transition-property: transform;
@@ -92,4 +92,11 @@
 
 .card_bottle + .card_bottle {
     margin-top: var(--espace-m);
+}
+
+.card_bottle__header{
+	display: flex;
+	gap: var(--espace-xs);
+	align-items: center;
+	justify-content: space-between;
 }
