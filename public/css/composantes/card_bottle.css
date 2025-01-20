@@ -1,12 +1,15 @@
 .card_bottle {
     display: flex;
     gap: var(--espace-micro);
+    padding-left: var(--espace-m); 
+    padding-right: var(--espace-m);
     align-items: center;
     height: max-content;
 
     h3 {
         font-family: var(--police-accent);
         font-size: var(--police-s);
+        text-align: left;
     }
 
     svg {
