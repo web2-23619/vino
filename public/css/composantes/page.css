@@ -54,3 +54,7 @@
 .page .page-prompt a {
     font-size: var(--police-std);
 }
+.page {
+   
+    margin: 0;
+}
