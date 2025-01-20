@@ -26,3 +26,20 @@
 	box-sizing: border-box;
 }
 
+.search-container button {
+    flex-shrink: 0; 
+   
+    border: none;
+    border-radius: var(--rayon-s);
+   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.search-container button svg {
+    width: var(--espace-xs);
+    height: var(--espace-xs);
+
+}

@@ -4,7 +4,7 @@
     align-items: center;
     gap: var(--espace-s);
     background-color: var(--clair);
-   
+    width: 100%;
     
 }
 .form-group select,
@@ -13,9 +13,12 @@
     padding: var(--espace-nano);
     font-size: var(--police-std);
     box-sizing: border-box;
+    appearance: none;
+    border-radius: 0;
 }
 
 .form-group label {
     margin-bottom: var(--espace-micro);
     font-weight: bold;
 }
+
