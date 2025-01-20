@@ -53,7 +53,7 @@
 			<a href="{{ route('user.showBottles', $user->id) }}">
 				<p class="stat-number">{{ $bottlesCount }}</p>
 			</a>
-				<p class="stat-label">Bouteilles</p>
+			<p class="stat-label">Bouteilles</p>
 		</div>
 
 		<!-- a acheter -->
@@ -74,8 +74,8 @@
 					Êtes-vous sûr de vouloir supprimer votre profil, <span data-js-replace="nom">NOM</span> ?
 				</p>
 				<div class="modale-action__boutons">
-					<button data-js-action="annuler">Annuler</button>
-					<button data-js-action="supprimer">Supprimer</button>
+					<button data-js-action="supprimer" class="btn btn_accent btn_thick">Supprimer</button>
+					<button data-js-action="annuler" class="btn btn_outline_dark btn_thick">Annuler</button>
 				</div>
 			</div>
 		</div>
@@ -89,8 +89,8 @@
 					Êtes-vous sûr de vouloir vous déconnecter, <span data-js-replace="nom">NOM</span> ?
 				</p>
 				<div class="modale-action__boutons">
-					<button data-js-action="annuler">Annuler</button>
-					<button data-js-action="deconnexion">Déconnexion</button>
+					<button data-js-action="deconnexion" class="btn btn_accent btn_thick">Déconnexion</button>
+					<button data-js-action="annuler" class="btn btn_outline_dark btn_thick">Annuler</button>
 				</div>
 			</div>
 		</div>

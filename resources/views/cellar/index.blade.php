@@ -46,8 +46,8 @@
 		<div class="modale-action__conteneur">
 			<p class="modale-action__message">Veuillez confirmer la supression du cellier <span data-js-replace="nom">NOM</span></p>
 			<div class="modale-action__boutons">
-				<button data-js-action="annuler">Annuler</button>
-				<button data-js-action="supprimer">Supprimer</button>
+				<button data-js-action="supprimer" class="btn btn_accent btn_thick">Supprimer</button>
+				<button data-js-action="annuler" class="btn btn_outline_dark btn_thick">Annuler</button>
 			</div>
 		</div>
 	</div>
