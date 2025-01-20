@@ -1,19 +1,30 @@
 .btn {
-	display: block;
+    display: block;
 
     width: max-content;
     padding: var(--espace-nano) var(--espace-s);
     background-color: var(--contraste-fonce);
     color: var(--clair);
     font-size: var(--police-std);
-	font-family: var(--police-regular);
+    font-family: var(--police-regular);
     text-align: center;
     border-radius: var(--rayon-s);
     cursor: pointer;
     transition: background-color var(--duree-std);
+	border: var(--bordure-s) solid var(--contraste-fonce);
 }
 
-.btn:hover {
+.btn_thick{
+	padding-block: var(--espace-micro);
+}
+
+.btn_accent {
     background-color: var(--contraste);
-    color: var(--clair);
+    border-color: var(--contraste);
+}
+
+.btn_outline_dark {
+    background-color: transparent;
+    border-color: var(--tres-fonce);
+    color: var(--tres-fonce);
 }

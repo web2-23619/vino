@@ -21,7 +21,7 @@ class ModaleAction {
         this.#action = action;
         this.#model = model;
         this.#elToChange = elToChange;
-        this.#conteneurHTML = document.querySelector("main");
+        this.#conteneurHTML = document.querySelector("body");
         this.#gabarit = document.querySelector(`[id='${template}']`);
 
         if (!this.#gabarit) {
@@ -96,15 +96,9 @@ class ModaleAction {
      * Méthode privée pour fermer la modale
      */
     #fermerModale() {
+		console.log('fermer modale');
         this.#déverouiller();
-
-        if (this.#elementHTML) {
-            this.#elementHTML.classList.add("remove");
-
-            setTimeout(() => {
-                this.#elementHTML.remove();
-            }, 2650);
-        }
+        this.#elementHTML.remove();
     }
 
     /**
@@ -201,7 +195,7 @@ class ModaleAction {
                     }
                 );
                 localStorage.removeItem("token");
-				window.location.href = `${App.instance.baseURL}/utilisateurSupprime`
+                window.location.href = `${App.instance.baseURL}/utilisateurSupprime`;
             } else {
                 const message = "Erreur à la suppression de l'utilisateur";
 
