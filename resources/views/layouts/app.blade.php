@@ -37,29 +37,29 @@
 	<footer>
 		@if(isset($addButton))
 		<div>
-			<a href="{{ route('cellar.create') }}" class="btn-add">✚ {{$addButton}}</a>
+			<a href="{{ route('cellar.create') }}" class="btn-add">Ajouter {{$addButton}}</a>
 		</div>
 		@endif
 		@if(isset($addBottle))
 		<div>
-			<a href="{{ route('search.index') }}" class="btn-add">✚ {{$addBottle}}</a>
+			<a href="{{ route('search.index') }}" class="btn-add">Ajouter {{$addBottle}}</a>
 		</div>
 		@endif
 		<!-- Ajouter un bouton "+ Bouteille" seulement sur la route 'cellar.showBottles' -->
 		@if(Route::currentRouteName() == 'cellar.showBottles')
         <div>
-            <a href="{{ route('search.index', ['source' => 'cellier', 'cellar_id' => $cellar->id]) }}" class="btn-add">+ Bouteille</a>
+            <a href="{{ route('search.index', ['source' => 'cellier', 'cellar_id' => $cellar->id]) }}" class="btn-add">Ajouter Bouteille</a>
         </div>
 		@endif
     @if(Route::currentRouteName() == 'purchase.index')
         <!-- Si on est sur la page des achats -->
         <div>
-            <a href="{{ route('search.index', ['source' => 'listeAchat']) }}" class="btn-add">+ Bouteille</a>
+            <a href="{{ route('search.index', ['source' => 'listeAchat']) }}" class="btn-add">Ajouter Bouteille</a>
         </div>
 		@endif
     @if(Route::currentRouteName() == 'user.showBottles')
         <div>
-            <a href="{{ route('search.index', ['source' => 'mesBouteilles']) }}" class="btn-add">+ Bouteille</a>
+            <a href="{{ route('search.index', ['source' => 'mesBouteilles']) }}" class="btn-add">Ajouter Bouteille</a>
         </div>
     @endif
 		<nav class="nav-menu">
