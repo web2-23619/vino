@@ -1,11 +1,8 @@
-.result {
-    margin-bottom: var(--espace-xs); 
-}
 .results-list {
     display: flex;
     flex-direction: column;
     gap: var(--espace-s);
-    padding: var(--espace-m);
+  
 }
 
 .result-item {
@@ -73,3 +70,6 @@
 }
 
 
+.result {
+    margin-bottom: var(--espace-xs); 
+}

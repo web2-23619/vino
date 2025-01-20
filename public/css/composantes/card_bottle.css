@@ -1,8 +1,6 @@
 .card_bottle {
     display: flex;
     gap: var(--espace-micro);
-    padding-left: var(--espace-m); 
-    padding-right: var(--espace-m);
     align-items: center;
     height: max-content;
 
