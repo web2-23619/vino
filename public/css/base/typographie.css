@@ -1,6 +1,7 @@
 h2 {
 	font-family: var(--police-accent);
 	font-size: var(--police-l);
+	text-align: left;
 }
 
 p, label, input {
