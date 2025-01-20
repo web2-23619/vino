@@ -4,6 +4,8 @@
     align-items: center;
     gap: var(--espace-s);
     background-color: var(--clair);
+   
+    
 }
 .form-group select,
 .form-group input {

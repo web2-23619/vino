@@ -35,7 +35,7 @@
 				<div class="card_purchase__actions">
 					<button data-js-action = "reduire">-</button>
 					<span data-js-quantite = "quantite">{{$purchase->quantity}}</span>
-					<button data-js-action = "augmenter">+</button>
+					<button data-js-action = "augmenter">Ajouter</button>
 				</div>
 			</div>
 		</section>
