@@ -89,7 +89,7 @@ class PurchaseController extends Controller
 
 	public function addBottle(Request $request)
 	{
-		// Validate the request
+		// Validation de la requête
 		$request->validate([
 			'bottle_id' => 'required|exists:bottles,id',
 			'quantity' => 'required|integer|min:1',
@@ -98,24 +98,40 @@ class PurchaseController extends Controller
 		// Récupérer l'utilisateur connecté
 		$user = Auth::user();
 	
-		// Vérifie si la boutielle existe déjà
+		// Vérifie si la bouteille existe déjà dans les achats de l'utilisateur
 		$existingPurchase = Purchase::where('user_id', $user->id)
-									->where('bottle_id', $request->input('bottle_id'))
-									->first();
+									 ->where('bottle_id', $request->input('bottle_id'))
+									 ->first();
+	
 		if ($existingPurchase) {
+			// Si la bouteille existe, mettre à jour la quantité
+			$currentQuantity = $existingPurchase->quantity;
+			$newQuantity = $currentQuantity + $request->input('quantity');
+	
+			// Mettre à jour la quantité de la bouteille
+			$existingPurchase->update(['quantity' => $newQuantity]);
+	
+			// Oublier la session après la mise à jour
+			session()->forget('add_bottle_source');
+	
 			return redirect()->route('purchase.index')
-				->with('error', 'Cette bouteille est déjà dans votre liste d\'achat.');
-		} 
-			// Créer une nouvelle bouteille si elle n'existe pas dans la liste
-		Purchase::create([
-			'user_id' => $user->id,
-			'bottle_id' => $request->input('bottle_id'),
-			'quantity' => $request->input('quantity'),
-		]);
-		
-		session()->forget('add_bottle_source');
-		return redirect()->route('purchase.index')->with('success', 'Bouteille ajoutée ou mise à jour avec succès!');
+							 ->with('success', 'La quantité de la bouteille a été mise à jour avec succès!');
+		} else {
+			// Sinon, créer une nouvelle entrée d'achat
+			Purchase::create([
+				'user_id' => $user->id,
+				'bottle_id' => $request->input('bottle_id'),
+				'quantity' => $request->input('quantity'),
+			]);
+	
+			// Oublier la session après l'ajout
+			session()->forget('add_bottle_source');
+	
+			return redirect()->route('purchase.index')
+							 ->with('success', 'Bouteille ajoutée avec succès!');
+		}
 	}
+	
 
 
 	public function updateQuantityApi(Request $request, Purchase $purchase)
