@@ -144,7 +144,7 @@ class UserController extends Controller
 		$user->temp_password = Hash::make($tempPassword);
 		$user->save();
 
-		$to_name = $user->name;
+		$to_name = $user->username;
 		$to_email = $user->email;
 		$body = "<a href='" . route('user.reset', [$user->id, $tempPassword]) . "'>Cliquez ici pour réinitialiser votre mot de passe</a>";
 
