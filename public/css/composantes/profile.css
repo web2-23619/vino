@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--espace-xs);
+  
     background-color: var(--clair);
     border-radius: var(--rayon-xl);
     box-shadow: 0 var(--bordure-m) var(--bordure-xl) rgba(0, 0, 0, 0.1);
@@ -37,6 +37,7 @@
     display: flex;
     justify-content: space-around;
     margin-bottom: var(--espace-m);
+    margin-top: var(--espace-m);
 }
 
 .stat-item {

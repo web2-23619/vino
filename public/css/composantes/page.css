@@ -1,7 +1,3 @@
-.page {
-    margin: var(--espace-m);
-}
-
 .page > div:not(.alerte) {
     display: flex;
     flex-direction: column;

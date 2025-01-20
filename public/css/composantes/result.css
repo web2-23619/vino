@@ -1,8 +1,11 @@
+.result {
+    margin-bottom: var(--espace-xs); 
+}
 .results-list {
     display: flex;
     flex-direction: column;
     gap: var(--espace-s);
-  
+    padding: var(--espace-m);
 }
 
 .result-item {
@@ -67,9 +70,4 @@
     border: var(--bordure-s) solid var(--fonce);
     border-radius: var(--rayon-s);
     box-sizing: border-box;
-}
-
-
-.result {
-    margin-bottom: var(--espace-xs); 
 }
