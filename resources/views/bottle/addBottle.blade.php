@@ -17,10 +17,18 @@
         <input type="hidden" name="cellar_id" value="{{ session('cellar_id') }}">
         <input type="hidden" name="source" value="{{ $source }}">
 
+         <!-- Quantité à ajouter -->
+         <div class="form-group">
+            <label for="quantity">Quantité :</label>
+            <input type="number" name="quantity" id="quantity" min="1" required>
+        </div>
+
         <!-- Sélectionner un cellier parmi les celliers de l'utilisateur -->
         <div class="form-group">
-            <label for="cellar_id">Sélectionner un cellier :</label>
+            
+        <label for="cellar_id">Sélectionner un cellier :</label>
             <select name="cellar_id" id="cellar_id" required>
+            <option value="" disabled selected>-- Sélectionnez une option --</option>
                 @if($source == 'default')
                     <!-- Si la source est 'default', afficher tous les celliers ET la liste d'achat -->
                     @foreach ($userCellars as $cellar)
@@ -54,11 +62,7 @@
             </select>
         </div>
 
-        <!-- Quantité à ajouter -->
-        <div class="form-group">
-            <label for="quantity">Quantité :</label>
-            <input type="number" name="quantity" id="quantity" min="1" required>
-        </div>
+       
 
         <button type="submit" class="btn">Ajouter</button>
     </form>
