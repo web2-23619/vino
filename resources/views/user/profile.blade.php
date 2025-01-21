@@ -5,13 +5,9 @@
 @section('content')
 <section>
 
-	<header data-js="header">
-		<h2>Profil</h2>
-	</header>
 
 	<article class="profile">
-		<h3>{{ $user->username }}</h3>
-
+		<h2>{{ $user->username }}</h2>
 		<template id="alerte">
 			<div class="alerte">
 				<p>{{ session('erreur') }}</p>
@@ -20,9 +16,6 @@
 		</template>
 	</article>
 		<!-- Boutons d'actions -->
-		<header>
-			{{-- <h4>Veuillez cliquer sur l'un des boutons suivant pour la manipulation de votre profil :</h4> --}}
-		</header>
 		<div class="profile-actions">
 			<a href="{{ route('user.edit', $user->id) }}" class="btn btn_semi_accent btn_thick">Modifier profil</a>
 			<button data-js-action="supprimerUser" 
