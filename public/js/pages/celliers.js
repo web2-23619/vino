@@ -55,7 +55,7 @@ import App from "../components/App.js";
         const dropdown = elToChange.querySelector(".menu-deroulant > input");
         dropdown.checked = false;
 
-        const modale = new ModaleAction(
+        new ModaleAction(
             cellierID,
             cellierNom,
             "supprimerCellier",

@@ -11,16 +11,16 @@
     }
 
     svg {
-        width: 18px;
+        width: 12px;
         color: var(--tres-fonce);
 
-		transition-property: transform;
-		transition-duration: var(--duree-x-rapide);
-		transition-timing-function: ease-in-out;
+        transition-property: transform;
+        transition-duration: var(--duree-x-rapide);
+        transition-timing-function: ease-in-out;
     }
 
-	    svg:active{
-			transform: scale(0.95);
+    svg:active {
+        transform: scale(0.95);
     }
 }
 
@@ -63,9 +63,9 @@
     align-items: center;
     justify-content: space-between;
 
-	p{
-		font-size: var(--police-s)
-	};
+    p {
+        font-size: var(--police-s);
+    }
 }
 
 .card_bottle__actions {
@@ -76,7 +76,7 @@
     align-items: center;
     justify-content: center;
 
-	margin-left: auto;
+    margin-left: auto;
 
     button {
         padding: var(--espace-nano);
@@ -93,4 +93,18 @@
 .card_bottle + .card_bottle {
     margin-top: var(--espace-m);
     margin-bottom: var(--espace-m);
+}
+
+.card_bottle__header {
+    display: flex;
+    gap: var(--espace-xs);
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card_bottle__header{
+	display: flex;
+	gap: var(--espace-xs);
+	align-items: center;
+	justify-content: space-between;
 }

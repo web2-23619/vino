@@ -1,5 +1,6 @@
 import App from "../components/App.js";
 import Alerte from "../components/Alerte.js";
+import ModaleAction from "../components/ModaleAction.js";
 
 (function () {
     new App();
@@ -10,12 +11,13 @@ import Alerte from "../components/Alerte.js";
         new Alerte(alerte);
     }
 
-    const btnsSupprimer = document.querySelectorAll("[data-js-action='supprimer']");
+    const btnsSupprimer = document.querySelectorAll(
+        "[data-js-action='afficherModaleConfirmation']"
+    );
 
     for (const btn of btnsSupprimer) {
-        btn.addEventListener("click", App.instance.removeBottleFromCellar);
+        btn.addEventListener("click", afficherModaleSupressionBouteille);
     }
-
     const btnsReduire = document.querySelectorAll("[data-js-action='reduire']");
     const btnsAugmenter = document.querySelectorAll("[data-js-action='augmenter']");
 
@@ -27,6 +29,23 @@ import Alerte from "../components/Alerte.js";
         btn.addEventListener("click", (event) => changeQuantity(event, "augmenter"));
     }
 })();
+
+async function afficherModaleSupressionBouteille(event) {
+    const declencheur = event.target;
+    const elToChange = declencheur.closest("article");
+    const ids = elToChange.dataset.jsKey;
+    const nom = elToChange.dataset.jsName;
+
+    new ModaleAction(
+        ids,
+        nom,
+        "retirerBouteille",
+        "supprimer",
+        "cellier_has_bouteille",
+        elToChange
+    );
+}
+
 
 async function changeQuantity(event, action) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');

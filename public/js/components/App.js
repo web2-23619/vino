@@ -19,13 +19,9 @@ export default class App {
         this.baseURL = "http://localhost:8000";
     }
 
-    async removeBottleFromCellar(event) {
+    async removeBottleFromCellar(key) {
         new App();
 
-        const trigger = event.target;
-
-        const bouteille = trigger.closest("article");
-        const key = bouteille.dataset.jsKey;
         const ids = key.split("|");
 
         const csrfToken = document
@@ -46,11 +42,6 @@ export default class App {
 
         if (response.ok) {
             const message = "Bouteille retirée avec succès";
-
-            bouteille.classList.add("fade");
-            setTimeout(() => {
-                bouteille.remove();
-            }, 500);
 
             new Alerte(null, message, "succes");
         } else {
