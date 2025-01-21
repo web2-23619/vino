@@ -45,3 +45,9 @@
     border-color: var(--tres-fonce);
     color: var(--tres-fonce);
 }
+
+.btn_semi_accent {
+    background-color: var(--contraste-faible);
+    border-color: var(--contraste-fonce);
+    color: var(--tres-fonce); 
+}

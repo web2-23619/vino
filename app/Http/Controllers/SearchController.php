@@ -16,11 +16,16 @@ class SearchController extends Controller
      */
     public function index(Request $request)
     {
-        session()->forget('add_bottle_source');
+        
         if ($request->has('source')) {
             session(['add_bottle_source' => $request->input('source')]);
+        }else{
+            session()->forget('add_bottle_source');
         }
-        return view('search.index');
+            
+    $randomBottles = Bottle::inRandomOrder()->take(5)->get();
+
+    return view('search.index', compact('randomBottles'));
     }
 
     /**
