@@ -162,9 +162,13 @@ class PurchaseController extends Controller
 		$purchase = Purchase::findOrFail($purchaseId);
 
 		// Delete the purchase
-		$purchase->delete();
+		if($purchase->delete()){
+			// Return a response indicating success
+			return response()->json(['message' => 'Bouteille retiré avec succes de la liste d\'achat'], 200);
+		} else {
+			return response()->json(['message' => 'Erreur au retrait de la bouteille'], 400);
+		}
 
-		// Return a response indicating success
-		return response()->json(['message' => 'Bouteille retiré avec succes de la liste d\'achat'], 200);
+		
 	}
 }
