@@ -3,7 +3,7 @@
 
     width: 100%;
     padding: var(--espace-nano) var(--espace-s);
-    background-color: var(--contraste-fonce);
+    background-color: var(--contraste);
     color: var(--clair);
     font-size: var(--police-std);
     font-family: var(--police-regular);
@@ -12,7 +12,7 @@
     box-sizing: border-box;
     cursor: pointer;
     transition: background-color var(--duree-std);
-	border: var(--bordure-s) solid var(--contraste-fonce);
+	border: var(--bordure-s) solid var(--contraste);
 }
 
 .btn.no-bg {
