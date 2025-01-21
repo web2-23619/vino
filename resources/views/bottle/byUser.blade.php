@@ -21,7 +21,7 @@
 			<header>
 				<div class="card_bottle__header">
 					<p class="card_bottle__metainfo">{{$bottle['type']}}</p>
-					<button data-js-action="supprimer">
+					<button data-js-action="afficherModaleConfirmation">
 						<svg enable-background="new 0 0 32 32" id="Glyph" version="1.1" viewBox="0 0 32 32" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 							<title>Icone de poubelle</title>
 							<path d="M6,12v15c0,1.654,1.346,3,3,3h14c1.654,0,3-1.346,3-3V12H6z M12,25c0,0.552-0.448,1-1,1s-1-0.448-1-1v-9  c0-0.552,0.448-1,1-1s1,0.448,1,1V25z M17,25c0,0.552-0.448,1-1,1s-1-0.448-1-1v-9c0-0.552,0.448-1,1-1s1,0.448,1,1V25z M22,25  c0,0.552-0.448,1-1,1s-1-0.448-1-1v-9c0-0.552,0.448-1,1-1s1,0.448,1,1V25z" id="XMLID_237_" />
@@ -46,4 +46,16 @@
 	<p>Aucune bouteille</p>
 	@endforelse
 </section>
+<!-- Template pour l'utilisation des modales, ne pas supprimer-->
+<template id="retirerBouteille">
+	<div class="modale-action">
+		<div class="modale-action__conteneur">
+			<p class="modale-action__message">Veuillez confirmer le retrait de la bouteille <span data-js-replace="nom">NOM</span></p>
+			<div class="modale-action__boutons">
+				<button data-js-action="supprimer" class="btn btn_accent btn_thick">Supprimer</button>
+				<button data-js-action="annuler" class="btn btn_outline_dark btn_thick">Annuler</button>
+			</div>
+		</div>
+	</div>
+</template>
 @endsection
