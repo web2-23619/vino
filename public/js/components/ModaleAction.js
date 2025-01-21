@@ -66,6 +66,11 @@ class ModaleAction {
                         "click",
                         this.#supprimerUtilisateur.bind(this)
                     );
+                } else if (this.#model === "cellier_has_bouteille") {
+                    this.#btnAction.addEventListener(
+                        "click",
+                        this.#retirerBouteilleDeCellier.bind(this)
+                    );
                 } else {
                     this.#btnAction.addEventListener(
                         "click",
@@ -241,6 +246,26 @@ class ModaleAction {
         }
 
         this.#fermerModale();
+    }
+
+    /**
+     * méthode privée pour retirer bouteille de cellier sur confirmation
+     */
+    #retirerBouteilleDeCellier() {
+        const top = document.querySelector("[data-js='header']");
+        try {
+            App.instance.removeBottleFromCellar(this.#id);
+            this.#elToChange?.remove();
+            this.#elementHTML.remove();
+            top.scrollIntoView();
+            this.#déverouiller();
+        } catch (error) {
+            console.log(error);
+            const message = "Erreur. Veuillez réessayer plus tard";
+            this.#elementHTML.remove();
+            top.scrollIntoView();
+            new Alerte(null, message, "erreur");
+        }
     }
 }
 
