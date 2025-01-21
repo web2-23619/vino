@@ -92,5 +92,5 @@
 
 .card_bottle + .card_bottle {
     margin-top: var(--espace-m);
-    margin-bottom: var(--espace-nano);
+    margin-bottom: var(--espace-m);
 }
