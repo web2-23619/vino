@@ -28,7 +28,6 @@
             
         <label for="cellar_id">Sélectionner un cellier :</label>
             <select name="cellar_id" id="cellar_id" required>
-            <option value="" disabled selected>-- Sélectionnez une option --</option>
                 @if($source == 'default')
                     <!-- Si la source est 'default', afficher tous les celliers ET la liste d'achat -->
                     @foreach ($userCellars as $cellar)
