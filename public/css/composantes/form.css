@@ -27,6 +27,7 @@
     font-weight: bold;
 }
 
+/* uniformiser des forms en IOS */ 
 input[type="hidden"] {
     outline: none;
     border: none;

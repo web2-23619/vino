@@ -32,8 +32,9 @@
 			</header>
 			<div>
 				<div class="card_bottle__actions">
-				<span data-js-quantite = "quantite">{{$bottle['quantity']}}</span>
+				
 					<button data-js-action = "reduire">-</button>
+					<span data-js-quantite = "quantite">{{$bottle['quantity']}}</span>
 					<button data-js-action = "augmenter">+</button>
 				</div>
 			</div>
