@@ -1,7 +1,8 @@
 .btn {
     display: block;
-
     width: 100%;
+    max-width: 100%;
+    max-height: fit-content;
     padding: var(--espace-nano) var(--espace-s);
     background-color: var(--contraste);
     color: var(--clair);
@@ -11,7 +12,8 @@
     border-radius: var(--rayon-s);
     box-sizing: border-box;
     cursor: pointer;
-    transition: background-color var(--duree-std);
+    transition-property: transform;
+    transition: background-color var(--duree-std),  transform var(--duree-x-rapide) ease-in-out;
 	border: var(--bordure-s) solid var(--contraste);
 }
 
