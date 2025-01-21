@@ -6,7 +6,7 @@
 <section>
 
 	<header data-js="header">
-		<h2>Profile</h2>
+		<h2>Profil</h2>
 	</header>
 
 	<article class="profile">
@@ -18,25 +18,25 @@
 				<button data-js-action="fermer">x</button>
 			</div>
 		</template>
-
-		<div class="menu-deroulant">
-			<input type="checkbox" aria-label="bouton pour ouvrir menu des actions">
-			<ul class="menu-deroulant__contenu">
-				<li>
-					<a href="{{ route('user.edit', $user->id) }}">Modifier</a>
-				</li>
-				<li data-js-action="supprimerUser"
-					data-js-name="{{ $user->username }}"
-					data-js-user-id="{{ $user->id }}">
-					Supprimer
-				</li>
-				<li data-js-action="afficherModaleDeconnexion"
-					data-js-name="{{ $user->username }}">
-					Déconnexion
-				</li>
-			</ul>
-		</div>
 	</article>
+		<!-- Boutons d'actions -->
+		<header>
+			<h4>Veuillez cliquer sur l'un des boutons suivant pour la manipulation de votre profil :</h4>
+		</header>
+		<div class="profile-actions">
+			<a href="{{ route('user.edit', $user->id) }}" class="btn btn_accent btn_thick">Modifier</a>
+			<button data-js-action="supprimerUser" 
+					data-js-name="{{ $user->username }}" 
+					data-js-user-id="{{ $user->id }}" 
+					class="btn btn_semi_accent btn_thick">
+				Supprimer
+			</button>
+			<button data-js-action="afficherModaleDeconnexion" 
+					data-js-name="{{ $user->username }}" 
+					class="btn btn_outline_dark btn_thick">
+				Déconnexion
+			</button>
+		</div>
 
 	<!-- Stats de profil -->
 	<div class="profile-stats">
