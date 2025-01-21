@@ -4,7 +4,7 @@
 @section('content')
 <section>
 	<header data-js="header">
-		<h2>Celliers</h2>
+		<h2>Inventaire</h2>
 	</header>
 	<template id="alerte">
 		<div class="alerte">
@@ -24,21 +24,26 @@
 		<button data-js-action="fermer">x</button>
 	</div>
 	@endif
-	@forelse($cellars as $cellar)
-	<article class="cellier">
-		<a href="{{route('cellar.showBottles', $cellar->id)}}">{{$cellar->name}}</a>
-		<div class="menu-deroulant">
-			<input type="checkbox" aria-label="bouton pour ouvrir menu des actions">
-			<ul class="menu-deroulant__contenu">
-				<li><a href="{{ route('cellar.edit', $cellar->id) }}">Modifier</a></li>
-				<li data-js-action="afficherModaleConfirmation" data-js-cellier="{{ $cellar->id }}" data-js-Name="{{$cellar->name}}">Supprimer</li>
-			</ul>
-		</div>
-	</article>
-	@empty
-	<p>Aucun cellier</p>
-	@endforelse
-	<!-- Bouton Ajouter Cellier sticky -->
+	<div>
+			<div class="menu-deroulant">
+				<input type="checkbox" aria-label="bouton pour ouvrir menu des actions">
+				<ul class="menu-deroulant__contenu">
+					@forelse($cellars as $cellar)
+					<li><a href="{{ route('cellar.edit', $cellar->id) }}">Modifier</a></li>
+					<li data-js-action="afficherModaleConfirmation" data-js-cellier="{{ $cellar->id }}" data-js-Name="{{$cellar->name}}">Supprimer</li>
+					@empty
+					<p>Aucun cellier</p>
+					@endforelse
+				</ul>
+			</div>
+			<select class="cellier-select" name="cellar-select" id="cellar-select">
+				@forelse($cellars as $cellar)	
+					<option value="{{ $cellar->id }}">{{ $cellar->name }}</option>
+				@empty
+				<option disable>Aucun cellier</option>
+				@endforelse
+			</select>
+	</div>
 </section>
 <!-- Template pour l'utilisation des modales, ne pas supprimer-->
 <template id="supprimerCellier">

@@ -28,3 +28,12 @@
 * + .cellier {
     margin-top: var(--espace-s);
 }
+
+.cellier-select {
+    width: 100%;
+    padding: var(--espace-nano);
+    font-size: var(--police-std);
+    box-sizing: border-box;
+    /* appearance: none; */
+    border-radius: 0;
+}
