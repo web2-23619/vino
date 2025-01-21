@@ -15,8 +15,13 @@ class PurchaseController extends Controller
 	public function index()
 	{
 		$purchases = Purchase::select()->where("user_id", Auth::user()->id)->get();
-		return view('purchase.index', ['purchases' => $purchases]);
-		// return view('purchase.index', ['purchases'=>$purchases, 'addBottle' => 'Bouteille']);
+		$empty = true;
+		if(count($purchases)>0){
+			$empty = false;
+		}
+
+		return view('purchase.index', ['purchases' => $purchases, 'empty' => $empty]);
+
 	}
 
 	/**
