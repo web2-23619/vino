@@ -21,10 +21,10 @@
     margin-bottom: var(--espace-m);
 }
 
-.profile-header h2 {
-    font-family: var(--police-accent);
-    font-size: var(--police-xl);
-    font-style: italic;
+
+
+.profile h2{
+    margin-top: var(--espace-m);
 }
 
 .profile-header__container {
@@ -32,6 +32,9 @@
     justify-content: space-between;
 }
 
+.profile-actions button {
+    margin-top: var(--espace-micro);
+}
 /* Stats Section */
 .profile-stats {
     display: flex;

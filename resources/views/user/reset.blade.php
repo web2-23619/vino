@@ -36,7 +36,7 @@
 
 		<!-- Bouton Soumettre -->
 		<div class="page-prompt">
-			<button type="submit" class="btn">Réinitialiser le mot de passe</button>
+			<button type="submit" class="btn">Sauvegarder</button>
 		</div>
 	</form>
 </section>

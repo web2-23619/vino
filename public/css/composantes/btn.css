@@ -1,9 +1,10 @@
 .btn {
     display: block;
-
     width: 100%;
+    max-width: 100%;
+    max-height: fit-content;
     padding: var(--espace-nano) var(--espace-s);
-    background-color: var(--contraste-fonce);
+    background-color: var(--contraste);
     color: var(--clair);
     font-size: var(--police-std);
     font-family: var(--police-regular);
@@ -11,9 +12,26 @@
     border-radius: var(--rayon-s);
     box-sizing: border-box;
     cursor: pointer;
-    transition: background-color var(--duree-std);
-	border: var(--bordure-s) solid var(--contraste-fonce);
+    transition-property: transform;
+    transition: background-color var(--duree-std),  transform var(--duree-x-rapide) ease-in-out;
+	border: var(--bordure-s) solid var(--contraste);
 }
+
+.btn.no-bg {
+    border: 1px solid var(--contraste);
+    background-color: var(--clair);
+    color: var(--fonce);    
+}
+
+.btn.no-bg:active {
+    /* transform: scale(0.98); */
+    background-color: var(--contraste-faible);
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
 
 .btn_thick{
 	padding-block: var(--espace-micro);
@@ -28,4 +46,10 @@
     background-color: transparent;
     border-color: var(--tres-fonce);
     color: var(--tres-fonce);
+}
+
+.btn_semi_accent {
+    background-color: var(--contraste-faible);
+    border-color: var(--contraste-fonce);
+    color: var(--tres-fonce); 
 }
