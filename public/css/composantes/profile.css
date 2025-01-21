@@ -32,6 +32,9 @@
     justify-content: space-between;
 }
 
+.profile-actions button {
+    margin-top: var(--espace-micro);
+}
 /* Stats Section */
 .profile-stats {
     display: flex;

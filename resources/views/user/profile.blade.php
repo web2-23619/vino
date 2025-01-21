@@ -21,19 +21,19 @@
 	</article>
 		<!-- Boutons d'actions -->
 		<header>
-			<h4>Veuillez cliquer sur l'un des boutons suivant pour la manipulation de votre profil :</h4>
+			{{-- <h4>Veuillez cliquer sur l'un des boutons suivant pour la manipulation de votre profil :</h4> --}}
 		</header>
 		<div class="profile-actions">
-			<a href="{{ route('user.edit', $user->id) }}" class="btn btn_accent btn_thick">Modifier</a>
+			<a href="{{ route('user.edit', $user->id) }}" class="btn btn_semi_accent btn_thick">Modifier profil</a>
 			<button data-js-action="supprimerUser" 
 					data-js-name="{{ $user->username }}" 
 					data-js-user-id="{{ $user->id }}" 
 					class="btn btn_semi_accent btn_thick">
-				Supprimer
+				Supprimer profil
 			</button>
 			<button data-js-action="afficherModaleDeconnexion" 
 					data-js-name="{{ $user->username }}" 
-					class="btn btn_outline_dark btn_thick">
+					class="btn btn_accent btn_thick">
 				Déconnexion
 			</button>
 		</div>
