@@ -17,6 +17,17 @@
     transition-timing-function: ease-in-out;
 }
 
+.btn-add.no-bg {
+    border: 1px solid var(--contraste);
+    background-color: var(--clair);
+    color: var(--fonce);    
+}
+
+.btn-add.no-bg:active {
+    /* transform: scale(0.98); */
+    background-color: var(--contraste-faible);
+}
+
 .btn-add:active {
     transform: scale(0.98);
 }
