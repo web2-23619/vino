@@ -22,7 +22,7 @@
 			<div>{{ $message }}</div>
 			@enderror
 		</div> -->
-		<button type="submit" class="btn">Modifier</button>
+		<button type="submit" class="btn">Sauvegarder</button>
 	</form>
 </section>
 @endsection

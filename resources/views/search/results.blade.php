@@ -39,7 +39,7 @@
                 <div>
                     <p>Prix: {{ number_format($bottle->price, 2) }} $</p>
                     <div class="card_bottle__actions">
-  <a href="{{ route('bottle.add', ['bottle_id' => $bottle->id, 'source' => session('add_bottle_source', 'default'), 'cellar_id' => request('cellar_id')]) }}" class="btn-add no-bg">Ajouter</a>
+  <a href="{{ route('bottle.add', ['bottle_id' => $bottle->id, 'source' => session('add_bottle_source', 'default'), 'cellar_id' => request('cellar_id')]) }}" class="btn no-bg">Ajouter</a>
                     </div>
                 </div>
             </section>
