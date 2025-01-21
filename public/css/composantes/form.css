@@ -13,6 +13,11 @@
     padding: var(--espace-nano);
     font-size: var(--police-std);
     box-sizing: border-box;
+   
+    
+}
+
+.form-group select{
     appearance: none;
     border-radius: 0;
 }
@@ -22,3 +27,10 @@
     font-weight: bold;
 }
 
+/* uniformiser des forms en IOS */ 
+input[type="hidden"] {
+    outline: none;
+    border: none;
+    color: inherit; 
+    text-decoration: none; 
+}

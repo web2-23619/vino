@@ -5,38 +5,31 @@
 @section('content')
 <section>
 
-	<header data-js="header">
-		<h2>Profile</h2>
-	</header>
 
 	<article class="profile">
-		<h3>{{ $user->username }}</h3>
-
+		<h2>{{ $user->username }}</h2>
 		<template id="alerte">
 			<div class="alerte">
 				<p>{{ session('erreur') }}</p>
 				<button data-js-action="fermer">x</button>
 			</div>
 		</template>
-
-		<div class="menu-deroulant">
-			<input type="checkbox" aria-label="bouton pour ouvrir menu des actions">
-			<ul class="menu-deroulant__contenu">
-				<li>
-					<a href="{{ route('user.edit', $user->id) }}">Modifier</a>
-				</li>
-				<li data-js-action="supprimerUser"
-					data-js-name="{{ $user->username }}"
-					data-js-user-id="{{ $user->id }}">
-					Supprimer
-				</li>
-				<li data-js-action="afficherModaleDeconnexion"
-					data-js-name="{{ $user->username }}">
-					Déconnexion
-				</li>
-			</ul>
-		</div>
 	</article>
+		<!-- Boutons d'actions -->
+		<div class="profile-actions">
+			<a href="{{ route('user.edit', $user->id) }}" class="btn btn_semi_accent btn_thick">Modifier profil</a>
+			<button data-js-action="supprimerUser" 
+					data-js-name="{{ $user->username }}" 
+					data-js-user-id="{{ $user->id }}" 
+					class="btn btn_semi_accent btn_thick">
+				Supprimer profil
+			</button>
+			<button data-js-action="afficherModaleDeconnexion" 
+					data-js-name="{{ $user->username }}" 
+					class="btn btn_accent btn_thick">
+				Déconnexion
+			</button>
+		</div>
 
 	<!-- Stats de profil -->
 	<div class="profile-stats">

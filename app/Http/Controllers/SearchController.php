@@ -16,11 +16,16 @@ class SearchController extends Controller
      */
     public function index(Request $request)
     {
-        session()->forget('add_bottle_source');
+        
         if ($request->has('source')) {
             session(['add_bottle_source' => $request->input('source')]);
+        }else{
+            session()->forget('add_bottle_source');
         }
-        return view('search.index');
+            
+    $randomBottles = Bottle::inRandomOrder()->take(5)->get();
+
+    return view('search.index', compact('randomBottles'));
     }
 
     /**
@@ -94,19 +99,36 @@ class SearchController extends Controller
     
         $bottle = Bottle::find($request->input('bottle_id'));
     
-        if ($cellar->bottles()->where('bottle_id', $bottle->id)->exists()) {
+        // Vérifier si la bouteille existe déjà dans le cellier
+        $existingBottle = $cellar->bottles()->where('bottle_id', $bottle->id)->first();
+    
+        if ($existingBottle) {
+            // Si la bouteille existe, mettre à jour la quantité
+            $currentQuantity = $existingBottle->pivot->quantity;
+            $newQuantity = $currentQuantity + $request->input('quantity');
+    
+            $cellar->bottles()->updateExistingPivot($bottle->id, ['quantity' => $newQuantity]);
+    
+            // Oublier les sessions après la mise à jour
+            session()->forget('add_bottle_source');
+            session()->forget('cellar_id');
+    
             return redirect()->route('cellar.showBottles', ['cellar' => $cellar->id])
-                             ->with('error', 'La bouteille est déjà dans ce cellier.');
+                             ->with('success', 'La quantité de la bouteille a été mise à jour avec succès!');
+        } else {
+            // Sinon, ajouter la bouteille au cellier
+            $cellar->bottles()->attach($bottle, ['quantity' => $request->input('quantity')]);
+    
+            // Oublier les sessions après l'ajout
+            session()->forget('add_bottle_source');
+            session()->forget('cellar_id');
+    
+            return redirect()->route('cellar.showBottles', ['cellar' => $cellar->id])
+                             ->with('success', 'Bouteille ajoutée avec succès!');
         }
+    }
     
-        $cellar->bottles()->attach($bottle, ['quantity' => $request->input('quantity')]);
-    
-        session()->forget('add_bottle_source');
-        session()->forget('cellar_id');
-    
-        return redirect()->route('cellar.showBottles', ['cellar' => $cellar->id])
-                         ->with('success', 'Bouteille ajoutée avec succès!');
-    }    
+       
     
     
     public function showAddBottleForm($bottleId, Request $request)
