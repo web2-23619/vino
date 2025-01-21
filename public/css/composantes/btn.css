@@ -15,6 +15,22 @@
 	border: var(--bordure-s) solid var(--contraste-fonce);
 }
 
+.btn.no-bg {
+    border: 1px solid var(--contraste);
+    background-color: var(--clair);
+    color: var(--fonce);    
+}
+
+.btn.no-bg:active {
+    /* transform: scale(0.98); */
+    background-color: var(--contraste-faible);
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+
 .btn_thick{
 	padding-block: var(--espace-micro);
 }
