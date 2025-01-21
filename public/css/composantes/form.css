@@ -13,16 +13,33 @@
     padding: var(--espace-nano);
     font-size: var(--police-std);
     box-sizing: border-box;
-   
-    
 }
 
 .form-group select{
     appearance: none;
     border-radius: 0;
+    box-shadow: none;
+    border: var(--bordure-s) solid var(--tres-fonce);
 }
 
 .form-group label {
     margin-bottom: var(--espace-micro);
     font-weight: bold;
+}
+
+/* Styles pour uniformiser l'apparence des menus déroulants sur tous les navigateurs */
+
+select {
+    color: var(--tres-fonce);
+    background-color: var(--clair);
+}
+
+select option {
+    color: var(--tres-fonce); 
+    background-color: var(--clair); 
+}
+.form-group select:focus,
+.form-group input:focus {
+    outline: none;
+ 
 }
