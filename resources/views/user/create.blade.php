@@ -34,7 +34,7 @@
 			<input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
 		</div>
 		<div class="page-prompt">
-			<button type="submit" class="btn">Enregistrer</button>
+			<button type="submit" class="btn">Sauvegarder</button>
 		</div>
 	</form>
 </section>
