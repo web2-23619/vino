@@ -64,4 +64,13 @@
 		</div>
 	</div>
 </template>
+<template id="noPurchase">
+	<article class="noContent">
+		<h3>
+			Il semblerait que vous n'ayez rien à acheter.
+		</h3>
+		<p>Créez votre liste d'achat afin de ne rien oublier lors de votre prochaine visite à la SAQ!</p>
+		<a href="{{ route('search.index', ['source' => 'listeAchat']) }}" class="btn">Découvrir des bouteilles</a>
+	</article>
+</template>
 @endsection

@@ -101,6 +101,9 @@ class ModaleAction {
      * Méthode privée pour fermer la modale
      */
     #fermerModale() {
+		const customEvent = new CustomEvent("fermerModale");
+		document.dispatchEvent(customEvent);
+
         this.#déverouiller();
         this.#elementHTML.remove();
     }

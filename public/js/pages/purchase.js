@@ -37,6 +37,25 @@ import ModaleAction from "../components/ModaleAction.js";
             btn.addEventListener("click", afficherModaleSupressionAchat);
         }
     }
+
+    document.addEventListener("fermerModale", function (event) {
+        const bouteilles = document.querySelectorAll(".card_bottle");
+        const nbBouteilles = bouteilles.length;
+
+        console.log(nbBouteilles);
+
+        if (nbBouteilles === 0) {
+            const template = document.querySelector("template#noPurchase");
+            let content = template.content.cloneNode(true);
+            let sectionHTML = document.querySelector("main > section");
+            sectionHTML.append(content);
+
+            const boutonAjout = document.querySelector("footer > div");
+            if (boutonAjout) {
+                boutonAjout.remove();
+            }
+        }
+    });
 })();
 
 async function changeQuantity(event, action) {
