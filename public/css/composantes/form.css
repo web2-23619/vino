@@ -5,21 +5,29 @@
     gap: var(--espace-s);
     background-color: var(--clair);
     width: 100%;
-    
 }
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+}
+
 .form-group select,
 .form-group input {
     width: 100%;
     padding: var(--espace-nano);
     font-size: var(--police-std);
     box-sizing: border-box;
-   
-    
 }
 
-.form-group select{
+.form-group select {
     appearance: none;
     border-radius: 0;
+    box-shadow: none;
+    border: var(--bordure-s) solid var(--tres-fonce);
 }
 
 .form-group label {
@@ -27,10 +35,18 @@
     font-weight: bold;
 }
 
-/* uniformiser des forms en IOS */ 
-input[type="hidden"] {
+/* Styles pour uniformiser l'apparence des menus déroulants sur tous les navigateurs */
+
+select {
+    color: var(--tres-fonce);
+    background-color: var(--clair);
+}
+
+select option {
+    color: var(--tres-fonce);
+    background-color: var(--clair);
+}
+.form-group select:focus,
+.form-group input:focus {
     outline: none;
-    border: none;
-    color: inherit; 
-    text-decoration: none; 
 }

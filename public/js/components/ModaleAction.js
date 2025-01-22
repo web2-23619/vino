@@ -66,6 +66,11 @@ class ModaleAction {
                         "click",
                         this.#supprimerUtilisateur.bind(this)
                     );
+                } else if (this.#model === "cellier_has_bouteille") {
+                    this.#btnAction.addEventListener(
+                        "click",
+                        this.#retirerBouteilleDeCellier.bind(this)
+                    );
                 } else {
                     this.#btnAction.addEventListener(
                         "click",
@@ -96,7 +101,9 @@ class ModaleAction {
      * Méthode privée pour fermer la modale
      */
     #fermerModale() {
-		console.log('fermer modale');
+		const customEvent = new CustomEvent("fermerModale");
+		document.dispatchEvent(customEvent);
+
         this.#déverouiller();
         this.#elementHTML.remove();
     }
@@ -123,38 +130,41 @@ class ModaleAction {
         const csrfToken = document
             .querySelector('meta[name="csrf-token"]')
             .getAttribute("content");
-
-        const response = await fetch(
-            `${App.instance.baseURL}/api/${this.#action}/${this.#model}/${
-                this.#id
-            }`,
-            {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "Bearer " + localStorage.getItem("token"), // ajouter token
-                    "X-CSRF-TOKEN": csrfToken,
-                },
-            }
-        );
-
         const top = document.querySelector("[data-js='header']");
+        try {
+            const response = await fetch(
+                `${App.instance.baseURL}/api/${this.#action}/${this.#model}/${
+                    this.#id
+                }`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization:
+                            "Bearer " + localStorage.getItem("token"), // ajouter token
+                        "X-CSRF-TOKEN": csrfToken,
+                    },
+                }
+            );
 
-        if (response.ok) {
-            const message = "Cellier supprimé avec succès";
-            this.#elToChange?.remove();
+            const reponseJson = await response.json();
+            const message = reponseJson.message;
+            const type = "succes";
 
-            this.#elementHTML.remove();
+            if (response.ok) {
+                this.#elToChange?.remove();
+            } else {
+                type = "erreur";
+            }
+            this.#fermerModale();
             top.scrollIntoView();
-            new Alerte(null, message, "succes");
-            this.#déverouiller();
-        } else {
-            const message = "Erreur à la suppression du cellier";
-            this.#elementHTML.remove();
+            new Alerte(null, message, type);
+        } catch (error) {
+            console.log(error);
+            const message = "Erreur. Veuillez réessayer plus tard";
+            this.#fermerModale();
             top.scrollIntoView();
             new Alerte(null, message, "erreur");
-
-            this.#déverouiller();
         }
     }
 
@@ -237,6 +247,25 @@ class ModaleAction {
         }
 
         this.#fermerModale();
+    }
+
+    /**
+     * méthode privée pour retirer bouteille de cellier sur confirmation
+     */
+    #retirerBouteilleDeCellier() {
+        const top = document.querySelector("[data-js='header']");
+        try {
+            App.instance.removeBottleFromCellar(this.#id);
+            this.#elToChange?.remove();
+            top.scrollIntoView();
+            this.#fermerModale();
+        } catch (error) {
+            console.log(error);
+            const message = "Erreur. Veuillez réessayer plus tard";
+            this.#elementHTML.remove();
+            top.scrollIntoView();
+            new Alerte(null, message, "erreur");
+        }
     }
 }
 

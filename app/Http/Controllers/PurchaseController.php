@@ -15,8 +15,13 @@ class PurchaseController extends Controller
 	public function index()
 	{
 		$purchases = Purchase::select()->where("user_id", Auth::user()->id)->get();
-		return view('purchase.index', ['purchases' => $purchases]);
-		// return view('purchase.index', ['purchases'=>$purchases, 'addBottle' => 'Bouteille']);
+		$empty = true;
+		if(count($purchases)>0){
+			$empty = false;
+		}
+
+		return view('purchase.index', ['purchases' => $purchases, 'empty' => $empty]);
+
 	}
 
 	/**
@@ -162,9 +167,13 @@ class PurchaseController extends Controller
 		$purchase = Purchase::findOrFail($purchaseId);
 
 		// Delete the purchase
-		$purchase->delete();
+		if($purchase->delete()){
+			// Return a response indicating success
+			return response()->json(['message' => 'Bouteille retiré avec succes de la liste d\'achat'], 200);
+		} else {
+			return response()->json(['message' => 'Erreur au retrait de la bouteille'], 400);
+		}
 
-		// Return a response indicating success
-		return response()->json(['message' => 'Bouteille retiré avec succes de la liste d\'achat'], 200);
+		
 	}
 }

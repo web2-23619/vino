@@ -46,22 +46,22 @@
 		</div>
 		@endif
 		<!-- Ajouter un bouton "+ Bouteille" seulement sur la route 'cellar.showBottles' -->
-		@if(Route::currentRouteName() == 'cellar.showBottles')
-        <div>
-            <a href="{{ route('search.index', ['source' => 'cellier', 'cellar_id' => $cellar->id]) }}" class="btn-add">Ajouter Bouteille</a>
-        </div>
+		@if(Route::currentRouteName() == 'cellar.showBottles' && $empty == false)
+		<div>
+			<a href="{{ route('search.index', ['source' => 'cellier', 'cellar_id' => $cellar->id]) }}" class="btn">Ajouter Bouteille</a>
+		</div>
 		@endif
-    @if(Route::currentRouteName() == 'purchase.index')
-        <!-- Si on est sur la page des achats -->
-        <div>
-            <a href="{{ route('search.index', ['source' => 'listeAchat']) }}" class="btn-add">Ajouter Bouteille</a>
-        </div>
+		@if(Route::currentRouteName() == 'purchase.index' && $empty == false)
+		<!-- Si on est sur la page des achats -->
+		<div>
+			<a href="{{ route('search.index', ['source' => 'listeAchat']) }}" class="btn">Ajouter Bouteille</a>
+		</div>
 		@endif
-    @if(Route::currentRouteName() == 'user.showBottles')
-        <div>
-            <a href="{{ route('search.index', ['source' => 'mesBouteilles']) }}" class="btn-add">Ajouter Bouteille</a>
-        </div>
-    @endif
+		@if(Route::currentRouteName() == 'user.showBottles' && $empty == false)
+		<div>
+			<a href="{{ route('search.index', ['source' => 'mesBouteilles']) }}" class="btn">Ajouter Bouteille</a>
+		</div>
+		@endif
 		<nav class="nav-menu">
 			<a href="{{ route('cellar.index') }}" class="nav-menu__item">
 				<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">

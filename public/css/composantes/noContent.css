@@ -1,0 +1,16 @@
+.noContent {
+	margin-top: var(--espace-xxl);
+}
+
+.noContent > h3 {
+    font-family: var(--police-accent);
+    margin: 0;
+}
+
+.noContent > p {
+    margin-top: var(--espace-xs);
+}
+
+.noContent > * {
+    margin-top: var(--espace-m);
+}

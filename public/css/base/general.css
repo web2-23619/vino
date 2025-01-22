@@ -35,7 +35,7 @@ body > footer {
 
     div:has(a) {
         padding-inline: var(--espace-m);
-        padding-block: var(--espace-micro);
+        padding-block: var(--espace-xs);
 
         a {
             margin-left: auto;

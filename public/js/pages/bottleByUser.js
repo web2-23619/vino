@@ -1,5 +1,6 @@
 import App from "../components/App.js";
 import Alerte from "../components/Alerte.js";
+import ModaleAction from "../components/ModaleAction.js";
 
 (function () {
     new App();
@@ -10,12 +11,13 @@ import Alerte from "../components/Alerte.js";
         new Alerte(alerte);
     }
 
-    const btnsSupprimer = document.querySelectorAll("[data-js-action='supprimer']");
+    const btnsSupprimer = document.querySelectorAll(
+        "[data-js-action='afficherModaleConfirmation']"
+    );
 
     for (const btn of btnsSupprimer) {
-        btn.addEventListener("click", App.instance.removeBottleFromCellar);
+        btn.addEventListener("click", afficherModaleSupressionBouteille);
     }
-
     const btnsReduire = document.querySelectorAll("[data-js-action='reduire']");
     const btnsAugmenter = document.querySelectorAll("[data-js-action='augmenter']");
 
@@ -26,7 +28,41 @@ import Alerte from "../components/Alerte.js";
     for (const btn of btnsAugmenter) {
         btn.addEventListener("click", (event) => changeQuantity(event, "augmenter"));
     }
+
+	 document.addEventListener("fermerModale", function (event) {
+         const bouteilles = document.querySelectorAll(".card_bottle");
+         const nbBouteilles = bouteilles.length;
+
+         if (nbBouteilles === 0) {
+             const template = document.querySelector("template#noBottle");
+             let content = template.content.cloneNode(true);
+             let sectionHTML = document.querySelector("main > section");
+             sectionHTML.append(content);
+
+             const boutonAjout = document.querySelector("footer > div");
+             if (boutonAjout) {
+                 boutonAjout.remove();
+             }
+         }
+     });
 })();
+
+async function afficherModaleSupressionBouteille(event) {
+    const declencheur = event.target;
+    const elToChange = declencheur.closest("article");
+    const ids = elToChange.dataset.jsKey;
+    const nom = elToChange.dataset.jsName;
+
+    new ModaleAction(
+        ids,
+        nom,
+        "retirerBouteille",
+        "supprimer",
+        "cellier_has_bouteille",
+        elToChange
+    );
+}
+
 
 async function changeQuantity(event, action) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
