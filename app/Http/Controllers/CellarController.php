@@ -129,8 +129,12 @@ class CellarController extends Controller
 			];
 		});
 
+		$empty = true;
+		if (count($bottles)>0) {
+			$empty = false;
+		}
 		// Pass the bottles to the view
-		return view('bottle.byCellar', ['bottles' => $bottles, 'cellar' => $cellar]);
+		return view('bottle.byCellar', ['bottles' => $bottles, 'cellar' => $cellar, 'empty'=>$empty]);
 	}
 
 	public function apiRemoveBottle($cellar_id, $bottle_id)

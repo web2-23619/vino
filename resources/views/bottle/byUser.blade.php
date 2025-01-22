@@ -43,7 +43,13 @@
 		</section>
 	</article>
 	@empty
-	<p>Aucune bouteille</p>
+	<article class="noContent">
+		<h3>
+			Il semblerait que vous n'ayez pas de bouteilles en stock.
+		</h3>
+		<p>Démarrez votre collection en ajoutant vos bouteilles recément achetées ou reçues</p>
+		<a href="{{ route('search.index') }}" class="btn">Agrandir ma collection</a>
+	</article>
 	@endforelse
 </section>
 <!-- Template pour l'utilisation des modales, ne pas supprimer-->
@@ -57,5 +63,14 @@
 			</div>
 		</div>
 	</div>
+</template>
+<template id="noBottle">
+	<article class="noContent">
+		<h3>
+			Il semblerait que vous n'ayez pas de bouteilles en stock.
+		</h3>
+		<p>Démarrez votre collection en ajoutant vos bouteilles recément achetées ou reçues</p>
+		<a href="{{ route('search.index') }}" class="btn">Agrandir ma collection</a>
+	</article>
 </template>
 @endsection

@@ -101,6 +101,9 @@ class ModaleAction {
      * Méthode privée pour fermer la modale
      */
     #fermerModale() {
+		const customEvent = new CustomEvent("fermerModale");
+		document.dispatchEvent(customEvent);
+
         this.#déverouiller();
         this.#elementHTML.remove();
     }
@@ -153,15 +156,13 @@ class ModaleAction {
             } else {
                 type = "erreur";
             }
-
-            this.#elementHTML.remove();
+            this.#fermerModale();
             top.scrollIntoView();
             new Alerte(null, message, type);
-            this.#déverouiller();
         } catch (error) {
             console.log(error);
             const message = "Erreur. Veuillez réessayer plus tard";
-            this.#elementHTML.remove();
+            this.#fermerModale();
             top.scrollIntoView();
             new Alerte(null, message, "erreur");
         }
@@ -256,9 +257,8 @@ class ModaleAction {
         try {
             App.instance.removeBottleFromCellar(this.#id);
             this.#elToChange?.remove();
-            this.#elementHTML.remove();
             top.scrollIntoView();
-            this.#déverouiller();
+            this.#fermerModale();
         } catch (error) {
             console.log(error);
             const message = "Erreur. Veuillez réessayer plus tard";
