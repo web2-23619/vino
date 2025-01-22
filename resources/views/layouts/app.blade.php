@@ -37,7 +37,7 @@
 	<footer>
 		@if(Route::currentRouteName() == 'cellar.index')
 			<div>
-				<a href="{{ route('search.index', ['source' => 'cellier', 'cellar_id' => $cellar->id]) }}" class="btn-add">Ajouter Bouteille</a>
+				<a href="{{ route('search.index', ['source' => 'cellier', 'cellar_id' => $cellar->id]) }}" class="btn btn_accent">Ajouter Bouteille</a>
 			</div>
 		@endif
 		@if(isset($addBottle))
