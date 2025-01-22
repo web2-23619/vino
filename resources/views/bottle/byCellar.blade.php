@@ -63,4 +63,13 @@
 		</div>
 	</div>
 </template>
+<template id="noBottle">
+	<article class="noContent">
+		<h3>
+			Il semblerait que vous n'ayez pas de bouteilles en stock.
+		</h3>
+		<p>Démarrez votre collection en ajoutant vos bouteilles recément achetées ou reçues</p>
+		<a href=" {{ route('search.index', ['source' => 'cellier', 'cellar_id' => $cellar->id]) }}" class="btn">Agrandir ma collection</a>
+	</article>
+</template>
 @endsection
