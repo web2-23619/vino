@@ -7,7 +7,7 @@
 
 
 	<article class="profile">
-		<h2>{{ $user->username }}</h2>
+		<h2 class="profile-header">{{ $user->username }}</h2>
 		<template id="alerte">
 			<div class="alerte">
 				<p>{{ session('erreur') }}</p>
