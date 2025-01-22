@@ -4,66 +4,40 @@
 
 @section('content')
 <section class="page">
-
-
     <header>
         <h2 class="register-header">Ajouter la bouteille</h2>
     </header>
 
     <!-- Formulaire avec action conditionnelle -->
-    <form class="form" action="{{ route('bottle.add.submit') }}" method="POST" id="addBottleForm">
+    <form class="form" id="addBottleForm" method="POST">
         @csrf
         <input type="hidden" name="bottle_id" value="{{ $bottle->id }}">
-        <input type="hidden" name="cellar_id" value="{{ session('cellar_id') }}">
+        <input type="hidden" name="cellar_id" id="cellar_id" value="{{ session('cellar_id') }}">
         <input type="hidden" name="source" value="{{ $source }}">
 
-         <!-- Quantité à ajouter -->
-         <div class="form-group">
+        <!-- Quantité à ajouter -->
+        <div class="form-group">
             <label for="quantity">Quantité :</label>
             <input type="number" name="quantity" id="quantity" min="1" required>
         </div>
 
-        <!-- Sélectionner un cellier parmi les celliers de l'utilisateur -->
-        <div class="form-group">
-            
-        <label for="cellar_id">Sélectionner un cellier :</label>
-            <select name="cellar_id" id="cellar_id" required>
-                @if($source == 'default')
-                    <!-- Si la source est 'default', afficher tous les celliers ET la liste d'achat -->
+        @if($source == 'listeAchat')
+            <div class="form-group">
+                <input type="hidden" name="cellar_id" value="wishlist">
+            </div>
+            <button type="submit" class="btn">Ajouter</button>
+        @elseif($source == 'cellier')
+            <div class="form-group">
+                <label for="cellar_id">Sélectionner un cellier :</label>
+                <div>
                     @foreach ($userCellars as $cellar)
-                        <option value="{{ $cellar->id }}"
-                            @if(session('cellar_id') == $cellar->id) selected @endif>
+                        <button type="button" class="btn cellar-button" data-cellar-id="{{ $cellar->id }}">
                             {{ $cellar->name }}
-                        </option>
+                        </button>
                     @endforeach
-                    <option value="wishlist">Liste d'achat</option>
-                @elseif($source == 'listeAchat')
-                    <!-- Si la source est 'listeAchat', afficher uniquement l'option pour la liste d'achat -->
-                    <option value="wishlist" selected>Liste d'achat</option>
-                @elseif($source == 'mesBouteilles')
-                    <!-- Si la source est 'mesBouteilles', afficher tous les celliers -->
-                    @foreach ($userCellars as $cellar)
-                        <option value="{{ $cellar->id }}">{{ $cellar->name }}</option>
-                    @endforeach
-                @elseif($source == 'cellier' && session('cellar_id'))
-                    <option value="{{ session('cellar_id') }}" selected>{{ $selectedCellarName }}</option>
-                    @foreach ($userCellars as $cellar)
-                        @if($cellar->id != session('cellar_id'))  
-                            <option value="{{ $cellar->id }}">{{ $cellar->name }}</option>
-                        @endif
-                    @endforeach
-                @else
-                    <!-- Cas par défaut, afficher tous les celliers -->
-                    @foreach ($userCellars as $cellar)
-                        <option value="{{ $cellar->id }}">{{ $cellar->name }}</option>
-                    @endforeach
-                @endif
-            </select>
-        </div>
-
-       
-
-        <button type="submit" class="btn">Ajouter</button>
+                </div>
+            </div>
+        @endif
     </form>
 </section>
 @endsection
