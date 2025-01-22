@@ -34,17 +34,10 @@
 			</header>
 			<div>
 				<div class="card_bottle__actions">
-					<button data-js-action="reduire" aria-label="Réduire la quantité">
-						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-							<path d="M3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8z"/>
-						</svg>
+					<button data-js-action="reduire" aria-label="Réduire la quantité"><span>-</span>
 					</button>
 					<span data-js-quantite="quantite">{{$bottle['quantity']}}</span>
-					<button data-js-action="augmenter" aria-label="Augmenter la quantité">
-						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-							<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-						</svg>
-					</button>
+					<button data-js-action="augmenter" aria-label="Augmenter la quantité"><span>+</span></button>
 				</div>
 			</div>
 		</section>

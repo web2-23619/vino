@@ -107,8 +107,13 @@
     color: var(--clair);
 }
 
+.card_bottle__actions button span {
+    font-weight: bold;
+    color: black; 
+}
+
 .card_bottle__actions span[data-js-quantite="quantite"] {
-    font-size: var(--police-l);
+    font-size: var(--police-m);
     font-weight: bold;
     margin: 0 var(--autre-xl); 
 }
