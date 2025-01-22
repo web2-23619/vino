@@ -52,7 +52,7 @@
 }
 
 .result header h2 {
-    margin-bottom: var(--espace-xs);
+    margin-bottom: var(--espace-s);
     word-wrap: break-word; 
     overflow-wrap: break-word;
 }

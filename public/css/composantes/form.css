@@ -5,8 +5,16 @@
     gap: var(--espace-s);
     background-color: var(--clair);
     width: 100%;
-    
 }
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+}
+
 .form-group select,
 .form-group input,
 .form-group div {
@@ -16,7 +24,7 @@
     box-sizing: border-box;
 }
 
-.form-group select{
+.form-group select {
     appearance: none;
     border-radius: 0;
     box-shadow: none;
@@ -36,13 +44,12 @@ select {
 }
 
 select option {
-    color: var(--tres-fonce); 
-    background-color: var(--clair); 
+    color: var(--tres-fonce);
+    background-color: var(--clair);
 }
 .form-group select:focus,
 .form-group input:focus {
     outline: none;
- 
 }
 
 .form-group button{

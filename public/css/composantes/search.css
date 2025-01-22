@@ -1,11 +1,5 @@
-.search-results-page {
-    padding: var(--espace-m) var(--espace-s);
- 
-}
-
 .search-header {
     margin-bottom: var(--espace-s);
-    font-size: var(--police-m);
     font-family: var(--police-accent);
 }
 
@@ -14,8 +8,6 @@
 	align-items: center;
 	width: 100%;
 	gap: var(--espace-micro);
-    
-
 }
 
 .search-container input {
@@ -26,3 +18,6 @@
 	box-sizing: border-box;
 }
 
+.search label {
+	font-weight: initial;	
+}
