@@ -17,7 +17,7 @@ class CellarController extends Controller
 		$user_id = Auth::user()->id;
 		$cellars = Cellar::select()->where('user_id', $user_id)->orderBy('name')->get();
 		// Retourner la vue avec la liste des celliers
-		return view('cellar.index', ['cellars' => $cellars, 'addButton' => 'Cellier']);
+		return view('cellar.index', ['cellars' => $cellars]);
 	}
 
 
@@ -129,6 +129,29 @@ class CellarController extends Controller
 
 		// Pass the bottles to the view
 		return view('bottle.byCellar', ['bottles'=>$bottles, 'cellar'=>$cellar]);
+	}
+
+	public function showBottlesApi($cellarId)
+	{
+		// récupere les bouteilles d'un cellier
+		$cellar = Cellar::with('bottles')->find($cellarId);
+	
+		// Regarde si le cellier existe
+		if (!$cellar) {
+			return response()->json(['error' => 'Cellier non trouvé'], 404);
+		}
+	
+		// Recupere les bouteilles
+		$bottles = $cellar->bottles;
+
+		// Retourne les bouteilles et le cellier
+		return response()->json([
+			'cellar' => [
+				'id' => $cellar->id,
+				'name' => $cellar->name,
+			],
+			'bottles' => $bottles,
+		]);
 	}
 
 	public function apiRemoveBottle($cellar_id, $bottle_id){

@@ -1,17 +1,17 @@
 .cellier {
+    align-items: center;
     display: flex;
     flex-direction: row;
     gap: var(--espace-xl);
-    align-items: center;
     justify-content: space-between;
 
     > :is(a, a:visited) {
-        font-size: var(--police-m);
-		font-family: var(--police-regular);
 
+		font-family: var(--police-regular);
         color: var(--tres-fonce);
-        transition-property: transform;
+        font-size: var(--police-m);
         transition-duration: var(--duree-x-rapide);
+        transition-property: transform;
         transition-timing-function: ease-in-out;
     }
 
@@ -30,9 +30,15 @@
 }
 
 .cellier-select {
-    width: 100%;
-    padding: var(--espace-nano);
-    font-size: var(--police-std);
-    box-sizing: border-box;
     border-radius: 0;
+    box-sizing: border-box;
+    font-size: var(--police-std);
+    padding: var(--espace-nano);
+    width: 100%;
+}
+
+.inventory-action {
+    align-items: center;
+    display: flex;
+    gap: var(--espace-nano);
 }
