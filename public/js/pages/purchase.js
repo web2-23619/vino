@@ -42,8 +42,6 @@ import ModaleAction from "../components/ModaleAction.js";
         const bouteilles = document.querySelectorAll(".card_bottle");
         const nbBouteilles = bouteilles.length;
 
-        console.log(nbBouteilles);
-
         if (nbBouteilles === 0) {
             const template = document.querySelector("template#noPurchase");
             let content = template.content.cloneNode(true);
