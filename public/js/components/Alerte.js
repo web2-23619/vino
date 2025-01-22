@@ -17,7 +17,7 @@ class Alerte {
             alert.querySelector("p").textContent = this.#message;
 
             document.querySelector("[data-js='header']").after(alert);
-            this.#elementHTML = document.querySelector(".alerte");
+            this.#elementHTML = document.querySelector("[data-js='header']").nextElementSibling;
             this.#elementHTML.classList.add("alerte_".concat(this.#type));
 
             this.#boutonAction = this.#elementHTML.querySelector(
@@ -41,7 +41,7 @@ class Alerte {
 
         setTimeout(() => {
             this.#elementHTML.classList.add("alerte_remove");
-        }, 2650);
+        }, 2000);
 
         setTimeout(() => {
             this.#elementHTML.remove();
