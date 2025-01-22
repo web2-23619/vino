@@ -28,7 +28,7 @@
 	@foreach($results as $bottle)
 	<article class="card_bottle" data-js-key="{{$bottle['id']}}">
 		<picture>
-			<img src="{{ $bottle->image_url }}" alt="">
+			<img loading="lazy" src="{{ $bottle->image_url }}" alt="">
 		</picture>
 		<section>
 			<header>
