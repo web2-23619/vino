@@ -37,6 +37,10 @@
     width: 100%;
 }
 
+.cellier-products {
+    margin-top: var(--espace-m);
+}
+
 .inventory-action {
     align-items: center;
     display: flex;

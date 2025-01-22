@@ -31,6 +31,16 @@ import App from "../components/App.js";
         }
     }
 
+        
+    document.addEventListener("click", (event) => {
+        if (event.target.matches("[data-js-action='reduire']")) {
+            changeQuantity(event, "reduire");
+        } else if (event.target.matches("[data-js-action='augmenter']")) {
+            changeQuantity(event, "augmenter");
+        }
+    });
+        
+
     function checkMenu(event) {
         const trigger = event.target;
 
@@ -71,7 +81,6 @@ import App from "../components/App.js";
     const kebabMenu = document.querySelector("template#kebab-menu");
 
     const bottleTemplate = document.querySelector("#bottle-template");
-    const bottlesContainer = document.querySelector(".products"); 
 
 
     function selectTheCurrentValue(){
@@ -130,7 +139,7 @@ import App from "../components/App.js";
     function renderBottles(cellar, bottles) {
     
         // Selectionne le conteneur
-        const bottlesContainer = document.querySelector(".products");
+        const bottlesContainer = document.querySelector(".cellier-products");
     
         // Supprime les articles existants
         const existingArticles = bottlesContainer.querySelectorAll("article");
@@ -148,6 +157,7 @@ import App from "../components/App.js";
     
             const article = clone.querySelector(".card_bottle");
             article.setAttribute("data-js-key", `${cellar.id}|${bottle.id}`);
+            article.setAttribute("data-js-id", bottle.id);
     
             const img = clone.querySelector("img");
             img.src = bottle.image_url;
@@ -170,7 +180,55 @@ import App from "../components/App.js";
         });
     }
     
+    async function changeQuantity(event, action) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const trigger = event.target;
+        const purchaseItem = trigger.closest("article");
+        const [cellarId, bottleId] = purchaseItem.dataset.jsKey.split('|');  
+        const quantityElement = purchaseItem.querySelector("[data-js-quantite='quantite']");
+        let currentQuantity = parseInt(quantityElement.textContent);
+    
+        // Ajuster la quantité selon l'action
+        if (action === "reduire" && currentQuantity > 1) {
+            currentQuantity--;
+        } else if (action === "augmenter") {
+            currentQuantity++;
+        }
 
+        // Envoie le PATCH request pour update seulement la quantité
+        const response = await fetch(
+
+            `${App.instance.baseURL}/api/cellier/${cellarId}/${bottleId}`,
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken, // Ajoute CSRF token
+                    Authorization: "Bearer " + localStorage.getItem("token"), // Ajoute le token
+                },
+                body: JSON.stringify({
+                    quantity: currentQuantity,
+                }),
+            }
+        );
+    
+        if (response.ok) {
+            // Mettre à jour le UI
+            quantityElement.textContent = currentQuantity;
+    
+            // Desactiver le bouton "-" si la quantité est == 1
+            const btnReduire = purchaseItem.querySelector("[data-js-action='reduire']");
+            if (currentQuantity === 1) {
+                btnReduire.setAttribute("inert", "true");
+                btnReduire.classList.add("card_purchase_deactivated");
+            } else {
+                btnReduire.removeAttribute("inert");
+                btnReduire.classList.remove("card_purchase_deactivated");
+            }
+        } else {
+            // console.log("Échec.");
+        }
+    }
 
 
     selectTheCurrentValue();

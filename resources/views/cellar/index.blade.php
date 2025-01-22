@@ -47,7 +47,7 @@
 			<a href="{{ route('cellar.create') }}" class="btn btn_accent">Ajouter un cellier</a>
 	</div>
 </section>
-<section class="products">
+<section class="cellier-products">
     <template id="bottle-template">
         <article class="card_bottle" data-js-key="">
             <button data-js-action="supprimer">

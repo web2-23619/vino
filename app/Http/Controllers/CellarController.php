@@ -133,7 +133,7 @@ class CellarController extends Controller
 
 	public function showBottlesApi($cellarId)
 	{
-		// récupere les bouteilles d'un cellier
+		// Trouver le cellier par son ID
 		$cellar = Cellar::with('bottles')->find($cellarId);
 	
 		// Regarde si le cellier existe
@@ -142,7 +142,18 @@ class CellarController extends Controller
 		}
 	
 		// Recupere les bouteilles
-		$bottles = $cellar->bottles;
+		$bottles = $cellar->bottles->map(function ($bottle) {
+			return [
+				'id' => $bottle->id,
+				'name' => $bottle->name,
+				'price' => $bottle->price,
+				'image_url' => $bottle->image_url,
+				'country' => $bottle->country,
+				'volume' => $bottle->volume,
+				'type' => $bottle->type,
+				'quantity' => $bottle->pivot->quantity,
+			];
+		});
 
 		// Retourne les bouteilles et le cellier
 		return response()->json([
