@@ -3,27 +3,16 @@
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
-    gap: var(--espace-m);
+    gap: var(--espace-l);
 
     background-color: var(--clair);
     font-family: var(--police-regular);
 }
 
-.page form > div {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-
-    margin: var(--espace-micro);
-    width: 100%;
-
-    a {
-        color: var(--fonce);
-        font-size: var(--police-s);
-    }
+.page form > div a {
+    color: var(--fonce);
+    font-size: var(--police-s);
 }
-
 
 .page picture {
     display: block;
@@ -42,6 +31,9 @@
 }
 
 .page .page-prompt {
+	width: 100%;
+	max-width: 100%;
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -55,6 +47,5 @@
     font-size: var(--police-std);
 }
 .page {
-   
     margin: 0;
 }

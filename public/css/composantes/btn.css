@@ -51,3 +51,8 @@
     border-color: var(--contraste-fonce);
     color: var(--tres-fonce); 
 }
+
+.btn_compact{
+	padding: var(--espace-nano) var(--espace-xs);
+	width: fit-content;
+}
