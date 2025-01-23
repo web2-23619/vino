@@ -150,10 +150,10 @@ export default class Bottle {
             );
             if (currentQuantity === 0) {
                 btnReduire.setAttribute("inert", "true");
-                btnReduire.classList.add("card_purchase_deactivated");
+                btnReduire.classList.add("disappear", "card_purchase_deactivated");
             } else {
                 btnReduire.removeAttribute("inert");
-                btnReduire.classList.remove("card_purchase_deactivated");
+                btnReduire.classList.remove("disappear", "card_purchase_deactivated");
             }
         } else {
             // console.log("Échec.");
