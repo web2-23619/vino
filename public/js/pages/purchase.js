@@ -24,7 +24,7 @@ import Bottle from "../components/Bottle.js";
     const data = await getAll();
     render(data);
 
-    const purchases = data.purchases;
+	let purchases = data.purchases;
 
     const selectOrder = document.querySelector("[name='order']");
     selectOrder.addEventListener("click", function () {
@@ -71,7 +71,7 @@ import Bottle from "../components/Bottle.js";
         );
 
         const data = await response.json();
-
+		console.log(data);
         return data;
     }
 
@@ -93,8 +93,8 @@ import Bottle from "../components/Bottle.js";
         const [criteria, order] = orderOption.split("_");
         purchases.sort((a, b) => {
             if (criteria === "name") {
-                const nameA = a.bottle.name;
-                const nameB = b.bottle.name;
+                const nameA = a.name;
+                const nameB = b.name;
 
                 if (order === "asc") {
                     return nameA.localeCompare(nameB);
@@ -102,8 +102,8 @@ import Bottle from "../components/Bottle.js";
                     return nameB.localeCompare(nameA);
                 }
             } else if (criteria === "price") {
-                const priceA = a.bottle.price;
-                const priceB = b.bottle.price;
+                const priceA = a.price;
+                const priceB = b.price;
                 if (order === "asc") {
                     return priceA - priceB; // Ascending order
                 } else {
