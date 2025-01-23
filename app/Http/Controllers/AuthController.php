@@ -95,6 +95,11 @@ class AuthController extends Controller
         'password' => Hash::make($validated['password']),
     ]);
 
+	$user->cellars()->create([
+        'name' => 'Mon cellier',
+    ]);
+
+
     // Log in the user and create a token
     Auth::login($user);
     $token = $user->createToken('Vino')->plainTextToken;
