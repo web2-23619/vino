@@ -19,7 +19,7 @@
 				<option value="name_asc">Nom ascendant: A-Z</option>
 				<option value="name_desc">Nom descendant: Z-A</option>
 				<option value="price_asc">Prix ascendant: 0 - 100</option>
-				<option value="price_desc">Prix ascendant: 100 - 0</option>
+				<option value="price_desc">Prix descendant: 100 - 0</option>
 			</select>
 		</div>
 	</div>
