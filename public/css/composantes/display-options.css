@@ -1,0 +1,10 @@
+.display-options{
+	display: flex;
+	flex-direction: row;
+}
+
+.display-options .order{
+	display: flex;
+	gap: var(--espace-micro);
+	margin-left: auto;
+}

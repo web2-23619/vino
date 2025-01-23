@@ -14,14 +14,7 @@ class PurchaseController extends Controller
 	 */
 	public function index()
 	{
-		$purchases = Purchase::select()->where("user_id", Auth::user()->id)->get();
-		$empty = true;
-		if(count($purchases)>0){
-			$empty = false;
-		}
-
-		return view('purchase.index', ['purchases' => $purchases, 'empty' => $empty]);
-
+		return view('purchase.index');
 	}
 
 	/**
@@ -84,10 +77,10 @@ class PurchaseController extends Controller
 	{
 		// Récupérer la bouteille par ID
 		$bottle = Bottle::findOrFail($bottle_id);
-	
+
 		// Récupérer la liste d'achat de l'utilisateur connecté
 		$userCellars = Auth::user()->cellars;
-	
+
 		// Retourner la vue pour le formulaire d'ajout de la bouteille
 		return view('bottle.addBottlePurchase', compact('bottle', 'userCellars'));
 	}
@@ -99,28 +92,28 @@ class PurchaseController extends Controller
 			'bottle_id' => 'required|exists:bottles,id',
 			'quantity' => 'required|integer|min:1',
 		]);
-	
+
 		// Récupérer l'utilisateur connecté
 		$user = Auth::user();
-	
+
 		// Vérifie si la bouteille existe déjà dans les achats de l'utilisateur
 		$existingPurchase = Purchase::where('user_id', $user->id)
-									 ->where('bottle_id', $request->input('bottle_id'))
-									 ->first();
-	
+			->where('bottle_id', $request->input('bottle_id'))
+			->first();
+
 		if ($existingPurchase) {
 			// Si la bouteille existe, mettre à jour la quantité
 			$currentQuantity = $existingPurchase->quantity;
 			$newQuantity = $currentQuantity + $request->input('quantity');
-	
+
 			// Mettre à jour la quantité de la bouteille
 			$existingPurchase->update(['quantity' => $newQuantity]);
-	
+
 			// Oublier la session après la mise à jour
 			session()->forget('add_bottle_source');
-	
+
 			return redirect()->route('purchase.index')
-							 ->with('success', 'La quantité de la bouteille a été mise à jour avec succès!');
+				->with('success', 'La quantité de la bouteille a été mise à jour avec succès!');
 		} else {
 			// Sinon, créer une nouvelle entrée d'achat
 			Purchase::create([
@@ -128,15 +121,15 @@ class PurchaseController extends Controller
 				'bottle_id' => $request->input('bottle_id'),
 				'quantity' => $request->input('quantity'),
 			]);
-	
+
 			// Oublier la session après l'ajout
 			session()->forget('add_bottle_source');
-	
+
 			return redirect()->route('purchase.index')
-							 ->with('success', 'Bouteille ajoutée avec succès!');
+				->with('success', 'Bouteille ajoutée avec succès!');
 		}
 	}
-	
+
 
 
 	public function updateQuantityApi(Request $request, Purchase $purchase)
@@ -156,7 +149,25 @@ class PurchaseController extends Controller
 		return response()->json(['message' => 'Quantité mise à jour', 'purchase' => $purchase], 200);
 	}
 
-	
+	/**
+	 * display All
+	 */
+	public function AllPurchaseApi()
+	{
+		$purchases = Purchase::with('bottle')
+		->where('user_id', Auth::user()->id)
+			->join('bottles', 'purchases.bottle_id', '=', 'bottles.id') // Join with the bottles table
+			->orderBy('bottles.name', 'asc') // Order by the bottle's name
+			->get();
+		$empty = true;
+		if (count($purchases) > 0) {
+			$empty = false;
+		}
+
+		return response()->json(['purchases' => $purchases, 'empty' => $empty], 200);
+	}
+
+
 
 	/**
 	 * Remove the specified resource from storage.
@@ -167,13 +178,11 @@ class PurchaseController extends Controller
 		$purchase = Purchase::findOrFail($purchaseId);
 
 		// Delete the purchase
-		if($purchase->delete()){
+		if ($purchase->delete()) {
 			// Return a response indicating success
 			return response()->json(['message' => 'Bouteille retiré avec succes de la liste d\'achat'], 200);
 		} else {
 			return response()->json(['message' => 'Erreur au retrait de la bouteille'], 400);
 		}
-
-		
 	}
 }
