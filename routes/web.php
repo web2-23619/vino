@@ -31,7 +31,7 @@ Route::get('/', function () {
 
 route::get('/goutte', [App\Http\Controllers\GoutteController::class, 'index'])->name('goutte');
 
-Route::middleware(['guest'])->group(function () {
+Route::middleware('guest')->group(function () {
 	Route::get('/enregistrement', [UserController::class, 'create'])->name('user.create');
 	Route::post('/enregistrement', [UserController::class, 'store'])->name('user.store');
 	
