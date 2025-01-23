@@ -22,7 +22,7 @@
     </template>
     @endif
 
-    <form class="form" method="POST">
+    <form class="form" action="{{ route('user.store') }}" method="POST">
         @csrf
         <div class="form-group">
             <label for="username">Nom</label>
