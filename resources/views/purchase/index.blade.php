@@ -12,6 +12,17 @@
 			<button data-js-action="fermer">x</button>
 		</div>
 	</template>
+	<div class="display-options">
+		<div class="order">
+			<label for="order">Tri</label>
+			<select name="tri" id="order">
+				<option value="name_asc">Nom ascendant: A-Z</option>
+				<option value="name_desc">Nom descendant: Z-A</option>
+				<option value="price_asc">Prix ascendant: 0 - 100</option>
+				<option value="price_desc">Prix ascendant: 100 - 0</option>
+			</select>
+		</div>
+	</div>
 	<div data-js-list>
 
 	</div>
