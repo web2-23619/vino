@@ -25,6 +25,7 @@ Route::post('/login', [AuthController::class, 'apiLogin']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'apiLogout']);
 
 Route::middleware('auth:sanctum')->delete('supprimer/achat/{purchase}', [PurchaseController::class, 'destroy']);
+Route::middleware('auth:sanctum')->get('afficher/achat', [PurchaseController::class, 'AllPurchaseApi']);
 Route::delete('/supprimer/utilisateur/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 Route::middleware('auth:sanctum')->delete('supprimer/cellier/{cellar}', [CellarController::class, 'destroy']);
 Route::middleware('auth:sanctum')->delete('retirer/{cellar_id}/{bottle_id}', [CellarController::class, 'apiRemoveBottle']);
