@@ -61,11 +61,10 @@ class UserController extends Controller
 		$cellar->save();
 
 		Auth::login($user);
-		 
-		//// creer un token pour sanctum
-		 $token = $user->createToken('Vino')->plainTextToken;
+		$request->session()->regenerate();
 
-		return redirect()->route('user.profile')->with('success', 'Utilisateur créé avec succès!');
+
+return redirect()->route('user.profile')->with('success', 'Utilisateur créé avec succès!');
 	}
 
 	public function profile()
