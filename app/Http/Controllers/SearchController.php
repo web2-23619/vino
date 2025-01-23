@@ -16,17 +16,40 @@ class SearchController extends Controller
      */
     public function index(Request $request)
     {
-        
+        // Conserver ou récupérer la source depuis l'URL ou la session
         if ($request->has('source')) {
-            session(['add_bottle_source' => $request->input('source')]);
-        }else{
-            session()->forget('add_bottle_source');
+            $source = $request->input('source');
+            session(['add_bottle_source' => $source]); // Mettre à jour la session
+        } else {
+            $source = session('add_bottle_source', 'default'); // Récupérer depuis la session ou par défaut
         }
+    
+        // Si une requête de recherche est présente
+        if ($request->has('query') && !empty($request->input('query'))) {
+            $query = $request->input('query');
             
-    $randomBottles = Bottle::inRandomOrder()->take(5)->get();
-
-    return view('search.index', compact('randomBottles'));
+            // Rechercher les bouteilles correspondant à la requête
+            $results = Bottle::where('name', 'LIKE', "%{$query}%")
+                ->orWhere('type', 'LIKE', "%{$query}%")
+                ->orWhere('country', 'LIKE', "%{$query}%")
+                ->get();
+    
+            // Renvoyer la vue des résultats de recherche
+            return view('search.results', [
+                'query' => $query,
+                'results' => $results,
+                'resultCount' => $results->count(),
+                'source' => $source, // Ajouter la source à la vue
+            ]);
+        }
+    
+        // Si aucune requête de recherche, afficher les bouteilles aléatoires
+        $randomBottles = Bottle::inRandomOrder()->take(5)->get();
+    
+        return view('search.index', compact('randomBottles', 'source'));
     }
+    
+    
 
     /**
      * Traiter la demande de recherche et afficher les résultats.
@@ -146,7 +169,7 @@ class SearchController extends Controller
             session(['cellar_id' => $cellarId]);
         }
         
-        $source = session('add_bottle_source', 'default');
+        $source = session('add_bottle_source');
         $selectedCellarName = $cellarId ? Cellar::find($cellarId)->name : null;
     
         return view('bottle.addBottle', compact('bottle', 'userCellars', 'source', 'selectedCellarName'));

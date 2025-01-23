@@ -86,19 +86,19 @@
         padding: var(--espace-nano);
         font-size: var(--police-m);
         border: none;
-        border-radius: 35% 20% 35% 20%; 
+        border-radius: 20% 20% 20% 20%; 
         width: var(--autre-xxl);
         height: var(--autre-xxl);
         display: flex;
         justify-content: center;
         align-items: center;
         cursor: pointer;
-        transition: transform 0.2s ease-in-out, background-color 0.2s;
+        transition: transform 0.3s ease-in-out, background-color 0.3s;
     }
 
     button:active {
-        transform: scale(0.95);
-        box-shadow: 0 var(--rayon-m) var(--rayon-l) var(--tres-fonce); 
+        transform: scale(0.99);
+        box-shadow: 0 var(--rayon-s) var(--rayon-m) var(--fonce); 
     }
 }
 
