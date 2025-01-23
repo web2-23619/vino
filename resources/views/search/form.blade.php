@@ -16,7 +16,7 @@
 			<button type="submit" class="btn btn_compact">
 				Chercher
 			</button>
-			<ul class="suggestions" style="display: none;"></ul>
+			<ul class="search_suggestions" style="display: none;"></ul>
 		</div>
 		
 

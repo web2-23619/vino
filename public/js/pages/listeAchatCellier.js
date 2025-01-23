@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById('addBottleForm');
-    const cellarButtons = document.querySelectorAll('.cellar-button');
+    const cellarButtons = document.querySelectorAll('.btn_cellar');
 
     // Si la source est 'listeAchat', l'action par défaut du formulaire sera '/listeAchat/bouteille/ajouter'
     if (document.querySelector('input[name="source"]').value === 'listeAchat') {

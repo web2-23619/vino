@@ -51,7 +51,3 @@ select option {
 .form-group input:focus {
     outline: none;
 }
-
-.form-group button{
-    margin-top: var(--espace-micro);
-}

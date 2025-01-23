@@ -56,3 +56,7 @@
 	padding: var(--espace-nano) var(--espace-xs);
 	width: fit-content;
 }
+
+.btn_cellar{
+    margin-top: var(--espace-micro);
+}
