@@ -142,7 +142,7 @@ class PurchaseController extends Controller
 	public function updateQuantityApi(Request $request, Purchase $purchase)
 	{
 		$request->validate([
-			'quantity' => 'required|integer|min:1',
+			'quantity' => 'required|integer|min:0',
 		]);
 
 		if ($purchase->user_id !== Auth::id()) {

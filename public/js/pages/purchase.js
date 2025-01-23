@@ -68,8 +68,10 @@ async function changeQuantity(event, action) {
     );
     let currentQuantity = parseInt(quantityElement.textContent);
 
+    if (currentQuantity < 0) return;
+
     // Ajuster la quantité selon l'action
-    if (action === "reduire" && currentQuantity > 1) {
+    if (action === "reduire" && currentQuantity > 0) {
         currentQuantity--;
     } else if (action === "augmenter") {
         currentQuantity++;
@@ -95,11 +97,11 @@ async function changeQuantity(event, action) {
         // Mettre à jour le UI
         quantityElement.textContent = currentQuantity;
 
-        // Desactiver le bouton "-" si la quantité est == 1
+        // Desactiver le bouton "-" si la quantité est == 0
         const btnReduire = purchaseItem.querySelector(
             "[data-js-action='reduire']"
         );
-        if (currentQuantity === 1) {
+        if (currentQuantity === 0) {
             btnReduire.setAttribute("inert", "true");
             btnReduire.classList.add("card_purchase_deactivated");
         } else {

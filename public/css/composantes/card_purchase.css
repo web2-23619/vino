@@ -75,5 +75,5 @@
 }
 
 .card_purchase_deactivated {
-    color: var(--contraste-faible);
+    display: none;
 }
