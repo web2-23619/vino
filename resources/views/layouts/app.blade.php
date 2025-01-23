@@ -51,12 +51,6 @@
 			<a href="{{ route('search.index', ['source' => 'cellier', 'cellar_id' => $cellar->id]) }}" class="btn">Ajouter Bouteille</a>
 		</div>
 		@endif
-		@if(Route::currentRouteName() == 'purchase.index' && $empty == false)
-		<!-- Si on est sur la page des achats -->
-		<div>
-			<a href="{{ route('search.index', ['source' => 'listeAchat']) }}" class="btn">Ajouter Bouteille</a>
-		</div>
-		@endif
 		@if(Route::currentRouteName() == 'user.showBottles' && $empty == false)
 		<div>
 			<a href="{{ route('search.index', ['source' => 'mesBouteilles']) }}" class="btn">Ajouter Bouteille</a>

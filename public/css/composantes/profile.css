@@ -3,10 +3,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-  
-    background-color: var(--clair);
-    border-radius: var(--rayon-xl);
-    box-shadow: 0 var(--bordure-m) var(--bordure-xl) rgba(0, 0, 0, 0.1);
     font-family: var(--police-regular);
 }
 
