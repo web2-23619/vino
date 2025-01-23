@@ -15,7 +15,7 @@
 	<div class="display-options">
 		<div class="order">
 			<label for="order">Tri</label>
-			<select name="tri" id="order">
+			<select name="order" id="order">
 				<option value="name_asc">Nom ascendant: A-Z</option>
 				<option value="name_desc">Nom descendant: Z-A</option>
 				<option value="price_asc">Prix ascendant: 0 - 100</option>
