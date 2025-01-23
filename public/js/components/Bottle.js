@@ -114,8 +114,6 @@ export default class Bottle {
         );
         let currentQuantity = parseInt(quantityElement.textContent);
 
-        if(currentQuantity === 0) return;
-
         // Ajuster la quantité selon l'action
         if (action === "reduire" && currentQuantity > 0) {
             currentQuantity--;
