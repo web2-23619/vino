@@ -114,8 +114,10 @@ export default class Bottle {
         );
         let currentQuantity = parseInt(quantityElement.textContent);
 
+        if(currentQuantity === 0) return;
+
         // Ajuster la quantité selon l'action
-        if (action === "reduire" && currentQuantity > 1) {
+        if (action === "reduire" && currentQuantity > 0) {
             currentQuantity--;
         } else if (action === "augmenter") {
             currentQuantity++;
@@ -145,7 +147,7 @@ export default class Bottle {
             const btnReduire = purchaseItem.querySelector(
                 "[data-js-action='reduire']"
             );
-            if (currentQuantity === 1) {
+            if (currentQuantity === 0) {
                 btnReduire.setAttribute("inert", "true");
                 btnReduire.classList.add("card_purchase_deactivated");
             } else {
