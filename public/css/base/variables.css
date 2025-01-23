@@ -2,10 +2,12 @@
 	/*============================ */
 	/* = COLORS */
 	/*============================ */
+	--blanc: #ffffff;
 	--clair: #fefef2;
 	--fonce: #4a4a48;
 	--tres-fonce: #10040a;
 	--contraste-faible: rgba(172, 172, 172, 0.5);
+	--contraste-fort: rgba(0, 0, 0, 1);
 	--contraste: #53233b;
 	--contraste-fonce: #3b0d1b;
 
@@ -49,6 +51,7 @@
 	--bordure-s: 1px;
 	--bordure-m: 2px;
 	--bordure-l: 3px;
+	--bordure-xl: 5px;
 
 	/*========================= */
 	/* = RAYON */
