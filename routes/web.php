@@ -60,7 +60,7 @@ Route::middleware('auth')->group(function () {
 
 
 	Route::post('/deconnexion', [AuthController::class, 'destroy'])->name('logout');
-	Route::middleware('auth')->get('/profile', [UserController::class, 'profile'])->name('user.profile');
+	Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
 
 	Route::get('/cellier', [CellarController::class, 'index'])->name('cellar.index');
 	Route::get('/creer/cellier', [CellarController::class, 'create'])->name('cellar.create');

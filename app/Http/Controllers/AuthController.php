@@ -99,9 +99,13 @@ class AuthController extends Controller
         'name' => 'Mon cellier',
     ]);
 
-
+	$credentials= $request->only('email','password');
+	Auth::validate($credentials);
+	
     // Log in the user and create a token
-    Auth::login($user);
+	// $user = Auth::getProvider()->retrieveByCredentials($credentials);
+	$log = Auth::login($user);
+	//$request->session()->regenerate();
     $token = $user->createToken('Vino')->plainTextToken;
 
     // Return a successful response
@@ -109,6 +113,8 @@ class AuthController extends Controller
         'message' => 'Inscription réussie!',
         'token' => $token,
         'redirect' => route('user.profile'),
+		'log'=> $log,
+		'user'=>$user
     ]);
 }
 
