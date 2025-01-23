@@ -50,15 +50,12 @@ class UserController extends Controller
 		$user->password = Hash::make($request->password);
 		$user->save();
 
-		if($user->id){
-			//creer cellier par default à la création d'un utilisateur
-			$cellar = new Cellar([
-				'name' => 'Mon cellier',
-				'user_id' => $user->id,
-			]);
-		}
-
-		$cellar->save();
+		
+		//creer cellier par default à la création d'un utilisateur
+		$user->cellars()->create([
+			'name' => 'Mon cellier',
+		]);
+	
 
 		Auth::login($user);
 		$request->session()->regenerate();
