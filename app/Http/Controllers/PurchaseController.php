@@ -14,7 +14,15 @@ class PurchaseController extends Controller
 	 */
 	public function index()
 	{
-		return view('purchase.index');
+		$countries = Bottle::select('country')
+			->distinct()
+			->get();
+
+		$types = Bottle::select('type')
+			->distinct()
+			->get();
+
+		return view('purchase.index', ['countries' => $countries, 'types' => $types]);
 	}
 
 	/**
@@ -154,11 +162,13 @@ class PurchaseController extends Controller
 	 */
 	public function AllPurchaseApi()
 	{
-		$purchases = Purchase::with('bottle')
+
+		$purchases = Purchase::join('bottles', 'purchases.bottle_id', '=', 'bottles.id')
 		->where('user_id', Auth::user()->id)
-			->join('bottles', 'purchases.bottle_id', '=', 'bottles.id') // Join with the bottles table
-			->orderBy('bottles.name', 'asc') // Order by the bottle's name
+			->select('purchases.id as purchase_id', 'purchases.quantity as purchase_quantity', 'bottles.*')
+			->orderBy('bottles.name', 'asc')
 			->get();
+
 		$empty = true;
 		if (count($purchases) > 0) {
 			$empty = false;

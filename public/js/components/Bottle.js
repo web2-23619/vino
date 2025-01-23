@@ -20,19 +20,21 @@ export default class Bottle {
     #changeQuantity;
 
     constructor(data, page, template, container) {
-        this.#name = data.bottle.name;
-        this.#price = data.bottle.price;
-        this.#country = data.bottle.country;
-        this.#type = data.bottle.type;
-        this.#volume = data.bottle.volume;
-        this.#img = data.bottle.image_url;
+		console.log(data);
+		
+        this.#name = data.name;
+        this.#price = data.price;
+        this.#country = data.country;
+        this.#type = data.type;
+        this.#volume = data.volume;
+        this.#img = data.image_url;
         this.#page = page;
         this.#template = template;
         this.#container = container;
 
         if (this.#page === "purchase") {
-            this.#purchaseId = data.id;
-            this.#quantity = data.quantity;
+            this.#purchaseId = data.purchase_id;
+            this.#quantity = data.purchase_quantity;
             this.#changeQuantity = this.#changePurchaseQuantity;
         }
 
@@ -103,6 +105,7 @@ export default class Bottle {
 
     async #changePurchaseQuantity(event, action) {
         console.log("clicked");
+		console.log(action);
 
         const csrfToken = document
             .querySelector('meta[name="csrf-token"]')
