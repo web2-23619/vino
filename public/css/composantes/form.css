@@ -40,7 +40,7 @@
 
 select {
     color: var(--tres-fonce);
-    background-color: var(--clair);
+  
 }
 
 select option {
