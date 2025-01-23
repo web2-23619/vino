@@ -154,9 +154,10 @@ class PurchaseController extends Controller
 	 */
 	public function AllPurchaseApi()
 	{
-
 		$purchases = Purchase::with('bottle')
-			->where('user_id', Auth::user()->id)
+		->where('user_id', Auth::user()->id)
+			->join('bottles', 'purchases.bottle_id', '=', 'bottles.id') // Join with the bottles table
+			->orderBy('bottles.name', 'asc') // Order by the bottle's name
 			->get();
 		$empty = true;
 		if (count($purchases) > 0) {
