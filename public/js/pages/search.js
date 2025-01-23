@@ -1,59 +1,61 @@
 document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.querySelector("#search");
-    const suggestionsContainer = document.querySelector(".suggestions");
+    const suggestionsContainer = document.querySelector(".search_suggestions");
 
-    // Vérifiez que les éléments existent
     if (!searchInput || !suggestionsContainer) {
-        console.error("L'élément #search ou .suggestions est introuvable !");
+        console.error("L'élément #search ou .search_suggestions est introuvable !");
         return;
     }
 
-    // Événement déclenché à chaque modification de l'input
-    searchInput.addEventListener("input", function () {
-        const query = searchInput.value.trim(); // Supprime les espaces inutiles
+    // Récupérer la source actuelle de l'URL ou depuis sessionStorage
+    const urlParams = new URLSearchParams(window.location.search);
+    let source = urlParams.get("source");
 
-        // Si la requête est trop courte, on masque la liste
+    if (!source) {
+        // Si aucune source dans l'URL, essayez de récupérer depuis sessionStorage
+        source = sessionStorage.getItem("source") || "default";
+    } else {
+        // Si une source existe dans l'URL, la sauvegarder dans sessionStorage
+        sessionStorage.setItem("source", source);
+    }
+
+    searchInput.addEventListener("input", function () {
+        const query = searchInput.value.trim();
+
         if (query.length < 2) {
-            suggestionsContainer.innerHTML = ""; // Vider la liste
-            suggestionsContainer.style.display = "none"; // Masquer
+            suggestionsContainer.innerHTML = "";
+            suggestionsContainer.style.display = "none";
             return;
         }
 
-        // Effectuer une requête pour récupérer les suggestions
         fetch(`/recherche-autocomplete?query=${encodeURIComponent(query)}`)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(`Erreur HTTP : ${response.status}`);
-                }
-                return response.json(); // Convertir en JSON
-            })
+            .then((response) => response.json())
             .then((data) => {
-                // Vider la liste actuelle pour éviter la duplication
                 suggestionsContainer.innerHTML = "";
 
-                // Si aucune suggestion, on masque la liste
                 if (data.length === 0) {
-                    suggestionsContainer.style.display = "none";
+                    // Afficher un message d'absence de résultats (optionnel)
+                    const noResultMessage = document.createElement("li");
+                    noResultMessage.textContent = "Aucun résultat trouvé.";
+                    noResultMessage.classList.add("suggestion-item");
+                    suggestionsContainer.appendChild(noResultMessage);
+                    suggestionsContainer.style.display = "block";
                     return;
                 }
 
-                // Afficher les suggestions correspondantes
                 data.forEach((item) => {
                     const suggestion = document.createElement("li");
                     suggestion.textContent = `${item.name} (${item.type}, ${item.country})`;
-                    suggestion.classList.add("suggestion-item");
+                    suggestion.classList.add("search_suggestion-item");
 
-                    // Événement de clic sur chaque suggestion
                     suggestion.addEventListener("click", function () {
-                        searchInput.value = item.name; // Remplit l'input avec la suggestion sélectionnée
-                        suggestionsContainer.innerHTML = ""; // Vider la liste
-                        suggestionsContainer.style.display = "none"; // Masquer
+                        // Inclure "query" et "source" dans la redirection
+                        window.location.href = `/recherche?query=${encodeURIComponent(item.name)}&source=${encodeURIComponent(source)}`;
                     });
 
                     suggestionsContainer.appendChild(suggestion);
                 });
 
-                // Afficher la liste
                 suggestionsContainer.style.display = "block";
             })
             .catch((error) => {

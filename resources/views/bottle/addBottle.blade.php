@@ -25,13 +25,13 @@
             <div class="form-group">
                 <input type="hidden" name="cellar_id" value="wishlist">
             </div>
-            <button type="submit" class="btn">Ajouter</button>
+            <button type="submit" class="btn">Liste d'achat</button>
         @elseif($source == 'cellier')
             <div class="form-group">
                 <label for="cellar_id">Sélectionner un cellier :</label>
                 <div>
                     @foreach ($userCellars as $cellar)
-                        <button type="button" class="btn cellar-button" data-cellar-id="{{ $cellar->id }}">
+                        <button type="button" class="btn btn_cellar" data-cellar-id="{{ $cellar->id }}">
                             {{ $cellar->name }}
                         </button>
                     @endforeach
