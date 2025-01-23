@@ -1,23 +1,29 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Récupérer le formulaire et le sélecteur du cellier
     const form = document.getElementById('addBottleForm');
-    const cellarSelect = document.getElementById('cellar_id');
+    const cellarButtons = document.querySelectorAll('.cellar-button');
 
-    // Ajouter un événement change pour modifier l'action du formulaire
-    cellarSelect.addEventListener('change', function () {
-        // Si "Liste d'achat" est sélectionné
-        if (this.value === 'wishlist') {
-            // Modifier l'action du formulaire pour ajouter à la liste d'achat
-            form.action = '/listeAchat/bouteille/ajouter';
-        } else {
-            // Restaurer l'action par défaut pour ajouter au cellier
-            form.action = '/cellier/bouteille/ajouter';
-        }
+    // Si la source est 'listeAchat', l'action par défaut du formulaire sera '/listeAchat/bouteille/ajouter'
+    if (document.querySelector('input[name="source"]').value === 'listeAchat') {
+        form.action = '/listeAchat/bouteille/ajouter';
+    } else {
+        form.action = '/cellier/bouteille/ajouter';
+    }
+
+    // Ajouter un événement pour chaque bouton des celliers
+    cellarButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            // Mettre à jour le champ caché cellar_id avec l'id du cellier sélectionné
+            const cellarId = this.getAttribute('data-cellar-id');
+            document.getElementById('cellar_id').value = cellarId;
+
+            // Soumettre le formulaire automatiquement
+            form.submit();
+        });
     });
 
-    // Ajouter un événement de soumission 
+    // Ajouter un événement de soumission
     form.addEventListener('submit', function () {
-        if (cellarSelect.value === 'wishlist') {
+        if (document.querySelector('input[name="source"]').value === 'listeAchat') {
             form.action = '/listeAchat/bouteille/ajouter';
         } else {
             form.action = '/cellier/bouteille/ajouter';

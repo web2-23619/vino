@@ -34,10 +34,10 @@
 			</header>
 			<div>
 				<p>$ {{$purchase->bottle->price}}</p>
-				<div class="card_purchase__actions">
-					<button data-js-action="reduire">-</button>
+				<div class="card_bottle__actions">
+					<button data-js-action="reduire"><span>-</span></button>
 					<span data-js-quantite="quantite">{{$purchase->quantity}}</span>
-					<button data-js-action="augmenter">+</button>
+					<button data-js-action="augmenter"><span>+</span></button>
 				</div>
 			</div>
 		</section>

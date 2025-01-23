@@ -16,7 +16,8 @@
 }
 
 .form-group select,
-.form-group input {
+.form-group input,
+.form-group div {
     width: 100%;
     padding: var(--espace-nano);
     font-size: var(--police-std);
@@ -49,4 +50,8 @@ select option {
 .form-group select:focus,
 .form-group input:focus {
     outline: none;
+}
+
+.form-group button{
+    margin-top: var(--espace-micro);
 }
