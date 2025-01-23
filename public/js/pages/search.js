@@ -1,66 +1,63 @@
-import App from "../components/App.js";
-
-(function () {
-    new App();
-
-    // Obtenir l’élément d’entrée de recherche
+document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.querySelector("#search");
+    const suggestionsContainer = document.querySelector(".suggestions");
 
-    // Commented sections related to autocomplete:
-    // let userEditing = false; //Déclarer userEditing 
+    // Vérifiez que les éléments existent
+    if (!searchInput || !suggestionsContainer) {
+        console.error("L'élément #search ou .suggestions est introuvable !");
+        return;
+    }
 
-    // if (searchInput) {
-    //     fetchSuggestions();
+    // Événement déclenché à chaque modification de l'input
+    searchInput.addEventListener("input", function () {
+        const query = searchInput.value.trim(); // Supprime les espaces inutiles
 
-        // Vérifier si l’utilisateur supprime du texte
-        // searchInput.addEventListener("keydown", (e) => {
-        //     if (e.key === "Backspace" || e.key === "Delete") {
-        //         userEditing = true;
-        //     }
-        // });
+        // Si la requête est trop courte, on masque la liste
+        if (query.length < 2) {
+            suggestionsContainer.innerHTML = ""; // Vider la liste
+            suggestionsContainer.style.display = "none"; // Masquer
+            return;
+        }
 
-        // searchInput.addEventListener("keyup", (e) => {
-        //     if (e.key !== "Backspace" && e.key !== "Delete") {
-        //         userEditing = false;
-        //     }
-        // });
+        // Effectuer une requête pour récupérer les suggestions
+        fetch(`/recherche-autocomplete?query=${encodeURIComponent(query)}`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP : ${response.status}`);
+                }
+                return response.json(); // Convertir en JSON
+            })
+            .then((data) => {
+                // Vider la liste actuelle pour éviter la duplication
+                suggestionsContainer.innerHTML = "";
 
-        //autocomplete logic
-    //     searchInput.addEventListener("input", handleAutocomplete);
-    // }
+                // Si aucune suggestion, on masque la liste
+                if (data.length === 0) {
+                    suggestionsContainer.style.display = "none";
+                    return;
+                }
 
-    /**
-     * Fetch suggestions from the server
-     */
-    // async function fetchSuggestions() {
-    //     try {
-    //         const response = await fetch("/recherche-autocomplete?query=");
-    //         const data = await response.json();
-    //         window.suggestions = data.map((item) => item.toLowerCase());
-    //     } catch (error) {
-    //         console.error("Erreur lors de la récupération des suggestions :", error);
-    //     }
-    // }
+                // Afficher les suggestions correspondantes
+                data.forEach((item) => {
+                    const suggestion = document.createElement("li");
+                    suggestion.textContent = `${item.name} (${item.type}, ${item.country})`;
+                    suggestion.classList.add("suggestion-item");
 
-    /**
-     * Handle the inline autocomplete logic
-     */
-    // function handleAutocomplete(event) {
-    //     const inputValue = event.target.value.trim().toLowerCase();
+                    // Événement de clic sur chaque suggestion
+                    suggestion.addEventListener("click", function () {
+                        searchInput.value = item.name; // Remplit l'input avec la suggestion sélectionnée
+                        suggestionsContainer.innerHTML = ""; // Vider la liste
+                        suggestionsContainer.style.display = "none"; // Masquer
+                    });
 
-    //     if (!window.suggestions || inputValue.length < 2 || userEditing) {
-    //         return;
-    //     }
+                    suggestionsContainer.appendChild(suggestion);
+                });
 
-        // Suggestions de filtres pour les correspondances strictes
-    //     const matches = window.suggestions.filter((item) =>
-    //         item.startsWith(inputValue)
-    //     );
-
-    //     if (matches.length > 0) {
-    //         const match = matches[0];
-    //         event.target.value = match;
-    //         event.target.setSelectionRange(inputValue.length, match.length);
-    //     }
-    // }
-})();
+                // Afficher la liste
+                suggestionsContainer.style.display = "block";
+            })
+            .catch((error) => {
+                console.error("Erreur lors de la récupération des suggestions :", error);
+            });
+    });
+});

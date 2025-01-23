@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Hash;
 
 
 
@@ -77,7 +78,36 @@ class AuthController extends Controller
 		], 401);
 	}
 
+	
+	public function apiRegister(Request $request)
+{
+    // Validate the incoming request
+    $validated = $request->validate([
+        'username' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'email', 'unique:users,email'],
+        'password' => ['required', 'string', 'min:6', 'confirmed'],
+    ]);
 
+    // Create a new user
+    $user = User::create([
+        'username' => $validated['username'],
+        'email' => $validated['email'],
+        'password' => Hash::make($validated['password']),
+    ]);
+
+    // Log in the user and create a token
+    Auth::login($user);
+    $token = $user->createToken('Vino')->plainTextToken;
+
+    // Return a successful response
+    return response()->json([
+        'message' => 'Inscription réussie!',
+        'token' => $token,
+        'redirect' => route('user.profile'),
+    ]);
+}
+
+	
 	/**
 	 * Display the specified resource.
 	 */

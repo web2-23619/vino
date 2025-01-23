@@ -6,6 +6,7 @@
 .search-container {
 	display: flex;
 	align-items: center;
+	position: relative;
 	width: 100%;
 	gap: var(--espace-micro);
 }
@@ -20,4 +21,25 @@
 
 .search label {
 	font-weight: initial;	
+}
+
+.suggestions {
+    position: absolute; 
+    top: 100%; 
+    left: 0;
+    width: 100%; 
+    background-color: var(--blanc);
+    border: 1px solid var(--clair);
+    box-shadow: 0 var(--bordure-l) var(--bordure-xl) var(--contraste-fort);
+    z-index: 1000; 
+    display: none; 
+}
+
+.suggestions .suggestion-item {
+    padding: var(--autre-xl);
+    cursor: pointer;
+}
+
+.suggestions .suggestion-item:hover {
+    background-color: var(--clair);
 }

@@ -23,6 +23,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/login', [AuthController::class, 'apiLogin']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'apiLogout']);
+Route::middleware('auth:sanctum')->get('/profile', [UserController::class, 'profile'])->name('user.profile');
+Route::post('/register', [AuthController::class, 'apiRegister']);
 
 Route::middleware('auth:sanctum')->delete('supprimer/achat/{purchase}', [PurchaseController::class, 'destroy']);
 Route::middleware('auth:sanctum')->get('afficher/achat', [PurchaseController::class, 'AllPurchaseApi']);
@@ -33,3 +35,5 @@ Route::middleware('auth:sanctum')->patch('cellier/{cellar_id}/{bottle_id}', [Cel
 Route::middleware('auth:sanctum')->get('cellier/{cellar}/bouteille', [CellarController::class, 'showBottlesApi']);
 Route::middleware('auth:sanctum')->patch('achat/{purchase}/quantite', [PurchaseController::class, 'updateQuantityApi']);
 Route::middleware('auth:sanctum')->patch('/mesBouteilles', [UserController::class, 'updateQuantityApi']);
+
+

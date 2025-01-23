@@ -31,13 +31,17 @@ Route::get('/', function () {
 
 route::get('/goutte', [App\Http\Controllers\GoutteController::class, 'index'])->name('goutte');
 
-Route::middleware('guest')->group(function(){
+Route::middleware('guest')->group(function () {
 	Route::get('/enregistrement', [UserController::class, 'create'])->name('user.create');
 	Route::post('/enregistrement', [UserController::class, 'store'])->name('user.store');
+	
+
 
 	// Route connexion
 	Route::get('/connexion', [AuthController::class, 'create'])->name('login');
 	Route::post('/connexion', [AuthController::class, 'store'])->name('login.store');
+	
+	
 
 	// Route mot de passe oublié
 
@@ -49,8 +53,7 @@ Route::middleware('guest')->group(function(){
 
 Route::middleware('auth')->group(function () {
 	Route::get('/utilisateur', [UserController::class, 'index'])->name('user.index');
-    Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
-
+ 
 	Route::get('/utilisateurs/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
 	Route::delete('/utilisateurs/{user}', [UserController::class, 'destroy'])->name('user.destroy');
 	Route::put('/utilisateurs/{user}', [UserController::class, 'update'])->name('user.update');
