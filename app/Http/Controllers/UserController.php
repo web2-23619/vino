@@ -224,8 +224,12 @@ class UserController extends Controller
 			});
 		});
 
+		$empty = true;
+		if (count($bottles) > 0) {
+			$empty = false;
+		}
 		
-		return view('bottle.byUser', compact('bottles'));
+		return view('bottle.byUser', compact('bottles', 'empty'));
 	}
 
 	public function updateQuantityApi(Request $request){

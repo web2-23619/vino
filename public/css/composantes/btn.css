@@ -12,13 +12,11 @@
     border-radius: var(--rayon-s);
     box-sizing: border-box;
     cursor: pointer;
-    transition-property: transform;
     transition: background-color var(--duree-std),  transform var(--duree-x-rapide) ease-in-out;
 	border: var(--bordure-s) solid var(--contraste);
 }
 
 .btn.no-bg {
-    border: 1px solid var(--contraste);
     background-color: var(--clair);
     color: var(--fonce);    
 }
@@ -52,4 +50,9 @@
     background-color: var(--contraste-faible);
     border-color: var(--contraste-fonce);
     color: var(--tres-fonce); 
+}
+
+.btn_compact{
+	padding: var(--espace-nano) var(--espace-xs);
+	width: fit-content;
 }

@@ -28,6 +28,23 @@ import ModaleAction from "../components/ModaleAction.js";
     for (const btn of btnsAugmenter) {
         btn.addEventListener("click", (event) => changeQuantity(event, "augmenter"));
     }
+
+	 document.addEventListener("fermerModale", function (event) {
+         const bouteilles = document.querySelectorAll(".card_bottle");
+         const nbBouteilles = bouteilles.length;
+
+         if (nbBouteilles === 0) {
+             const template = document.querySelector("template#noBottle");
+             let content = template.content.cloneNode(true);
+             let sectionHTML = document.querySelector("main > section");
+             sectionHTML.append(content);
+
+             const boutonAjout = document.querySelector("footer > div");
+             if (boutonAjout) {
+                 boutonAjout.remove();
+             }
+         }
+     });
 })();
 
 async function afficherModaleSupressionBouteille(event) {
