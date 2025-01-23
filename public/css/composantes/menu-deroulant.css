@@ -29,7 +29,6 @@
 .menu-deroulant__contenu {
     position: absolute;
     top: 100%;
-    right: 0;
 	z-index: 5;
 
 	display: flex;

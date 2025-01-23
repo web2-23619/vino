@@ -34,9 +34,10 @@
 			</header>
 			<div>
 				<div class="card_bottle__actions">
-					<button data-js-action="reduire">-</button>
+					<button data-js-action="reduire" aria-label="Réduire la quantité"><span>-</span>
+					</button>
 					<span data-js-quantite="quantite">{{$bottle['quantity']}}</span>
-					<button data-js-action="augmenter">Ajouter</button>
+					<button data-js-action="augmenter" aria-label="Augmenter la quantité"><span>+</span></button>
 				</div>
 			</div>
 		</section>

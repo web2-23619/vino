@@ -66,4 +66,11 @@
 	--duree-std: 300ms;
 	--duree-lent: 500ms;
 	--duree-x-lent: 750ms;
+
+	/*========================= */
+	/* = Autres */
+	/*========================= */
+     --autre-xl: 10px;
+	 --autre-xxl: 35px;
+
 }
