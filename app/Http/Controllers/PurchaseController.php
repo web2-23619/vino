@@ -14,7 +14,15 @@ class PurchaseController extends Controller
 	 */
 	public function index()
 	{
-		return view('purchase.index');
+		$countries = Bottle::select('country')
+			->distinct()
+			->get();
+
+		$types = Bottle::select('type')
+			->distinct()
+			->get();
+
+		return view('purchase.index', ['countries' => $countries, 'types' => $types]);
 	}
 
 	/**
@@ -155,7 +163,7 @@ class PurchaseController extends Controller
 	public function AllPurchaseApi()
 	{
 		$purchases = Purchase::with('bottle')
-		->where('user_id', Auth::user()->id)
+			->where('user_id', Auth::user()->id)
 			->join('bottles', 'purchases.bottle_id', '=', 'bottles.id') // Join with the bottles table
 			->orderBy('bottles.name', 'asc') // Order by the bottle's name
 			->get();
