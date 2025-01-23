@@ -4,9 +4,57 @@ import Alerte from "../components/Alerte.js";
 (function () {
     new App();
 
-    const alerte = document.querySelector(".alerte");
-
-    if (alerte) {
-        new Alerte(alerte);
+    if (!document.querySelector("template#alerte")) {
+        const template = document.createElement("template");
+        template.id = "alerte";
+        template.innerHTML = `
+            <div class="alerte">
+                <p></p>
+                <button data-js-action="fermer">x</button>
+            </div>
+        `;
+        document.body.prepend(template);
     }
+
+    document.querySelector("form").addEventListener("submit", register);
 })();
+
+async function register(event) {
+    event.preventDefault();
+
+    try {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+        const username = document.querySelector("[name='username']").value;
+        const email = document.querySelector("[name='email']").value;
+        const password = document.querySelector("[name='password']").value;
+        const passwordConfirmation = document.querySelector("[name='password_confirmation']").value;
+
+        const response = await fetch(`${App.instance.baseURL}/api/register`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-CSRF-TOKEN": csrfToken,
+            },
+            body: JSON.stringify({
+                username,
+                email,
+                password,
+                password_confirmation: passwordConfirmation,
+            }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            localStorage.setItem("token", data.token);
+            window.location.href = data.redirect;
+        } else {
+            // Display error message
+            new Alerte(null, data.message || "Une erreur s'est produite", "erreur");
+        }
+    } catch (error) {
+        console.error("Unexpected Error:", error);
+        new Alerte(null, "Une erreur s'est produite", "erreur");
+    }
+}

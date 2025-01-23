@@ -104,12 +104,12 @@
 
 .card_bottle__actions button[data-js-action="reduire"],.card_bottle__actions button[data-js-action="augmenter"] {
     background-color: var(--contraste-faible); 
-    color: var(--clair);
+    font-weight: bold;
 }
 
 .card_bottle__actions button span {
     font-weight: bold;
-    color: black; 
+    color: var(--tres-fonce); 
 }
 
 .card_bottle__actions span[data-js-quantite="quantite"] {

@@ -4,38 +4,46 @@
 @section('content')
 
 <section class="page">
-	<header>
-		<h2 class="register-header">Enregistrement</h2>
-	</header>
+    <header data-js="header">
+        <h2 class="register-header">Enregistrement</h2>
+    </header>
 
-	@if(!$errors->isEmpty())
-	<div class="alerte alerte_erreur">
-		<ul>
-			@foreach($errors->all() as $error)
-			<li>{{ $error }}</li>
-			@endforeach
-		</ul>
-		</ul><button data-js-action="fermer">x</button>
-	</div>
-	@endif
+    <!-- Blade-rendered errors for fallback -->
+    @if(!$errors->isEmpty())
+    <template id="alerte">
+        <div class="alerte alerte_erreur">
+            <ul>
+                @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button data-js-action="fermer">x</button>
+        </div>
+    </template>
+    @endif
 
-	<form class="form" action="{{ route('user.store') }}" method="POST">
-		@csrf
+    <form class="form" action="{{ route('user.store') }}" method="POST">
+        @csrf
+        <div class="form-group">
+            <label for="username">Nom</label>
+            <input type="text" id="username" name="username" placeholder="Votre nom" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Votre email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
+        </div>
 		<div class="form-group">
-			<label for="username">Nom</label>
-			<input type="text" id="username" name="username" placeholder="Votre nom" value="{{ old('username') }}" required>
-		</div>
-		<div class="form-group">
-			<label for="email">Email</label>
-			<input type="email" id="email" name="email" placeholder="Votre email" value="{{ old('email') }}" required>
-		</div>
-		<div class="form-group">
-			<label for="password">Mot de passe</label>
-			<input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
-		</div>
-		<div class="page-prompt">
-			<button type="submit" class="btn">Sauvegarder</button>
-		</div>
-	</form>
+            <label for="password"> Confirmer votre mot de passe</label>
+<input type="password" id="password_confirmation" name="password_confirmation" placeholder="Confirmez votre mot de passe" required>
+        </div>
+        <div class="page-prompt">
+            <button type="submit" class="btn">Sauvegarder</button>
+        </div>
+    </form>
 </section>
+
 @endsection
