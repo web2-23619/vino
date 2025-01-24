@@ -158,13 +158,15 @@ class PurchaseController extends Controller
 	}
 
 	/**
-	 * display All
+	 * retourne tous les achats
 	 */
-	public function AllPurchaseApi()
+	public function AllPurchaseApi(Request $request)
 	{
 
+
+
 		$purchases = Purchase::join('bottles', 'purchases.bottle_id', '=', 'bottles.id')
-		->where('user_id', Auth::user()->id)
+			->where('user_id', Auth::user()->id)
 			->select('purchases.id as purchase_id', 'purchases.quantity as purchase_quantity', 'bottles.*')
 			->orderBy('bottles.name', 'asc')
 			->get();

@@ -14,7 +14,7 @@
 	</template>
 	<div class="display-options">
 
-		<!-- @include('layouts.filtres', ['countries' => $countries, 'types' => $types]) -->
+		@include('layouts.filtres', ['countries' => $countries, 'types' => $types])
 
 		<div class="order">
 			<label for="order">Tri</label>
