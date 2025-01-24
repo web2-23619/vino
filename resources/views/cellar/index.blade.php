@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('js', asset('js/pages/celliers.js'))
-@section('title', 'Celliers')
+@section('title', 'Inventaire')
 @section('content')
 <section>
 	<header data-js="header">
@@ -24,7 +24,7 @@
 		<button data-js-action="fermer">x</button>
 	</div>
 	@endif
-	<div class="inventory-action">
+	<div class="cellier-inventory-action">
 			<div id="kebab-menu-wrapper">
 				<template id="kebab-menu">
 					<div class="menu-deroulant">
@@ -32,6 +32,7 @@
 						<ul class="menu-deroulant__contenu">
 							<li data-js-option="modifier"><a href="">Modifier</a></li>
 							<li data-js-option="supprimer" data-js-action="afficherModaleConfirmation" data-js-cellier="" data-js-name="">Supprimer</li>
+							<li><a href="{{ route('cellar.create') }}">Ajouter un cellier</a></li>
 						</ul>
 					</div>
 				</template>
@@ -43,10 +44,17 @@
 				<option disable>Aucun cellier</option>
 				@endforelse
 			</select>
-
-			<a href="{{ route('cellar.create') }}" class="btn btn_accent">Ajouter un cellier</a>
 	</div>
 </section>
+<template id="noPurchase">
+	<article class="noContent">
+		<h3>
+			Il semblerait que vous n'ayez rien dans votre cellier.
+		</h3>
+		<p>Remplissez votre cellier en ajoutant des bouteilles.</p>
+		<a href="{{ route('search.index', ['source' => 'cellier', 'cellar_id' => $cellar->id]) }}" class="btn btn_accent">Ajouter Bouteille</a>
+	</article>
+</template>
 <section class="cellier-products">
     <template id="bottle-template">
         <article class="card_bottle" data-js-key="">
