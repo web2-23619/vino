@@ -54,6 +54,12 @@ import Bottle from "../components/Bottle.js";
         sectionHTML.prepend(content);
     }
 
+    /**
+     * Fetch les achats de l'utilisateur connect .
+     *
+     * @async
+     * @returns {object} Un objet JSON contenant les achats (purchases) de l'utilisateur.
+     */
     async function getAll() {
         const csrfToken = document
             .querySelector('meta[name="csrf-token"]')
@@ -75,6 +81,19 @@ import Bottle from "../components/Bottle.js";
         return data;
     }
 
+
+    /**
+     * Affiche la liste d'achat sur la page.
+     *
+     * Si la liste n'est pas vide, la fonction parcourt le tableau d'objets d'achats et
+     * crée une instance de Bottle pour chaque objet. La fonction affiche ensuite le bouton
+     * Ajouter une bouteille . Si la liste est vide, la fonction affiche le message
+     * correspondant.
+     *
+     * @param {object} data - Un objet contenant les données de la liste d'achat.
+     * @param {boolean} data.empty - Un indicateur indiquant si la liste est vide.
+     * @param {Array} data.purchases - Un tableau d'objets d'achats à afficher.
+     */
     function render(data) {
         const container = document.querySelector("[data-js-list]");
         const template = document.querySelector("template#bottle");

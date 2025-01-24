@@ -54,6 +54,20 @@ import App from "../components/App.js";
         }
     }
 
+    
+    function displayNoContentMessage() {
+        const template = document.querySelector("template#noPurchase");
+        let content = template.content.cloneNode(true);
+        let sectionHTML = document.querySelector("main > section");
+        sectionHTML.append(content);
+
+        const boutonAjout = document.querySelector("footer > div");
+        if (boutonAjout) {
+            boutonAjout.remove();
+        }
+    }
+
+
     function afficherModaleSupressionCellier(event) {
         menuOuvert = null;
 
@@ -147,7 +161,7 @@ import App from "../components/App.js";
     
         // S'il y a aucune bouteille, affiche un message
         if (bottles.length === 0) {
-            bottlesContainer.innerHTML += `<p>Aucune bouteille dans ce cellier</p>`;
+            displayNoContentMessage();
             return;
         }
     
