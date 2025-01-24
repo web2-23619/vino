@@ -164,6 +164,12 @@ import App from "../components/App.js";
             displayNoContentMessage();
             return;
         }
+
+        // Cache le message "Aucune bouteille"
+        const noContentMessage = document.querySelector(".noContent");
+        if (noContentMessage) {
+            noContentMessage.remove();
+        }
     
         // Affiche les bouteilles
         bottles.forEach((bottle) => {
