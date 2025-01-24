@@ -52,13 +52,13 @@
 			Il semblerait que vous n'ayez rien dans votre cellier.
 		</h3>
 		<p>Remplissez votre cellier en ajoutant des bouteilles.</p>
-		<a href="{{ route('search.index', ['source' => 'cellier', 'cellar_id' => $cellar->id]) }}" class="btn btn_accent">Ajouter Bouteille</a>
+		<a href="{{ route('search.index', ['source' => 'cellier', 'cellar_id' => $cellar->id]) }}" class="btn btn_accent">Découvrir des bouteilles</a>
 	</article>
 </template>
 <section class="cellier-products">
     <template id="bottle-template">
         <article class="card_bottle" data-js-key="">
-            <button data-js-action="supprimer">
+            <button data-js-action="afficherModaleConfirmation">
 				<svg enable-background="new 0 0 32 32" id="Glyph" version="1.1" viewBox="0 0 32 32" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 					<title>Icone de poubelle</title>
 					<path d="M6,12v15c0,1.654,1.346,3,3,3h14c1.654,0,3-1.346,3-3V12H6z M12,25c0,0.552-0.448,1-1,1s-1-0.448-1-1v-9  c0-0.552,0.448-1,1-1s1,0.448,1,1V25z M17,25c0,0.552-0.448,1-1,1s-1-0.448-1-1v-9c0-0.552,0.448-1,1-1s1,0.448,1,1V25z M22,25  c0,0.552-0.448,1-1,1s-1-0.448-1-1v-9c0-0.552,0.448-1,1-1s1,0.448,1,1V25z" id="XMLID_237_" />
