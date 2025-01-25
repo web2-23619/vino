@@ -14,15 +14,19 @@ class PurchaseController extends Controller
 	 */
 	public function index()
 	{
-		$countries = Bottle::select('country')
-			->distinct()
-			->get();
+		$countries = Bottle::select('country')->distinct()->get();
+
+		$countryNames = $countries->pluck('country')->toArray();
+
+		$initialCountries = array_slice($countryNames, 0, 5);
+		$remainingCountries = array_slice($countryNames, 5);
+		$remainingCount = count($remainingCountries);
 
 		$types = Bottle::select('type')
 			->distinct()
 			->get();
 
-		return view('purchase.index', ['countries' => $countries, 'types' => $types]);
+		return view('purchase.index', ['initialCountries' => $initialCountries, 'remainingCountries' => $remainingCountries, 'remainingCount' => $remainingCount, 'types' => $types]);
 	}
 
 	/**

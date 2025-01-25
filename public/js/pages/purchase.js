@@ -29,9 +29,10 @@ import Bottle from "../components/Bottle.js";
     let purchases = dataAll.purchases;
 
     // changer l'ordre d'affichage selon la selection
-    const selectOrder = document.querySelector("[name='order']");
-    selectOrder.addEventListener("click", function () {
-        renderSort(selectOrder.value);
+    const sortingOptions = document.querySelector(".sorting__frame");
+    sortingOptions.addEventListener("click", function () {
+        const selectedSort = document.querySelector("[name='sorting']:checked");
+        renderSort(selectedSort.value);
     });
 
     //filtres
@@ -44,6 +45,25 @@ import Bottle from "../components/Bottle.js";
     btnResetFilters.addEventListener("click", function (event) {
         event.preventDefault();
         filterFormHTML.reset();
+    });
+
+    const btnAfficherPlus = document.querySelector("[data-js='afficherPlus']");
+    const btnAfficherMoins = document.querySelector(
+        "[data-js='afficherMoins']"
+    );
+    btnAfficherPlus.addEventListener("click", function (event) {
+        const trigger = event.target;
+        trigger.nextElementSibling.classList.remove("invisible");
+        btnAfficherMoins.classList.remove("invisible");
+        btnAfficherPlus.classList.add("invisible");
+    });
+
+    btnAfficherMoins.addEventListener("click", function (event) {
+        const trigger = event.target;
+        trigger.previousElementSibling.classList.add("invisible");
+        btnAfficherMoins.classList.add("invisible");
+        btnAfficherPlus.classList.remove("invisible");
+        document.querySelector("h1").scrollIntoView();
     });
 
     // --- fonctions auxilières ---
@@ -128,14 +148,14 @@ import Bottle from "../components/Bottle.js";
     /**
      * tri et affiche le résultat trié
      */
-    function renderSort(orderOption) {
-        const [criteria, order] = orderOption.split("_");
+    function renderSort(sortOption) {
+        const [criteria, sort] = sortOption.split("_");
         purchases.sort((a, b) => {
             if (criteria === "name") {
                 const nameA = a.name;
                 const nameB = b.name;
 
-                if (order === "asc") {
+                if (sort === "asc") {
                     return nameA.localeCompare(nameB);
                 } else {
                     return nameB.localeCompare(nameA);
@@ -143,13 +163,15 @@ import Bottle from "../components/Bottle.js";
             } else if (criteria === "price") {
                 const priceA = a.price;
                 const priceB = b.price;
-                if (order === "asc") {
-                    return priceA - priceB; // Ascending order
+                if (sort === "asc") {
+                    return priceA - priceB; // Ascending sort
                 } else {
-                    return priceB - priceA; // Descending order
+                    return priceB - priceA; // Descending sort
                 }
             }
         });
+
+        document.querySelector(".sorting > details").removeAttribute("open");
 
         clearAll();
 
@@ -158,6 +180,7 @@ import Bottle from "../components/Bottle.js";
         purchases.forEach((purchase) => {
             new Bottle(purchase, "purchase", template, container);
         });
+        displayAddBottleBtn();
     }
 
     /**
@@ -166,6 +189,13 @@ import Bottle from "../components/Bottle.js";
     async function renderFilter(event) {
         event.preventDefault();
 
+        //fermer les filtres
+        const accordionsHTML = filterFormHTML.querySelectorAll("details");
+        accordionsHTML.forEach((accordion) =>
+            accordion.removeAttribute("open")
+        );
+
+        //filtrer
         const countriesHTML =
             filterFormHTML.querySelectorAll("[name='country']");
         const countries = [];
@@ -220,28 +250,5 @@ import Bottle from "../components/Bottle.js";
             clearAll();
             render(dataFiltered);
         }
-
-        // const formData = new FormData();
-        // formData.append("type[]", types);
-        // formData.append("country[]", countries);
-        // formData.append("min", min.value);
-        // formData.append("max", max.value);
-
-        // const csrfToken = document
-        //     .querySelector('meta[name="csrf-token"]')
-        //     .getAttribute("content");
-        // const response = await fetch("http://example.org/post", {
-        //     method: "POST",
-        //     body: formData,
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //         "X-CSRF-TOKEN": csrfToken, // Ajoute CSRF token
-        //         Authorization: "Bearer " + localStorage.getItem("token"), // Ajoute le token
-        //     },
-        // });
     }
-
-    /**
-     * réinitialiser filtre
-     */
 })();

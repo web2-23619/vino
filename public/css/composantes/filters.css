@@ -1,0 +1,30 @@
+.filters {
+    font-family: var(--police-regular);
+}
+
+.filters > form > details + div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-pico);
+}
+
+.filter__criterion > summary {
+    font-weight: 600;
+}
+
+.filter__criterion[open] + .filter__content {
+    max-height: 100vh;
+    overflow: hidden;
+    transition: all 0.5s ease-in-out;
+}
+
+.filter__content {
+    height: auto;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.5s ease;
+}
+
+.filters * + button {
+	margin-top: var(--espace-nano);
+}

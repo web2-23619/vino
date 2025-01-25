@@ -14,17 +14,8 @@
 	</template>
 	<div class="display-options">
 
-		@include('layouts.filtres', ['countries' => $countries, 'types' => $types])
-
-		<div class="order">
-			<label for="order">Tri</label>
-			<select name="order" id="order">
-				<option value="name_asc">Nom ascendant: A-Z</option>
-				<option value="name_desc">Nom descendant: Z-A</option>
-				<option value="price_asc">Prix ascendant: 0 - 100</option>
-				<option value="price_desc">Prix descendant: 100 - 0</option>
-			</select>
-		</div>
+		@include('layouts.filtres',['initialCountries' => $initialCountries, 'remainingCountries' => $remainingCountries, 'remainingCount' => $remainingCount, 'types' => $types])
+		@include('layouts.sort')
 	</div>
 	<div data-js-list>
 

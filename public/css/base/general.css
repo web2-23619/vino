@@ -10,6 +10,8 @@ body {
     flex-direction: column;
 
     height: 100dvh;
+
+    scroll-behavior: smooth;
 }
 
 body > * {
