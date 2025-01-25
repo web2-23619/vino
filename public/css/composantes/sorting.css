@@ -27,10 +27,12 @@
     padding-inline: var(--espace-s);
     box-sizing: border-box;
 
-    border-left: var(--bordure-s) solid var(--tres-fonce);
-    border-right: var(--bordure-s) solid var(--tres-fonce);
-    border-bottom: var(--bordure-s) solid var(--tres-fonce);
-    border-radius: var(--rayon-s);
+    border-left: var(--bordure-m) solid var(--tres-fonce);
+    border-right: var(--bordure-m) solid var(--tres-fonce);
+    border-bottom: var(--bordure-m) solid var(--tres-fonce);
+
+    border-bottom-right-radius: var(--rayon-m);
+    border-bottom-left-radius: var(--rayon-m);
 }
 
 .sorting__frame > * + * {
@@ -46,6 +48,7 @@
 
 .sorting__chevron {
     display: inline-block;
+    height: var(--police-std);
     transform: rotate(-90deg);
     transform-origin: center;
     transition: all 200ms ease-in-out;

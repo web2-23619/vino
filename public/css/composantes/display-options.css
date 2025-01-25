@@ -2,18 +2,16 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: var(--espace-micro);
-    box-sizing: border-box;
 
     margin-bottom: var(--espace-s);
 
-	align-items: start; /* Prevents uneven stretching */
+    align-items: start; /* Prevents uneven stretching */
 }
 
-.display-options > *{
-	    font-family: var(--police-regular);
+.display-options > div {
+    font-family: var(--police-regular);
     border: var(--bordure-s) solid var(--tres-fonce);
     border-radius: var(--rayon-s);
     padding: var(--espace-nano) var(--espace-s);
-    box-sizing: border-box;
     font-size: var(--police-std);
 }
