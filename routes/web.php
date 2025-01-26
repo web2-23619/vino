@@ -62,8 +62,8 @@ Route::middleware('auth')->group(function () {
 	Route::post('/deconnexion', [AuthController::class, 'destroy'])->name('logout');
 	Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
 
-	Route::get('/cellier', [CellarController::class, 'index'])->name('cellar.index');
-	Route::get('/creer/cellier', [CellarController::class, 'create'])->name('cellar.create');
+	Route::get('/inventaire', [CellarController::class, 'index'])->name('cellar.index');
+	Route::get('inventaire/creer/cellier', [CellarController::class, 'create'])->name('cellar.create');
 	Route::post('/creer/cellier', [CellarController::class, 'store'])->name('cellar.store');
 	Route::get('/modifier/cellier/{cellar}', [CellarController::class, 'edit'])->name('cellar.edit');
 	Route::put('/modifier/cellier/{cellar}', [CellarController::class, 'update'])->name('cellar.update');

@@ -74,6 +74,6 @@
     margin-top: var(--espace-s);
 }
 
-.card_purchase_deactivated {
-    color: var(--contraste-faible);
+.disappear.card_purchase_deactivated {
+    display: none;
 }

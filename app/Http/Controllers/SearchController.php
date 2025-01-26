@@ -151,7 +151,7 @@ class SearchController extends Controller
             session()->forget('add_bottle_source');
             session()->forget('cellar_id');
     
-            return redirect()->route('cellar.showBottles', ['cellar' => $cellar->id])
+            return redirect()->route('cellar.index', ['cellar' => $cellar->id])
                              ->with('success', 'Bouteille ajoutée avec succès!');
         }
     }

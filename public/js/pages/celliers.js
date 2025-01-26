@@ -54,6 +54,20 @@ import App from "../components/App.js";
         }
     }
 
+    
+    function displayNoContentMessage() {
+        const template = document.querySelector("template#noPurchase");
+        let content = template.content.cloneNode(true);
+        let sectionHTML = document.querySelector("main > section");
+        sectionHTML.append(content);
+
+        const boutonAjout = document.querySelector("footer > div");
+        if (boutonAjout) {
+            boutonAjout.remove();
+        }
+    }
+
+
     function afficherModaleSupressionCellier(event) {
         menuOuvert = null;
 
@@ -147,8 +161,14 @@ import App from "../components/App.js";
     
         // S'il y a aucune bouteille, affiche un message
         if (bottles.length === 0) {
-            bottlesContainer.innerHTML += `<p>Aucune bouteille dans ce cellier</p>`;
+            displayNoContentMessage();
             return;
+        }
+
+        // Cache le message "Aucune bouteille"
+        const noContentMessage = document.querySelector(".noContent");
+        if (noContentMessage) {
+            noContentMessage.remove();
         }
     
         // Affiche les bouteilles
@@ -189,7 +209,7 @@ import App from "../components/App.js";
         let currentQuantity = parseInt(quantityElement.textContent);
     
         // Ajuster la quantité selon l'action
-        if (action === "reduire" && currentQuantity > 1) {
+        if (action === "reduire" && currentQuantity > 0) {
             currentQuantity--;
         } else if (action === "augmenter") {
             currentQuantity++;
@@ -218,12 +238,12 @@ import App from "../components/App.js";
     
             // Desactiver le bouton "-" si la quantité est == 1
             const btnReduire = purchaseItem.querySelector("[data-js-action='reduire']");
-            if (currentQuantity === 1) {
+            if (currentQuantity === 0) {
                 btnReduire.setAttribute("inert", "true");
-                btnReduire.classList.add("card_purchase_deactivated");
+                btnReduire.classList.add("disappear", "card_purchase_deactivated");
             } else {
                 btnReduire.removeAttribute("inert");
-                btnReduire.classList.remove("card_purchase_deactivated");
+                btnReduire.classList.remove("disappear", "card_purchase_deactivated");
             }
         } else {
             // console.log("Échec.");
