@@ -88,7 +88,8 @@ import Bottle from "../components/Bottle.js";
     // --- fonctions auxilières ---
 
     /**
-     * retire toutes les cartes de l'affichage
+     * Supprime tout le contenu de la liste des achats.
+     * Utile pour les cas de reset de la liste.
      */
     function clearAll() {
         document.querySelector("[data-js-list]").innerHTML = "";
@@ -124,7 +125,10 @@ import Bottle from "../components/Bottle.js";
     }
 
     /**
-     * recupere tous les achats
+     * Fetch les achats de l'utilisateur connect .
+     *
+     * @async
+     * @returns {object} Un objet JSON contenant les achats (purchases) de l'utilisateur.
      */
     async function getAll() {
         const csrfToken = document
@@ -148,7 +152,16 @@ import Bottle from "../components/Bottle.js";
     }
 
     /**
-     * affiche les cartes de bouteilles selon les données reçues
+     * Affiche la liste d'achat sur la page.
+     *
+     * Si la liste n'est pas vide, la fonction parcourt le tableau d'objets d'achats et
+     * crée une instance de Bottle pour chaque objet. La fonction affiche ensuite le bouton
+     * Ajouter une bouteille . Si la liste est vide, la fonction affiche le message
+     * correspondant.
+     *
+     * @param {object} data - Un objet contenant les données de la liste d'achat.
+     * @param {boolean} data.empty - Un indicateur indiquant si la liste est vide.
+     * @param {Array} data.purchases - Un tableau d'objets d'achats à afficher.
      */
     function render(data) {
         const container = document.querySelector("[data-js-list]");
