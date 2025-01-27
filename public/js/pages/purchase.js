@@ -31,6 +31,10 @@ import Bottle from "../components/Bottle.js";
         renderSort(selectOrder.value);
     });
 
+    /**
+     * Supprime tout le contenu de la liste des achats.
+     * Utile pour les cas de reset de la liste.
+     */
     function clearAll() {
         document.querySelector("[data-js-list]").innerHTML = "";
     }
