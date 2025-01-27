@@ -1,6 +1,5 @@
 import App from "../components/App.js";
 import Alerte from "../components/Alerte.js";
-import ModaleAction from "../components/ModaleAction.js";
 import Bottle from "../components/Bottle.js";
 
 (async function () {
@@ -12,7 +11,7 @@ import Bottle from "../components/Bottle.js";
         new Alerte(alerte);
     }
 
-    document.addEventListener("fermerModale", function (event) {
+    document.addEventListener("fermerModale", function () {
         const bouteilles = document.querySelectorAll(".card_bottle");
         const nbBouteilles = bouteilles.length;
 
@@ -24,11 +23,59 @@ import Bottle from "../components/Bottle.js";
     const data = await getAll();
     render(data);
 
-	let purchases = data.purchases;
+    let purchases = data.purchases;
 
     const selectOrder = document.querySelector("[name='order']");
-    selectOrder.addEventListener("click", function () {
+    selectOrder.addEventListener("change", function () {
         renderSort(selectOrder.value);
+    });
+
+    const cellars = await getCellars();
+    populateCellarDropdown(cellars);
+
+    // Event listener for "Add to Cellar" button
+    document.addEventListener("click", async (event) => {
+        if (event.target.matches('[data-js-action="addToCellar"]')) {
+            const button = event.target;
+            const bottleCard = button.closest(".card_bottle");
+            const bottleId = bottleCard.getAttribute("data-js-id");
+            const quantity = parseInt(
+                bottleCard.querySelector('[data-info="quantity"]').textContent
+            );
+
+            const dropdown = document.querySelector("#cellarDropdown");
+            const cellarId = dropdown.value;
+
+            if (!cellarId) {
+                console.error("Veuillez sélectionner un cellier.");
+                showAlerte("Veuillez sélectionner un cellier.");
+                return;
+            }
+
+            try {
+                const response = await addToCellar({ bottleId, cellarId, quantity });
+
+                if (response.message === "added" || response.message === "updated") {
+                    showAlerte(
+                        response.message === "added"
+                            ? "La bouteille a été ajoutée au cellier !"
+                            : "La quantité a été mise à jour dans le cellier !"
+                    );
+
+                    bottleCard.remove(); // Remove the bottle from the list
+                } else {
+                    throw new Error("Une erreur est survenue.");
+                }
+
+                const bouteilles = document.querySelectorAll(".card_bottle");
+                if (bouteilles.length === 0) {
+                    displayNoContentMessage();
+                }
+            } catch (error) {
+                console.error("Erreur lors de l'ajout au cellier :", error);
+                showAlerte("Erreur lors de l'ajout au cellier.");
+            }
+        }
     });
 
     function clearAll() {
@@ -54,12 +101,6 @@ import Bottle from "../components/Bottle.js";
         sectionHTML.prepend(content);
     }
 
-    /**
-     * Fetch les achats de l'utilisateur connect .
-     *
-     * @async
-     * @returns {object} Un objet JSON contenant les achats (purchases) de l'utilisateur.
-     */
     async function getAll() {
         const csrfToken = document
             .querySelector('meta[name="csrf-token"]')
@@ -67,33 +108,82 @@ import Bottle from "../components/Bottle.js";
         const response = await fetch(
             `${App.instance.baseURL}/api/afficher/achat`,
             {
-                method: "get",
+                method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": csrfToken, // Ajoute CSRF token
-                    Authorization: "Bearer " + localStorage.getItem("token"), // Ajoute le token
+                    "X-CSRF-TOKEN": csrfToken,
+                    Authorization: "Bearer " + localStorage.getItem("token"),
                 },
             }
         );
 
         const data = await response.json();
-		console.log(data);
+        console.log(data);
         return data;
     }
 
+    async function getCellars() {
+        try {
+            const response = await fetch(`${App.instance.baseURL}/api/user/cellars`, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token"),
+                },
+            });
 
-    /**
-     * Affiche la liste d'achat sur la page.
-     *
-     * Si la liste n'est pas vide, la fonction parcourt le tableau d'objets d'achats et
-     * crée une instance de Bottle pour chaque objet. La fonction affiche ensuite le bouton
-     * Ajouter une bouteille . Si la liste est vide, la fonction affiche le message
-     * correspondant.
-     *
-     * @param {object} data - Un objet contenant les données de la liste d'achat.
-     * @param {boolean} data.empty - Un indicateur indiquant si la liste est vide.
-     * @param {Array} data.purchases - Un tableau d'objets d'achats à afficher.
-     */
+            if (!response.ok) {
+                throw new Error("Erreur lors de la récupération des celliers.");
+            }
+
+            const data = await response.json();
+            return data.cellars;
+        } catch (error) {
+            console.error("Erreur lors de la récupération des celliers :", error);
+            return [];
+        }
+    }
+
+    function populateCellarDropdown(cellars) {
+        const dropdown = document.querySelector("#cellarDropdown");
+
+        dropdown.innerHTML = "";
+
+        if (cellars.length === 0) {
+            const option = document.createElement("option");
+            option.value = "";
+            option.textContent = "Aucun cellier disponible";
+            dropdown.appendChild(option);
+        } else {
+            cellars.forEach((cellar) => {
+                const option = document.createElement("option");
+                option.value = cellar.id;
+                option.textContent = cellar.name;
+                dropdown.appendChild(option);
+            });
+        }
+    }
+
+    async function addToCellar({ bottleId, cellarId, quantity }) {
+        console.log({ bottleId, cellarId, quantity });
+        const csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content");
+
+        const response = await fetch(
+            `${App.instance.baseURL}/api/add-to-cellar`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken,
+                    Authorization: "Bearer " + localStorage.getItem("token"),
+                },
+                body: JSON.stringify({ bottleId, cellarId, quantity }),
+            }
+        );
+
+        return response.json();
+    }
+
     function render(data) {
         const container = document.querySelector("[data-js-list]");
         const template = document.querySelector("template#bottle");
@@ -112,22 +202,13 @@ import Bottle from "../components/Bottle.js";
         const [criteria, order] = orderOption.split("_");
         purchases.sort((a, b) => {
             if (criteria === "name") {
-                const nameA = a.name;
-                const nameB = b.name;
-
-                if (order === "asc") {
-                    return nameA.localeCompare(nameB);
-                } else {
-                    return nameB.localeCompare(nameA);
-                }
+                return order === "asc"
+                    ? a.name.localeCompare(b.name)
+                    : b.name.localeCompare(a.name);
             } else if (criteria === "price") {
-                const priceA = a.price;
-                const priceB = b.price;
-                if (order === "asc") {
-                    return priceA - priceB; // Ascending order
-                } else {
-                    return priceB - priceA; // Descending order
-                }
+                return order === "asc"
+                    ? a.price - b.price
+                    : b.price - a.price;
             }
         });
 
@@ -138,5 +219,9 @@ import Bottle from "../components/Bottle.js";
         purchases.forEach((purchase) => {
             new Bottle(purchase, "purchase", template, container);
         });
+    }
+
+    function showAlerte(message) {
+        console.error(message);
     }
 })();

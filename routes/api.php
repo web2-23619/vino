@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'apiL
 Route::middleware('auth:sanctum')->get('/profile', [UserController::class, 'profile'])->name('user.profile');
 Route::post('/register', [AuthController::class, 'apiRegister']);
 
+
 Route::middleware('auth:sanctum')->delete('supprimer/achat/{purchase}', [PurchaseController::class, 'destroy']);
 Route::middleware('auth:sanctum')->get('afficher/achat', [PurchaseController::class, 'AllPurchaseApi']);
 Route::delete('/supprimer/utilisateur/{id}', [UserController::class, 'destroy'])->name('user.destroy');
@@ -36,4 +37,5 @@ Route::middleware('auth:sanctum')->get('cellier/{cellar}/bouteille', [CellarCont
 Route::middleware('auth:sanctum')->patch('achat/{purchase}/quantite', [PurchaseController::class, 'updateQuantityApi']);
 Route::middleware('auth:sanctum')->patch('/mesBouteilles', [UserController::class, 'updateQuantityApi']);
 
-
+Route::middleware('auth:sanctum')->post('/add-to-cellar', [PurchaseController::class, 'addToCellar']);
+Route::middleware('auth:sanctum')->get('/user/cellars', [CellarController::class, 'getUserCellars']);

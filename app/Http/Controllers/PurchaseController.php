@@ -6,6 +6,10 @@ use App\Models\Purchase;
 use App\Models\Bottle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+
+
 
 class PurchaseController extends Controller
 {
@@ -195,4 +199,55 @@ class PurchaseController extends Controller
 			return response()->json(['message' => 'Erreur au retrait de la bouteille'], 400);
 		}
 	}
+
+	public function addToCellar(Request $request)
+{
+    try {
+        Log::info('Incoming request:', $request->all());
+
+        $validated = $request->validate([
+            'bottleId' => 'required|integer|exists:bottles,id',
+            'cellarId' => 'required|integer|exists:cellars,id',
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        Log::info('Validation passed.', $validated);
+
+        $cellarBottle = DB::table('cellar_bottles')
+            ->where('bottle_id', $validated['bottleId'])
+            ->where('cellar_id', $validated['cellarId'])
+            ->first();
+
+        if ($cellarBottle) {
+            DB::table('cellar_bottles')
+                ->where('bottle_id', $validated['bottleId'])
+                ->where('cellar_id', $validated['cellarId'])
+                ->update([
+                    'quantity' => $cellarBottle->quantity + $validated['quantity'],
+                    'updated_at' => now(),
+                ]);
+        } else {
+            DB::table('cellar_bottles')->insert([
+                'cellar_id' => $validated['cellarId'],
+                'bottle_id' => $validated['bottleId'],
+                'quantity' => $validated['quantity'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        DB::table('purchases')
+            ->where('bottle_id', $validated['bottleId'])
+            ->where('user_id', auth()->id())
+            ->delete();
+
+			Log::info('Returning response: added to cellar');
+
+        return response()->json(['message' => 'added']);
+    } catch (\Exception $e) {
+        Log::error('Error in addToCellar: ' . $e->getMessage());
+        return response()->json(['error' => 'An error occurred while adding the bottle to the cellar.'], 500);
+    }
+}
+
 }
