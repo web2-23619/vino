@@ -180,7 +180,7 @@ class PurchaseController extends Controller
 			$empty = false;
 		}
 
-		return response()->json(['purchases' => $purchases, 'empty' => $empty], 200);
+		return response()->json(['purchases' => $purchases, 'empty' => $empty, 'filtered'=>false], 200);
 	}
 
 

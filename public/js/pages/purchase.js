@@ -39,24 +39,21 @@ import Bottle from "../components/Bottle.js";
     const filterFormHTML = document.querySelector("[data-js='filtersForm']");
     filterFormHTML.addEventListener("submit", renderFilter);
 
-	//calcul de la hauteur du footer pour la position du filtre
-	const footerHTML = document.querySelector(".nav-menu");
-	const footerHeight = footerHTML.offsetHeight;
-	filterFormHTML.style.setProperty(
-        "--bottom",
-        `${footerHeight}px`
-    );
-	const btnFilters = document.querySelector("#btn-filters");
-	const btnFilterY = App.instance.getAbsoluteYPosition(btnFilters);
-		filterFormHTML.style.setProperty("--top", `${btnFilterY}px`);
+    //calcul de la hauteur du footer pour la position du filtre
+    const footerHTML = document.querySelector(".nav-menu");
+    const footerHeight = footerHTML.offsetHeight;
+    filterFormHTML.style.setProperty("--bottom", `${footerHeight}px`);
+    const btnFilters = document.querySelector("#btn-filters");
+    const btnFilterY = App.instance.getAbsoluteYPosition(btnFilters);
+    filterFormHTML.style.setProperty("--top", `${btnFilterY}px`);
 
-	btnFilters.addEventListener("change", function () {
+    btnFilters.addEventListener("change", function () {
         document
             .querySelector("[data-js-list]")
             .classList.toggle("invisible", btnFilters.checked);
     });
 
-	//reinitialisation des filtres
+    //reinitialisation des filtres
     const btnResetFilters = filterFormHTML.querySelector(
         "[data-js='resetFilters']"
     );
@@ -101,8 +98,8 @@ import Bottle from "../components/Bottle.js";
     /**
      * affiche le message de liste vide avec appel à l'action
      */
-    function displayNoContentMessage() {
-        const template = document.querySelector("template#noPurchase");
+    function displayNoContentMessage(templateName) {
+        const template = document.querySelector(`[id='${templateName}']`);
         let content = template.content.cloneNode(true);
         let sectionHTML = document.querySelector("main > section");
         sectionHTML.append(content);
@@ -153,14 +150,18 @@ import Bottle from "../components/Bottle.js";
     function render(data) {
         const container = document.querySelector("[data-js-list]");
         const template = document.querySelector("template#bottle");
+		console.log(data);
 
         if (!data.empty) {
             data.purchases.forEach((purchase) => {
                 new Bottle(purchase, "purchase", template, container);
             });
             displayAddBottleBtn();
+        } else if (data.filtered) {
+            console.log("no result");
+            displayNoContentMessage("noResult");
         } else {
-            displayNoContentMessage();
+            displayNoContentMessage("noPurchase");
         }
     }
 
@@ -233,7 +234,7 @@ import Bottle from "../components/Bottle.js";
             max.value === ""
         ) {
             btnFilters.checked = false;
-			btnFilters.dispatchEvent(new Event("change"));
+            btnFilters.dispatchEvent(new Event("change"));
             clearAll();
             render(dataAll);
             purchases = dataAll.purchases;
@@ -258,11 +259,20 @@ import Bottle from "../components/Bottle.js";
                     (purchase) => purchase.price <= parseFloat(max.value)
                 );
             }
-            const dataFiltered = { purchases: filteredPurchase, empty: false };
+
+            const dataFiltered = {
+                purchases: filteredPurchase,
+                empty: false,
+                filtered: true,
+            };
+			console.log(dataFiltered.purchases.length === 0);
+            if (dataFiltered.purchases.length === 0) {
+                dataFiltered.empty = true;
+            }
             purchases = filteredPurchase;
 
             btnFilters.checked = false;
-			btnFilters.dispatchEvent(new Event("change"));
+            btnFilters.dispatchEvent(new Event("change"));
             clearAll();
             render(dataFiltered);
         }

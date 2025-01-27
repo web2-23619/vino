@@ -70,7 +70,7 @@
     font-family: var(--police-regular);
 
     position: fixed; /* Cover the entire viewport */
-	top: calc(var(--top) + var(--espace-m) + var(--espace-nano));
+	top: calc(var(--top) + var(--espace-m));
 	bottom: calc(var(--bottom) + var(--espace-xs));
 	left: 0;
 	width: 100%;
