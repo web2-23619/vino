@@ -39,6 +39,24 @@ import Bottle from "../components/Bottle.js";
     const filterFormHTML = document.querySelector("[data-js='filtersForm']");
     filterFormHTML.addEventListener("submit", renderFilter);
 
+	//calcul de la hauteur du footer pour la position du filtre
+	const footerHTML = document.querySelector(".nav-menu");
+	const footerHeight = footerHTML.offsetHeight;
+	filterFormHTML.style.setProperty(
+        "--bottom",
+        `${footerHeight}px`
+    );
+	const btnFilters = document.querySelector("#btn-filters");
+	const btnFilterY = App.instance.getAbsoluteYPosition(btnFilters);
+		filterFormHTML.style.setProperty("--top", `${btnFilterY}px`);
+
+	btnFilters.addEventListener("change", function () {
+        document
+            .querySelector("[data-js-list]")
+            .classList.toggle("invisible", btnFilters.checked);
+    });
+
+	//reinitialisation des filtres
     const btnResetFilters = filterFormHTML.querySelector(
         "[data-js='resetFilters']"
     );
@@ -47,6 +65,7 @@ import Bottle from "../components/Bottle.js";
         filterFormHTML.reset();
     });
 
+    // affichage de la liste complete de pays
     const btnAfficherPlus = document.querySelector("[data-js='afficherPlus']");
     const btnAfficherMoins = document.querySelector(
         "[data-js='afficherMoins']"
@@ -171,8 +190,6 @@ import Bottle from "../components/Bottle.js";
             }
         });
 
-        document.querySelector(".sorting > details").removeAttribute("open");
-
         clearAll();
 
         const container = document.querySelector("[data-js-list]");
@@ -188,12 +205,6 @@ import Bottle from "../components/Bottle.js";
      */
     async function renderFilter(event) {
         event.preventDefault();
-
-        //fermer les filtres
-        const accordionsHTML = filterFormHTML.querySelectorAll("details");
-        accordionsHTML.forEach((accordion) =>
-            accordion.removeAttribute("open")
-        );
 
         //filtrer
         const countriesHTML =
@@ -221,6 +232,8 @@ import Bottle from "../components/Bottle.js";
             min.value === "" &&
             max.value === ""
         ) {
+            btnFilters.checked = false;
+			btnFilters.dispatchEvent(new Event("change"));
             clearAll();
             render(dataAll);
             purchases = dataAll.purchases;
@@ -247,6 +260,9 @@ import Bottle from "../components/Bottle.js";
             }
             const dataFiltered = { purchases: filteredPurchase, empty: false };
             purchases = filteredPurchase;
+
+            btnFilters.checked = false;
+			btnFilters.dispatchEvent(new Event("change"));
             clearAll();
             render(dataFiltered);
         }

@@ -8,9 +8,9 @@
     overflow: hidden;
 }
 
-.sorting:has(details[open]) {
+/* .sorting:has(details[open]) {
     background-color: color-mix(in oklab, var(--contraste) 20%, white 80%);
-}
+} */
 
 .sorting__frame {
     height: auto;
@@ -21,18 +21,17 @@
     position: absolute; /* Detaches from normal flow */
     top: 100%;
     z-index: 2; /* Ensures it appears above other elements */
-    background-color: color-mix(in oklab, var(--contraste) 20%, white 80%);
+    /* background-color: color-mix(in oklab, var(--contraste) 20%, white 80%); */
+    background-color: var(--clair);
     width: 100%;
     margin-left: calc(-1 * var(--espace-s));
     padding-inline: var(--espace-s);
     box-sizing: border-box;
 
-    border-left: var(--bordure-m) solid var(--tres-fonce);
-    border-right: var(--bordure-m) solid var(--tres-fonce);
-    border-bottom: var(--bordure-m) solid var(--tres-fonce);
-
-    border-bottom-right-radius: var(--rayon-m);
-    border-bottom-left-radius: var(--rayon-m);
+    border-bottom: var(--bordure-s) solid var(--tres-fonce);
+    border-right: var(--bordure-s) solid var(--tres-fonce);
+    border-left: var(--bordure-s) solid var(--tres-fonce);
+    border-radius: var(--rayon-s);
 }
 
 .sorting__frame > * + * {

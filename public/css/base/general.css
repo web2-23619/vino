@@ -20,7 +20,7 @@ body > * {
 }
 
 body > header {
-    padding-block: var(--espace-s);
+    padding-top: var(--espace-s);
 }
 
 body > main {

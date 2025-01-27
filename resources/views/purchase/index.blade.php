@@ -13,7 +13,6 @@
 		</div>
 	</template>
 	<div class="display-options">
-
 		@include('layouts.filtres',['initialCountries' => $initialCountries, 'remainingCountries' => $remainingCountries, 'remainingCount' => $remainingCount, 'types' => $types])
 		@include('layouts.sort')
 	</div>
@@ -39,6 +38,15 @@
 			Il semblerait que vous n'ayez rien à acheter.
 		</h3>
 		<p>Créez votre liste d'achat afin de ne rien oublier lors de votre prochaine visite à la SAQ!</p>
+		<a href="{{ route('search.index', ['source' => 'listeAchat']) }}" class="btn">Découvrir des bouteilles</a>
+	</article>
+</template>
+<template id="noResult">
+	<article class="noContent">
+		<h3>
+			Aucune bouteille dans la liste d'achat ne correspond à votre recherche
+		</h3>
+		<p>Allez consulter le catalogue des bouteilles de la SAQ afin d'ajouter la bouteille désirée à la liste d'achat!</p>
 		<a href="{{ route('search.index', ['source' => 'listeAchat']) }}" class="btn">Découvrir des bouteilles</a>
 	</article>
 </template>
