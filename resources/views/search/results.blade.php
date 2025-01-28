@@ -7,7 +7,7 @@
 
 	<div class="result">
 		<header>
-			<h2>Résultats pour "{{ $query }}"</h2>
+			<h2>Résultats pour "<span data-info="searchQuery"></span>"</h2>
 		</header>
 
 
@@ -15,36 +15,33 @@
 		@include('search.form')
 
 		{{-- nombres des resultats --}}
-		<p>
-			{{ $resultCount }} {{ Str::plural('résultat', $resultCount) }} trouvé{{ $resultCount > 1 ? 's' : '' }}.
+		<p data-info="resultCount">
+			X résultat trouvé
 		</p>
 
 	</div>
+	<div data-js-list>
 
-	@if($results->isEmpty())
-	<p>Aucune bouteille trouvée</p>
-	@else
-
-	@foreach($results as $bottle)
-	<article class="card_bottle" data-js-key="{{$bottle['id']}}">
+	</div>
+</section>
+@endsection
+<template id="searchResultBottle">
+	<article class="card_bottle" data-js-key="">
 		<picture>
-			<img loading="lazy" src="{{ $bottle->image_url }}" alt="">
+			<img loading="lazy" src="" alt="">
 		</picture>
 		<section>
 			<header>
-				<p class="card_bottle__metainfo">{{ ucfirst($bottle->type) }}</p>
-				<h3>{{ $bottle->name }}</h3>
-				<p class="card_bottle__metainfo">{{ $bottle->volume }} ml | {{ $bottle->country }}</p>
+				<p class="card_bottle__metainfo"></p>
+				<h3></h3>
+				<p class="card_bottle__metainfo"> ml | </p>
 			</header>
 			<div>
-				<p>Prix: {{ number_format($bottle->price, 2) }} $</p>
+				<p>Prix: $</p>
 				<div class="card_bottle__actions">
-					<a href="{{ route('bottle.add', ['bottle_id' => $bottle->id, 'source' => session('add_bottle_source', 'default'), 'cellar_id' => request('cellar_id')]) }}" class="btn no-bg">Ajouter</a>
+					<a href="" class="btn no-bg">Ajouter</a>
 				</div>
 			</div>
 		</section>
 	</article>
-	@endforeach
-	@endif
-</section>
-@endsection
+</template>
