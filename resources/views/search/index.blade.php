@@ -36,6 +36,10 @@
 	</article>
 	@endforeach
 	@endif
+	<!-- Template pour la position du scanner ne pas supprimer, merci! -->
+	<template id="interactive-container">
+		<div id="interactive" style="width: 100%; height: 300px;"></div>
+	</template>
 
 </section>
 @endsection
