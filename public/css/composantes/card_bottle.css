@@ -119,8 +119,8 @@
 }
 
 .card_bottle + .card_bottle {
-    margin-top: var(--espace-m);
-    margin-bottom: var(--espace-m);
+    margin-top: var(--espace-s);
+    margin-bottom: var(--espace-s);
 }
 
 .card_bottle__header {
