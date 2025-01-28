@@ -1,29 +1,60 @@
-<div>
-	<h3>Filtres</h3>
-	<form action="">
+<div class="filters">
+	<input type="checkbox" id="btn-filters" aria-label="button to open filters" />
+	<form data-js="filtersForm">
 		<section>
-			<h4>Type</h4>
-			@foreach($types as $type)
-			<input type="checkbox" name="type" id="{{$type->type}}">
-			<label for="{{$type->type}}}">{{$type->type}}</label>
-			@endforeach
+			<details class="filters__criterion" open>
+			<summary>Type</summary>
+			</details>
+			<div class="filters__content">
+				@foreach($types as $type)
+				<div class="filters__pair">
+					<input type="checkbox" name="type" id="{{$type->type}}" value="{{$type->type}}">
+					<label for="{{$type->type}}">{{$type->type}}</label>
+				</div>
+				@endforeach
+			</div>
 		</section>
 		<section>
-			<h4>Origine</h4>
-			@foreach($countries as $country)
-			<input type="checkbox" name="country" id="{{$country->country}}">
-			<label for="{{$country->country}}}">{{$country->country}}</label>
-			@endforeach
+			<details class="filters__criterion" open>
+				<summary>Origine</summary>
+			</details>
+			<div class="filters__content">
+				<div>
+					@foreach($initialCountries as $country)
+					<div class="filters__pair">
+						<input type="checkbox" name="country" id="{{ $country }}" value="{{ $country }}">
+						<label for="{{ $country }}">{{ $country }}</label>
+					</div>
+					@endforeach
+					<span data-js="afficherPlus">Afficher plus ({{$remainingCount}})</span>
+					<div class="invisible">
+						@foreach($remainingCountries as $country)
+						<div class="filters__pair">
+							<input type="checkbox" name="country" id="{{ $country }}" value="{{ $country }}">
+							<label for="{{ $country }}">{{ $country }}</label>
+						</div>
+						@endforeach
+					</div>
+					<span data-js="afficherMoins" class="invisible">Afficher moins</span>
+				</div>
+			</div>
 		</section>
 		<section>
-			<h4>Prix</h4>
-			<label for="min">Minimum</label>
-			<input type="number" name="min" id="min">
-			<label for="max">Maximum</label>
-			<input type="number" name="max" id="max">
+			<details class="filters__criterion" open>
+				<summary>Prix</summary>
+			</details>
+			<div class="filters__content">
+				<div class="filters__pair">
+					<label for="min">Minimum</label>
+					<input type="number" name="min" id="min" step="0.01">
+				</div>
+				<div class="filters__pair">
+					<label for="max">Maximum</label>
+					<input type="number" name="max" id="max" step="0.01">
+				</div>
+			</div>
 		</section>
+		<button class="btn btn_outline_dark" data-js="resetFilters">Reinitialiser</button>
 		<button class="btn">Appliquer</button>
-		<button class="btn btn_outline_dark">Reinitialiser</button>
 	</form>
-
 </div>

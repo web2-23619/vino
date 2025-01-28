@@ -20,8 +20,6 @@ export default class Bottle {
     #changeQuantity;
 
     constructor(data, page, template, container) {
-		console.log(data);
-		
         this.#name = data.name;
         this.#price = data.price;
         this.#country = data.country;
@@ -105,7 +103,7 @@ export default class Bottle {
 
     async #changePurchaseQuantity(event, action) {
         console.log("clicked");
-		console.log(action);
+        console.log(action);
 
         const csrfToken = document
             .querySelector('meta[name="csrf-token"]')
