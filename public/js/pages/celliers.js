@@ -142,6 +142,8 @@ import App from "../components/App.js";
             "cellier_has_bouteille",
             elToChange
         );
+        const currentCellarId = currentCellar.value;
+        updateBottleView(currentCellarId);
     }
     
 
