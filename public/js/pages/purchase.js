@@ -5,10 +5,9 @@ import Bottle from "../components/Bottle.js";
 (async function () {
     const appSingleton = new App();
 
-    const alerteElement = document.querySelector(".alerte");
-
-    if (alerteElement) {
-        new Alerte(alerteElement);
+    const alerte = document.querySelector(".alerte");
+    if (alerte) {
+        new Alerte(alerte);
     }
 
     document.addEventListener("fermerModale", function (event) {
