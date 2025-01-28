@@ -5,13 +5,13 @@ import Bottle from "../components/Bottle.js";
 (async function () {
     const appSingleton = new App();
 
-    const alerte = document.querySelector(".alerte");
+    const alerteElement = document.querySelector(".alerte");
 
-    if (alerte) {
-        new Alerte(alerte);
+    if (alerteElement) {
+        new Alerte(alerteElement);
     }
 
-    document.addEventListener("fermerModale", function () {
+    document.addEventListener("fermerModale", function (event) {
         const bouteilles = document.querySelectorAll(".card_bottle");
         const nbBouteilles = bouteilles.length;
 
@@ -33,7 +33,7 @@ import Bottle from "../components/Bottle.js";
     const cellars = await getCellars();
     populateCellarDropdown(cellars);
 
-    // Event listener for "Add to Cellar" button
+    // Event listener pour le bouton « Ajouter au cellier »
     document.addEventListener("click", async (event) => {
         if (event.target.matches('[data-js-action="addToCellar"]')) {
             const button = event.target;
@@ -47,8 +47,7 @@ import Bottle from "../components/Bottle.js";
             const cellarId = dropdown.value;
 
             if (!cellarId) {
-                console.error("Veuillez sélectionner un cellier.");
-                showAlerte("Veuillez sélectionner un cellier.");
+                new Alerte(null, "Veuillez sélectionner un cellier.", "erreur");
                 return;
             }
 
@@ -56,13 +55,18 @@ import Bottle from "../components/Bottle.js";
                 const response = await addToCellar({ bottleId, cellarId, quantity });
 
                 if (response.message === "added" || response.message === "updated") {
-                    showAlerte(
+                    new Alerte(
+                        null,
                         response.message === "added"
                             ? "La bouteille a été ajoutée au cellier !"
-                            : "La quantité a été mise à jour dans le cellier !"
+                            : "La quantité a été mise à jour dans le cellier !",
+                        "succes"
                     );
 
                     bottleCard.remove(); // Remove the bottle from the list
+
+                    // Fetch and update the inventory view
+                    await fetchInventory(cellarId);
                 } else {
                     throw new Error("Une erreur est survenue.");
                 }
@@ -73,10 +77,31 @@ import Bottle from "../components/Bottle.js";
                 }
             } catch (error) {
                 console.error("Erreur lors de l'ajout au cellier :", error);
-                showAlerte("Erreur lors de l'ajout au cellier.");
+                new Alerte(null, "Erreur lors de l'ajout au cellier.", "erreur");
             }
         }
     });
+
+    // Récupérer l’inventaire d’un identifiant de cave donné
+    async function fetchInventory(cellarId) {
+        try {
+            const response = await fetch(`${App.instance.baseURL}/api/cellars/${cellarId}/bottles`, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token"),
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error("Erreur lors de la récupération des bouteilles.");
+            }
+
+            const data = await response.json();
+            console.log("Updated Inventory:", data);
+        } catch (error) {
+            console.error("Erreur lors de la récupération des bouteilles :", error);
+            new Alerte(null, "Impossible de récupérer l'inventaire.", "erreur");
+        }
+    }
 
     function clearAll() {
         document.querySelector("[data-js-list]").innerHTML = "";
@@ -101,6 +126,13 @@ import Bottle from "../components/Bottle.js";
         sectionHTML.prepend(content);
     }
 
+      /**
+     * Fetch les achats de l'utilisateur connect .
+     *
+     * @async
+     * @returns {object} Un objet JSON contenant les achats (purchases) de l'utilisateur.
+     */
+
     async function getAll() {
         const csrfToken = document
             .querySelector('meta[name="csrf-token"]')
@@ -122,6 +154,7 @@ import Bottle from "../components/Bottle.js";
         return data;
     }
 
+
     async function getCellars() {
         try {
             const response = await fetch(`${App.instance.baseURL}/api/user/cellars`, {
@@ -141,6 +174,13 @@ import Bottle from "../components/Bottle.js";
             return [];
         }
     }
+
+
+/**
+ * Remplit le menu déroulant avec la liste des celliers de l'utilisateur.
+ *
+ * @param {Array} cellars - Liste des celliers récupérés pour l'utilisateur.
+ */
 
     function populateCellarDropdown(cellars) {
         const dropdown = document.querySelector("#cellarDropdown");
@@ -183,6 +223,18 @@ import Bottle from "../components/Bottle.js";
 
         return response.json();
     }
+       /**
+     * Affiche la liste d'achat sur la page.
+     *
+     * Si la liste n'est pas vide, la fonction parcourt le tableau d'objets d'achats et
+     * crée une instance de Bottle pour chaque objet. La fonction affiche ensuite le bouton
+     * Ajouter une bouteille . Si la liste est vide, la fonction affiche le message
+     * correspondant.
+     *
+     * @param {object} data - Un objet contenant les données de la liste d'achat.
+     * @param {boolean} data.empty - Un indicateur indiquant si la liste est vide.
+     * @param {Array} data.purchases - Un tableau d'objets d'achats à afficher.
+     */
 
     function render(data) {
         const container = document.querySelector("[data-js-list]");
@@ -202,13 +254,22 @@ import Bottle from "../components/Bottle.js";
         const [criteria, order] = orderOption.split("_");
         purchases.sort((a, b) => {
             if (criteria === "name") {
-                return order === "asc"
-                    ? a.name.localeCompare(b.name)
-                    : b.name.localeCompare(a.name);
+                const nameA = a.name;
+                const nameB = b.name;
+
+                if (order === "asc") {
+                    return nameA.localeCompare(nameB);
+                } else {
+                    return nameB.localeCompare(nameA);
+                }
             } else if (criteria === "price") {
-                return order === "asc"
-                    ? a.price - b.price
-                    : b.price - a.price;
+                const priceA = a.price;
+                const priceB = b.price;
+                if (order === "asc") {
+                    return priceA - priceB; // Ascending order
+                } else {
+                    return priceB - priceA; // Descending order
+                }
             }
         });
 
@@ -219,9 +280,5 @@ import Bottle from "../components/Bottle.js";
         purchases.forEach((purchase) => {
             new Bottle(purchase, "purchase", template, container);
         });
-    }
-
-    function showAlerte(message) {
-        console.error(message);
     }
 })();

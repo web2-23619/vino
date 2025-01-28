@@ -27,6 +27,12 @@
         </div>
     </div>
 
+	<!-- Cellier Inventory Section -->
+<div class="cellier-inventory-action">
+    <!-- Inventory of selected cellar will be dynamically inserted here -->
+</div>
+
+
     <div data-js-list>
         <!-- Purchases will be dynamically added here -->
     </div>

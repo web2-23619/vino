@@ -215,11 +215,13 @@ class CellarController extends Controller
 			'quantity' => $bottle->pivot->quantity,
 		]);
 	}
+
+	// Récupère la liste des celliers appartenant à l'utilisateur connecté.
 	public function getUserCellars()
 	{
 		$user_id = Auth::id();
 	
-		// Retrieve all cellars for the logged-in user
+
 		$cellars = Cellar::where('user_id', $user_id)->get();
 	
 		return response()->json([
