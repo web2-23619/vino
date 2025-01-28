@@ -1,0 +1,43 @@
+div#interactive {
+    aspect-ratio: 4 / 3;
+    background-color: #000;
+    border-radius: 8px;
+    border: 2px solid #ccc;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    left: 50%;
+    margin: 20px auto;
+    max-width: 600px;
+    overflow: hidden;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    z-index: 1000;
+}
+
+/* Guide pour l'utilisateur */
+#interactive::after {
+    border: 2px dashed #00ff00;
+    box-sizing: border-box;
+    content: "";
+    display: block;
+    height: 50%;
+    left: 50%;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+}
+
+/* Styles pour les écrans plus petits */
+@media (max-width: 768px) {
+    #interactive {
+        width: 90%;
+    }
+
+    #interactive::after {
+        height: 40%;
+        width: 90%;
+    }
+}

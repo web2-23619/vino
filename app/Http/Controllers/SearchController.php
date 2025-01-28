@@ -102,6 +102,17 @@ class SearchController extends Controller
 		return response()->json(['searchQuery' => $searchQuery, 'results' => $results, 'source' => $source], 200);
 	}
 
+    /**
+     * Retourne les 3 meilleures correspondances pour une recherche d’autocomplétion.
+     *
+     * La requête doit contenir un paramètre `query` qui contient la chaîne de caractères
+     * à rechercher.
+     *
+     * Si la requête est vide, une réponse vide est renvoyée.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
 	public function autocomplete(Request $request)
 	{
 		$query = $request->get('query');
