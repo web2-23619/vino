@@ -8,13 +8,13 @@
     </header>
 
     <!-- Cellar Dropdown -->
-    <div class="display-options">
+    <!-- <div class="display-options">
         <div class="order">
             <label for="cellarDropdown">Sélectionnez un cellier</label>
             <select id="cellarDropdown" name="cellar">
                 <option value="" disabled selected>Chargement des celliers...</option>
             </select>
-        </div>
+        </div> -->
 
         <div class="order">
             <label for="order">Tri</label>

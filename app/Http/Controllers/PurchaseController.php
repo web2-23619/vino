@@ -246,7 +246,7 @@ class PurchaseController extends Controller
         return response()->json(['message' => 'added']);
     } catch (\Exception $e) {
         Log::error('Error in addToCellar: ' . $e->getMessage());
-        return response()->json(['error' => 'An error occurred while adding the bottle to the cellar.'], 500);
+        return response()->json(['error' => 'Une erreur est produite lors de ajout de la bouteille à la cave.'], 500);
     }
 }
 
