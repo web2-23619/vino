@@ -18,8 +18,10 @@ export default class Bottle {
     #btnReduire;
     #btnAugmenter;
     #changeQuantity;
+    #jsKey;
+    #source;
 
-    constructor(data, page, template, container) {
+    constructor(data, page, template, container, source = null) {
         this.#name = data.name;
         this.#price = data.price;
         this.#country = data.country;
@@ -34,6 +36,9 @@ export default class Bottle {
             this.#purchaseId = data.purchase_id;
             this.#quantity = data.purchase_quantity;
             this.#changeQuantity = this.#changePurchaseQuantity;
+        } else if (this.#page === "search") {
+            this.#jsKey = data.id;
+            this.#source = source;
         }
 
         this.#render();
@@ -46,43 +51,60 @@ export default class Bottle {
 
         clone.querySelector("[data-info='name']").textContent = this.#name;
         clone.querySelector("[data-info='type']").textContent = this.#type;
-        clone.querySelector("[data-info='quantity']").textContent =
-            this.#quantity;
+
         clone.querySelector("[data-info='volume']").textContent = this.#volume;
         clone.querySelector("[data-info='price']").textContent = this.#price;
         clone.querySelector("[data-info='img']").src = this.#img;
         clone.querySelector("[data-info='country']").textContent =
             this.#country;
+        if (this.#page === "purchase") {
+            clone.querySelector("[data-info='quantity']").textContent =
+                this.#quantity;
+        }
 
         //injecter dans DOM
         this.#container.append(clone);
         this.#elementHTML = this.#container.lastElementChild;
 
-        this.#elementHTML.setAttribute("data-js-id", this.#purchaseId);
+        if (this.#page === "purchase") {
+            this.#elementHTML.setAttribute("data-js-id", this.#purchaseId);
+
+            this.#btnRemove = this.#elementHTML.querySelector(
+                "[data-js-action='afficherModaleConfirmation']"
+            );
+
+            this.#btnRemove.addEventListener(
+                "click",
+                this.#afficherModaleSupressionAchat.bind(this)
+            );
+
+            this.#btnReduire = this.#elementHTML.querySelector(
+                "[data-js-action='reduire']"
+            );
+            this.#btnAugmenter = this.#elementHTML.querySelector(
+                "[data-js-action='augmenter']"
+            );
+
+            this.#btnReduire.addEventListener("click", (event) =>
+                this.#changeQuantity(event, "reduire")
+            );
+            this.#btnAugmenter.addEventListener("click", (event) =>
+                this.#changeQuantity(event, "augmenter")
+            );
+        } else if (this.#page === "search") {
+            this.#elementHTML.setAttribute("data-js-key", this.#jsKey);
+
+            const btnAdd = this.#elementHTML.querySelector(".btn");
+            const routeTemplate = btnAdd.dataset.routeTemplate;
+
+            const updatedRoute = routeTemplate
+                .replace(":bottle_id", this.#jsKey)
+                .replace(":source", this.#source);
+
+            btnAdd.href = updatedRoute;
+        }
+
         this.#elementHTML.setAttribute("data-js-name", this.#name);
-
-        this.#btnRemove = this.#elementHTML.querySelector(
-            "[data-js-action='afficherModaleConfirmation']"
-        );
-
-        this.#btnRemove.addEventListener(
-            "click",
-            this.#afficherModaleSupressionAchat.bind(this)
-        );
-
-        this.#btnReduire = this.#elementHTML.querySelector(
-            "[data-js-action='reduire']"
-        );
-        this.#btnAugmenter = this.#elementHTML.querySelector(
-            "[data-js-action='augmenter']"
-        );
-
-        this.#btnReduire.addEventListener("click", (event) =>
-            this.#changeQuantity(event, "reduire")
-        );
-        this.#btnAugmenter.addEventListener("click", (event) =>
-            this.#changeQuantity(event, "augmenter")
-        );
     }
 
     #afficherModaleSupressionAchat(event) {
@@ -148,10 +170,16 @@ export default class Bottle {
             );
             if (currentQuantity === 0) {
                 btnReduire.setAttribute("inert", "true");
-                btnReduire.classList.add("disappear", "card_purchase_deactivated");
+                btnReduire.classList.add(
+                    "disappear",
+                    "card_purchase_deactivated"
+                );
             } else {
                 btnReduire.removeAttribute("inert");
-                btnReduire.classList.remove("disappear", "card_purchase_deactivated");
+                btnReduire.classList.remove(
+                    "disappear",
+                    "card_purchase_deactivated"
+                );
             }
         } else {
             // console.log("Échec.");

@@ -18,7 +18,5 @@
 			</button>
 			<ul class="search_suggestions" style="display: none;"></ul>
 		</div>
-		
-
 	</div>
 </form>
