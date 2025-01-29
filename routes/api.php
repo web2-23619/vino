@@ -7,6 +7,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CellarController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\SearchController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,7 +21,7 @@ use App\Http\Controllers\FavoriteController;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+	return $request->user();
 });
 
 Route::post('/login', [AuthController::class, 'apiLogin']);
@@ -29,14 +31,18 @@ Route::post('/register', [AuthController::class, 'apiRegister']);
 
 Route::middleware('auth:sanctum')->delete('supprimer/achat/{purchase}', [PurchaseController::class, 'destroy']);
 Route::middleware('auth:sanctum')->get('afficher/achat', [PurchaseController::class, 'AllPurchaseApi']);
+Route::middleware('auth:sanctum')->patch('achat/{purchase}/quantite', [PurchaseController::class, 'updateQuantityApi']);
+
 Route::delete('/supprimer/utilisateur/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+Route::middleware('auth:sanctum')->patch('/mesBouteilles', [UserController::class, 'updateQuantityApi']);
+
 Route::middleware('auth:sanctum')->delete('supprimer/cellier/{cellar}', [CellarController::class, 'destroy']);
 Route::middleware('auth:sanctum')->delete('retirer/{cellar_id}/{bottle_id}', [CellarController::class, 'apiRemoveBottle']);
 Route::middleware('auth:sanctum')->patch('cellier/{cellar_id}/{bottle_id}', [CellarController::class, 'updateQuantityApi']);
 Route::middleware('auth:sanctum')->get('cellier/{cellar}/bouteille', [CellarController::class, 'showBottlesApi']);
-Route::middleware('auth:sanctum')->patch('achat/{purchase}/quantite', [PurchaseController::class, 'updateQuantityApi']);
-Route::middleware('auth:sanctum')->patch('/mesBouteilles', [UserController::class, 'updateQuantityApi']);
 
 Route::middleware('auth:sanctum')->get('/favoris', [FavoriteController::class, 'allFavoritesApi']);
 Route::middleware('auth:sanctum')->post('/favoris', [FavoriteController::class, 'addFavoriteApi']);
 Route::middleware('auth:sanctum')->delete('/favoris/{bottle_id}', [FavoriteController::class, 'removeFavoriteApi']);
+
+Route::middleware('auth:sanctum')->post('/recherche', [SearchController::class, 'searchApi']);

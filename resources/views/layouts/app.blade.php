@@ -7,6 +7,7 @@
 	<title>{{ config('app.name') }} - @yield('title')</title>
 	<link rel="stylesheet" href="{{ asset('css/main.css') }}">
 	<script type="module" src="@yield('js')"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2/dist/quagga.min.js"></script>
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
@@ -36,13 +37,18 @@
 	@auth
 	<footer>
 		@if(Route::currentRouteName() == 'cellar.index')
-			<div>
-				<a href="{{ route('search.index', ['source' => 'cellier', 'cellar_id' => $cellar->id]) }}" class="btn btn_accent">Ajouter Bouteille</a>
-			</div>
+		<div>
+			<a href="{{ route('search.index', ['source' => 'cellier', 'cellar_id' => $cellar->id]) }}" class="btn btn_accent">Ajouter Bouteille</a>
+		</div>
 		@endif
 		@if(isset($addBottle))
 		<div>
 			<a href="{{ route('search.index') }}" class="btn-add">Ajouter {{$addBottle}}</a>
+		</div>
+		@endif
+		@if(Route::currentRouteName() == 'search.index')
+		<div>
+			<button class="btn btn_outline_dark" data-js="remonter">Remonter</button>
 		</div>
 		@endif
 		<!-- Ajouter un bouton "+ Bouteille" seulement sur la route 'cellar.showBottles' -->
@@ -80,6 +86,7 @@
 							d="M321.2127,54.3591a13.3054,13.3054,0,0,0-12.294-8.4243H203.1539a13.3025,13.3025,0,0,0-12.279,8.3847,203.8036,203.8036,0,0,0-7.981,23.64H329.1061A208.59,208.59,0,0,0,321.2127,54.3591Z" />
 					</g>
 				</svg>Inventaire</a>
+
 			<a href="{{ route('favorites.index') }}" class="nav-menu__item">
 				<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
 					<g id="Wine_bottle">
@@ -92,14 +99,8 @@
 					</g>
 				</svg>Favoris
 			</a>
-			<a href="{{ route('search.index') }}" class="nav-menu__item">
-				<svg enable-background="new 0 0 32 32" id="Glyph" version="1.1" viewBox="0 0 32 32" xml:space="preserve"
-					xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-					<path
-						d="M27.414,24.586l-5.077-5.077C23.386,17.928,24,16.035,24,14c0-5.514-4.486-10-10-10S4,8.486,4,14  s4.486,10,10,10c2.035,0,3.928-0.614,5.509-1.663l5.077,5.077c0.78,0.781,2.048,0.781,2.828,0  C28.195,26.633,28.195,25.367,27.414,24.586z M7,14c0-3.86,3.14-7,7-7s7,3.14,7,7s-3.14,7-7,7S7,17.86,7,14z"
-						id="XMLID_223_" />
-				</svg>Recherche
-			</a>
+			
+
 			<a href="{{route('purchase.index')}}" class="nav-menu__item">
 				<svg viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg">
 					<path

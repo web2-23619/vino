@@ -49,4 +49,13 @@ export default class App {
             new Alerte(null, message, "erreur");
         }
     }
+
+	getAbsoluteYPosition(element) {
+    let yPosition = 0;
+    while (element) {
+        yPosition += element.offsetTop;
+        element = element.offsetParent;
+    }
+    return yPosition;
+}
 }

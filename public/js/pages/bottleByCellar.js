@@ -54,6 +54,18 @@ import ModaleAction from "../components/ModaleAction.js";
     });
 })();
 
+/**
+ * Affiche la modale de suppression d'une bouteille d'un cellier.
+ *
+ * La modale est créer avec les données suivantes :
+ * - l'ID de l'association cellier_has_bouteille à supprimer
+ * - le nom de la bouteille
+ * - l'action à effectuer (retirerBouteille)
+ * - le type d'action (supprimer)
+ * - l'élément HTML à mettre à jour suite à la suppression
+ *
+ * @param {Event} event L'évènement qui a déclencher la fonction
+ */
 async function afficherModaleSupressionBouteille(event) {
     const declencheur = event.target;
     const elToChange = declencheur.closest("article");

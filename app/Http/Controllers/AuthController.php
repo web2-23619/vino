@@ -43,7 +43,7 @@ class AuthController extends Controller
 			$request->session()->regenerate();
 
 			
-			return redirect()->route('user.profile')->with('success', 'Connexion réussie!');
+			return redirect()->route('cellar.index')->with('success', 'Connexion réussie!');
 		}
 
 		return redirect(route('login'))
