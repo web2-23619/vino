@@ -9,7 +9,7 @@
     </header>
 
     <!-- Formulaire avec action conditionnelle -->
-    <form class="form" id="addBottleForm" method="POST">
+    <form class="form" id="addBottleForm" method="POST" action="{{ route('purchase.addToCellar') }}">
         @csrf
         <input type="hidden" name="bottle_id" value="{{ $bottle->id }}">
         <input type="hidden" name="cellar_id" id="cellar_id" value="{{ session('cellar_id') }}">

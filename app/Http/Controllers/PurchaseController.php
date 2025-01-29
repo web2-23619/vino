@@ -6,6 +6,10 @@ use App\Models\Purchase;
 use App\Models\Bottle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+
+
 
 class PurchaseController extends Controller
 {
@@ -199,4 +203,54 @@ class PurchaseController extends Controller
 			return response()->json(['message' => 'Erreur au retrait de la bouteille'], 400);
 		}
 	}
+	public function addToCellar(Request $request)
+	{
+		try {
+			$validated = $request->validate([
+				'bottleId' => 'required|integer|exists:bottles,id',
+				'cellarId' => 'required|integer|exists:cellars,id',
+				'quantity' => 'required|integer|min:1',
+			]);
+	
+			// 🔹 Check if the bottle already exists in the selected cellar
+			$cellarBottle = DB::table('cellar_has_bottles')
+				->where('bottle_id', $validated['bottleId'])
+				->where('cellar_id', $validated['cellarId'])
+				->first();
+	
+			if ($cellarBottle) {
+				// 🔹 If the bottle is already in the cellar, update the quantity
+				DB::table('cellar_has_bottles')
+					->where('bottle_id', $validated['bottleId'])
+					->where('cellar_id', $validated['cellarId'])
+					->update([
+						'quantity' => $cellarBottle->quantity + $validated['quantity'],
+						'updated_at' => now(),
+					]);
+			} else {
+				// 🔹 If the bottle is new, insert it into the cellar
+				DB::table('cellar_has_bottles')->insert([
+					'cellar_id' => $validated['cellarId'],
+					'bottle_id' => $validated['bottleId'],
+					'quantity' => $validated['quantity'],
+					'created_at' => now(),
+					'updated_at' => now(),
+				]);
+			}
+	
+			// Remove the bottle from the purchases list (Liste d'achat)
+			DB::table('purchases')
+				->where('bottle_id', $validated['bottleId'])
+				->where('user_id', Auth::id())
+				->delete();
+	
+			// Redirect to the inventory page
+			return redirect()->route('inventaire')->with('success', 'Bouteille ajoutée avec succès!');
+	
+		} catch (\Exception $e) {
+			return response()->json(['error' => 'Erreur lors de l\'ajout'], 500);
+		}
+	}
+	
+
 }

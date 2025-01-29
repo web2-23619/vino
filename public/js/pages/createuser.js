@@ -46,9 +46,11 @@ async function register(event) {
 
         const data = await response.json();
 
+        console.log(data);
+
         if (response.ok) {
             localStorage.setItem("token", data.token);
-            window.location.href = data.redirect;
+            //window.location.href = `${App.instance.baseURL}/profile`;
         } else {
             // Display error message
             new Alerte(null, data.message || "Une erreur s'est produite", "erreur");
