@@ -46,6 +46,7 @@
 			</select>
 	</div>
 </section>
+
 <template id="noPurchase">
 	<article class="noContent">
 		<h3>
@@ -56,6 +57,10 @@
 	</article>
 </template>
 <section class="cellier-products">
+	<div class="display-options">
+		@include('layouts.filtres',['initialCountries' => $initialCountries, 'remainingCountries' => $remainingCountries, 'remainingCount' => $remainingCount, 'types' => $types])
+		@include('layouts.sort')
+	</div>
     <template id="bottle-template">
         <article class="card_bottle" data-js-key="" data-js-Name="">
             <picture>
@@ -77,6 +82,7 @@
                     <p class="card_bottle__metainfo"></p>
                 </header>
                 <div>
+					<p>$ <span data-info="price">PRIX</span></p>
                     <div class="card_bottle__actions">
                         <button data-js-action="reduire">-</button>
                         <span data-js-quantite="quantite"></span>

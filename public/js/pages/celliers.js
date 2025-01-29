@@ -21,6 +21,10 @@ import App from "../components/App.js";
         new Alerte(alerte);
     }
 
+    // Variable qui contient les bouteilles après chaque render de la page
+    // Elle est mise à jour dand la fonction updateBottleView()
+    let currentBottles = [];
+
 
     document.addEventListener("DOMContentLoaded", () => {
         document.addEventListener("click", (event) => {
@@ -42,6 +46,19 @@ import App from "../components/App.js";
         } else if (event.target.matches("[data-js-action='augmenter']")) {
             changeQuantity(event, "augmenter");
         }
+    });
+
+    // Gestion de la fonctionnalité (Sort)
+    // changer l'ordre d'affichage selon la selection
+    document.addEventListener("DOMContentLoaded", () => {
+        const sortingOptions = document.querySelector(".sorting__frame");
+    
+        sortingOptions.addEventListener("change", function () {
+            const selectedSort = document.querySelector("[name='sorting']:checked");
+            if (selectedSort && currentBottles.length > 0) {
+                renderSort(selectedSort.value);
+            }
+        });
     });
 
 
@@ -142,10 +159,7 @@ import App from "../components/App.js";
             "cellier_has_bouteille",
             elToChange
         );
-        const currentCellarId = currentCellar.value;
-        updateBottleView(currentCellarId);
     }
-    
 
     // Fonctionnalité pour le menu kebab et le select dans l'inventaire
 
@@ -216,8 +230,12 @@ import App from "../components/App.js";
 
             const data = await response.json();
 
+            // Mise à jour de la liste des bouteilles dans la variable globale
+            // pour que la fonctionnalité (sort) puisse avoir accès
+            currentBottles = [...data.bottles];
+
             // Charge les bouteilles dans la vue
-            renderBottles(data.cellar, data.bottles);
+            renderBottles(data.cellar, currentBottles);
         } catch (error) {
             console.error("Une erreur s'est produite :", error);
         }
@@ -273,11 +291,46 @@ import App from "../components/App.js";
     
             const quantity = clone.querySelector("[data-js-quantite='quantite']");
             quantity.textContent = bottle.quantity;
+
+            const price = clone.querySelector("[data-info='price']");
+            price.textContent = bottle.price;
     
             // Ajoute la bouteille au conteneur
             bottlesContainer.appendChild(clone);
         });
     }
+
+    /**
+    * tri et affiche le résultat trié
+    */
+    function renderSort(sortOption) {
+
+        if (currentBottles.length === 0) return;
+
+        const [criteria, sort] = sortOption.split("_");
+        currentBottles.sort((a, b) => {
+            if (criteria === "name") {
+                const nameA = a.name;
+                const nameB = b.name;
+
+                if (sort === "asc") {
+                    return nameA.localeCompare(nameB);
+                } else {
+                    return nameB.localeCompare(nameA);
+                }
+            } else if (criteria === "price") {
+                const priceA = a.price;
+                const priceB = b.price;
+                if (sort === "asc") {
+                    return priceA - priceB; // Ascending sort
+                } else {
+                    return priceB - priceA; // Descending sort
+                }
+            }
+        });
+        renderBottles({ id: currentBottles[0]?.cellar_id || 0 }, currentBottles);
+    }
+    
     
     /**
      * Met à jour la quantité d'une bouteille dans un cellier
