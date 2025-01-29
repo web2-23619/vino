@@ -27,7 +27,20 @@ class SearchController extends Controller
 		// Si aucune requête de recherche, afficher les bouteilles aléatoires
 		$randomBottles = Bottle::inRandomOrder()->take(5)->get();
 
-		return view('search.index', compact('randomBottles', 'source'));
+		// recupérer donner pour afficher les filtres
+		$countries = Bottle::select('country')->distinct()->get();
+
+		$countryNames = $countries->pluck('country')->toArray();
+
+		$initialCountries = array_slice($countryNames, 0, 5);
+		$remainingCountries = array_slice($countryNames, 5);
+		$remainingCount = count($remainingCountries);
+
+		$types = Bottle::select('type')
+			->distinct()
+			->get();
+
+		return view('search.index', compact('randomBottles', 'source', 'initialCountries', 'remainingCountries', 'remainingCount', 'types'));
 	}
 
 
@@ -58,15 +71,6 @@ class SearchController extends Controller
 		$searchQuery = $request->input('query');
 
 
-		//TODO: adapt
-		// Handling Sorting
-		if ($request->has('sort_by') && in_array($request->sort_by, ['name', 'created_at', 'price'])) {
-			$query->orderBy($request->sort_by, $request->sort_direction ?? 'asc');
-		} else {
-			// par default
-			$query->orderBy('name', 'asc');
-		}
-
 
 		//TODO: adapt
 		// Handling Filters by specific fields (checkboxes)
@@ -92,6 +96,15 @@ class SearchController extends Controller
 			});
 		}
 
+		// Handling Sorting
+		if ($request->has('tri')) {
+			list($criteria, $order) = explode("_", $request->tri);
+			$query->orderBy($criteria, $order);
+		} else {
+			// par default
+			$query->orderBy('name', 'asc');
+		}
+
 		// Handling Pagination
 		$results = $query->paginate(30);
 
@@ -102,17 +115,17 @@ class SearchController extends Controller
 		return response()->json(['searchQuery' => $searchQuery, 'results' => $results, 'source' => $source], 200);
 	}
 
-    /**
-     * Retourne les 3 meilleures correspondances pour une recherche d’autocomplétion.
-     *
-     * La requête doit contenir un paramètre `query` qui contient la chaîne de caractères
-     * à rechercher.
-     *
-     * Si la requête est vide, une réponse vide est renvoyée.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 * Retourne les 3 meilleures correspondances pour une recherche d’autocomplétion.
+	 *
+	 * La requête doit contenir un paramètre `query` qui contient la chaîne de caractères
+	 * à rechercher.
+	 *
+	 * Si la requête est vide, une réponse vide est renvoyée.
+	 *
+	 * @param \Illuminate\Http\Request $request
+	 * @return \Illuminate\Http\Response
+	 */
 	public function autocomplete(Request $request)
 	{
 		$query = $request->get('query');

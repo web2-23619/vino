@@ -2,7 +2,7 @@
 	<details>
 		<summary>Trier <span class="sorting__chevron">&#10094;</span></summary>
 	</details>
-	<div class="sorting__frame">
+	<form class="sorting__frame">
 		<div>
 			<input type="radio" id="name_asc" name="sorting" value="name_asc" checked />
 			<label for="name_asc">Nom: A-Z</label>
@@ -19,5 +19,5 @@
 			<input type="radio" id="price_desc" name="sorting" value="price_desc" />
 			<label for="price_desc">Prix: 100 - 0</label>
 		</div>
-	</div>
+	</form>
 </div>
