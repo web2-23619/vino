@@ -229,4 +229,44 @@ class CellarController extends Controller
 		]);
 	}
 
+	// Récupère la liste des celliers appartenant à l'utilisateur connecté.
+	public function getUserCellars()
+	{
+		$user_id = Auth::id();
+	
+
+		$cellars = Cellar::where('user_id', $user_id)->get();
+	
+		return response()->json([
+			'cellars' => $cellars,
+		]);
+	}
+
+
+public function addBottleFromSelection(Request $request)
+{
+    $request->validate([
+        'bottle_id' => 'required|exists:bottles,id',
+        'cellar_id' => 'required|exists:cellars,id',
+        'quantity' => 'required|integer|min:1',
+    ]);
+
+    $cellar = Cellar::findOrFail($request->cellar_id);
+    $bottle = Bottle::findOrFail($request->bottle_id);
+
+    // Check if the bottle already exists in the cellar
+    $existingBottle = $cellar->bottles()->where('bottle_id', $bottle->id)->first();
+
+    if ($existingBottle) {
+        $existingBottle->pivot->quantity += $request->quantity;
+        $existingBottle->pivot->save();
+    } else {
+        $cellar->bottles()->attach($bottle->id, ['quantity' => $request->quantity]);
+    }
+
+    // Redirect to the inventory page for the selected cellar
+	return redirect('/inventaire')->with('succes', 'Bouteille ajoutée avec succès!');
+
+
+}
 }

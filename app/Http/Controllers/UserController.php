@@ -67,7 +67,6 @@ return redirect()->route('user.profile')->with('success', 'Utilisateur créé av
 	public function profile()
 	{
 		$user = auth()->user();
-
 	
 		// Récupérer les comptes requis de manière dynamique
 		$cellarsCount = $user->cellars()->count(); 

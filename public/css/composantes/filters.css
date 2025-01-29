@@ -1,5 +1,7 @@
 .filters {
     font-family: var(--police-regular);
+
+	position: relative;
 }
 
 .filters > form > details + div {
@@ -46,42 +48,31 @@
 }
 
 /* ---- open filters ---- */
-.filters [id="btn-filters"] {
-    appearance: none;
-    cursor: pointer;
-    font-family: var(--police-regular);
-    font-size: var(--police-std);
-}
-
-.filters [id="btn-filters"]:not(:checked) + form {
-    opacity: 0;
-    pointer-events: none;
-}
-.filters [id="btn-filters"]::after {
-    content: "Filtrer";
-}
-
-.filters [id="btn-filters"]:checked::after {
-    content: "Filtrer";
-}
-
 .filters form {
 	box-sizing: border-box;
     font-family: var(--police-regular);
-
-    position: fixed; /* Cover the entire viewport */
-	top: calc(var(--top) + var(--espace-m));
-	bottom: calc(var(--bottom) + var(--espace-xs));
-	left: 0;
-	width: 100%;
-    z-index: 10; /* Above the content */
-
-	overflow: scroll;
-
-    background-color: var(--clair);
-	padding-inline: var(--espace-m);
 
 	display: flex;
 	flex-direction: column;
 	gap: var(--espace-xs);
 }
+
+.filters summary:has(.filters__chevron) {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.filters__chevron {
+    display: inline-block;
+    height: var(--police-std);
+    transform: rotate(-90deg);
+    transform-origin: center;
+    transition: all 200ms ease-in-out;
+}
+
+.filters details[open] .filters__chevron {
+    transform: rotate(90deg);
+}
+

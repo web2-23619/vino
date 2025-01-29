@@ -71,6 +71,8 @@ class ModaleAction {
                         "click",
                         this.#retirerBouteilleDeCellier.bind(this)
                     );
+                } else if (this.#model === "favoris") {
+                        this.#btnAction.addEventListener("click", this.#supprimerFavori.bind(this));
                 } else {
                     this.#btnAction.addEventListener(
                         "click",
@@ -267,6 +269,32 @@ class ModaleAction {
             new Alerte(null, message, "erreur");
         }
     }
+
+    async #supprimerFavori() {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+    
+        try {
+            const response = await fetch(`${App.instance.baseURL}/api/favoris/${this.#id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken,
+                    Authorization: "Bearer " + localStorage.getItem("token"),
+                },
+            });
+    
+            if (response.ok) {
+                this.#elToChange?.remove(); 
+            } else {
+                console.error("Erreur lors de la suppression du favori");
+            }
+    
+            this.#fermerModale(); 
+        } catch (error) {
+            console.error("Erreur réseau :", error);
+        }
+    }
+    
 }
 
 export default ModaleAction;

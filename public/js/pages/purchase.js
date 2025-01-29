@@ -23,10 +23,43 @@ import Bottle from "../components/Bottle.js";
         }
     });
 
+    document.addEventListener("click", (event) => {
+        if (event.target.matches('[data-js-action="addToCellar"]')) {
+            const bottleCard = event.target.closest(".card_bottle");
+            const bottleId = bottleCard.getAttribute("data-js-id");
+    
+            let source = 'cellier'; 
+            if (window.location.href.includes("listeAchat")) {
+                source = 'listeAchat';
+            }
+    
+            // Manually construct the URL based on Laravel route structure
+            const url = `/cellier/bouteille/ajouter/${bottleId}?source=${source}`;
+            
+            // Debugging
+            console.log("Redirecting to:", url); 
+            window.location.href = url;
+        }
+    });
+
+    // Remove bottle from UI after addition
+document.addEventListener("DOMContentLoaded", function () {
+    const successMessage = document.querySelector(".alert-success");
+    if (successMessage && window.location.href.includes("inventaire")) {
+        const bottleId = new URLSearchParams(window.location.search).get("bottleId");
+        const bottleCard = document.querySelector(`[data-js-id="${bottleId}"]`);
+        if (bottleCard) {
+            bottleCard.remove();
+        }
+    }
+});
+    
+
     // récupérer et afficher les données
     let dataAll = await getAll();
     render(dataAll);
     let purchases = dataAll.purchases;
+
 
     // changer l'ordre d'affichage selon la selection
     const sortingOptions = document.querySelector(".sorting__frame");
@@ -38,20 +71,6 @@ import Bottle from "../components/Bottle.js";
     //filtres
     const filterFormHTML = document.querySelector("[data-js='filtersForm']");
     filterFormHTML.addEventListener("submit", renderFilter);
-
-    //calcul de la hauteur du footer pour la position du filtre
-    const footerHTML = document.querySelector(".nav-menu");
-    const footerHeight = footerHTML.offsetHeight;
-    filterFormHTML.style.setProperty("--bottom", `${footerHeight}px`);
-    const btnFilters = document.querySelector("#btn-filters");
-    const btnFilterY = App.instance.getAbsoluteYPosition(btnFilters);
-    filterFormHTML.style.setProperty("--top", `${btnFilterY}px`);
-
-    btnFilters.addEventListener("change", function () {
-        document
-            .querySelector("[data-js-list]")
-            .classList.toggle("invisible", btnFilters.checked);
-    });
 
     //reinitialisation des filtres
     const btnResetFilters = filterFormHTML.querySelector(
@@ -88,6 +107,7 @@ import Bottle from "../components/Bottle.js";
      * Supprime tout le contenu de la liste des achats.
      * Utile pour les cas de reset de la liste.
      */
+
     function clearAll() {
         document.querySelector("[data-js-list]").innerHTML = "";
         const boutonAjout = document.querySelector("footer > div");
@@ -134,11 +154,11 @@ import Bottle from "../components/Bottle.js";
         const response = await fetch(
             `${App.instance.baseURL}/api/afficher/achat`,
             {
-                method: "get",
+                method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": csrfToken, // Ajoute CSRF token
-                    Authorization: "Bearer " + localStorage.getItem("token"), // Ajoute le token
+                    "X-CSRF-TOKEN": csrfToken,
+                    Authorization: "Bearer " + localStorage.getItem("token"),
                 },
             }
         );
@@ -163,7 +183,7 @@ import Bottle from "../components/Bottle.js";
     function render(data) {
         const container = document.querySelector("[data-js-list]");
         const template = document.querySelector("template#bottle");
-		console.log(data);
+        console.log(data);
 
         if (!data.empty) {
             data.purchases.forEach((purchase) => {
@@ -246,8 +266,6 @@ import Bottle from "../components/Bottle.js";
             min.value === "" &&
             max.value === ""
         ) {
-            btnFilters.checked = false;
-            btnFilters.dispatchEvent(new Event("change"));
             clearAll();
             render(dataAll);
             purchases = dataAll.purchases;
@@ -278,14 +296,11 @@ import Bottle from "../components/Bottle.js";
                 empty: false,
                 filtered: true,
             };
-			console.log(dataFiltered.purchases.length === 0);
+            console.log(dataFiltered.purchases.length === 0);
             if (dataFiltered.purchases.length === 0) {
                 dataFiltered.empty = true;
             }
             purchases = filteredPurchase;
-
-            btnFilters.checked = false;
-            btnFilters.dispatchEvent(new Event("change"));
             clearAll();
             render(dataFiltered);
         }

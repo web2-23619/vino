@@ -9,6 +9,7 @@ use App\Http\Controllers\PurchaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\GoutteController;
+use App\Http\Controllers\FavoriteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,7 +61,7 @@ Route::middleware('auth')->group(function () {
 
 
 	Route::post('/deconnexion', [AuthController::class, 'destroy'])->name('logout');
-	Route::middleware('auth')->get('/profile', [UserController::class, 'profile'])->name('user.profile');
+	Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
 
 	Route::get('/inventaire', [CellarController::class, 'index'])->name('cellar.index');
 	Route::get('inventaire/creer/cellier', [CellarController::class, 'create'])->name('cellar.create');
@@ -68,25 +69,35 @@ Route::middleware('auth')->group(function () {
 	Route::get('/modifier/cellier/{cellar}', [CellarController::class, 'edit'])->name('cellar.edit');
 	Route::put('/modifier/cellier/{cellar}', [CellarController::class, 'update'])->name('cellar.update');
 	Route::delete('supprimer/cellier/{cellar}', [CellarController::class, 'destroy'])->name('cellar.delete');
+	Route::post('/cellier/bouteille/ajouter', [CellarController::class, 'addBottleFromSelection'])->name('cellar.addBottleFromSelection');
 
 	Route::get('/mesBouteilles', [UserController::class, 'showBottles'])->name('user.showBottles');
 	Route::get('/cellier/{cellar}/bouteille', [CellarController::class, 'showBottles'])->name('cellar.showBottles');
 	
 	Route::get('/cellier/bouteille/ajouter/{bottle_id}', [SearchController::class, 'showAddBottleForm'])->name('bottle.add');
 	Route::post('/cellier/bouteille/ajouter', [SearchController::class, 'addBottle'])->name('bottle.add.submit');
+	
 
 	Route::get('/listeAchat/bouteille/ajouter/{bottle_id}', [PurchaseController::class, 'showAddBottleForm'])->name('achat.add');
 	Route::post('/listeAchat/bouteille/ajouter', [PurchaseController::class, 'addBottle'])->name('achat.add.submit');
-
-
-
+	Route::post('/listeAchat/ajouter-au-cellier', [PurchaseController::class, 'addToCellar'])->name('purchase.addToCellar');
 	Route::get('/listeAchat', [PurchaseController::class, 'index'])->name('purchase.index');
 
 	Route::get('/recherche', [SearchController::class, 'index'])->name('search.index');
-    Route::post('/recherche', [SearchController::class, 'search'])->name('search.results');
 	Route::get('/recherche-autocomplete', [SearchController::class, 'autocomplete'])->name('search.autocomplete');
 
+	Route::get('/favoris', [FavoriteController::class, 'index'])->name('favorites.index');
+	Route::get('/favoris/ajouter/{bottleId}', [FavoriteController::class, 'add'])->name('favoris.add');
+	Route::delete('/favoris/supprimer/{bottleId}', [FavoriteController::class, 'remove'])->name('favoris.remove');
+	Route::post('/favoris/toggle', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
 
 });
 
 Route::get('/utilisateurSupprime', [AuthController::class, 'deletedUser']);
+Route::get('/api/user/cellars', [CellarController::class, 'getUserCellars'])->name('cellar.getUserCellars');
+
+
+
+
+
+
