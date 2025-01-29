@@ -70,20 +70,6 @@ class SearchController extends Controller
 		$query = Bottle::query();
 		$searchQuery = $request->input('query');
 
-
-
-		//TODO: adapt
-		// Handling Filters by specific fields (checkboxes)
-		if ($request->has('filter_types')) {
-			$filterTypes = json_decode($request->filter_types, true); // Decode JSON to array
-			$query->whereIn('type', $filterTypes);
-		}
-		//TODO: adapt
-		if ($request->has('filter_countries')) {
-			$filterCountries = json_decode($request->filter_countries, true); // Decode JSON to array
-			$query->whereIn('country', $filterCountries);
-		}
-
 		// Rechercher les bouteilles correspondant à la requête
 		$searchTerms = explode(' ', $searchQuery); // Split search query into keyword
 		foreach ($searchTerms as $term) {
@@ -96,7 +82,30 @@ class SearchController extends Controller
 			});
 		}
 
-		// Handling Sorting
+		// filtrer par pays
+		$countries = $request->input('countries', []);
+
+		if (!empty($countries)) {
+			$query->whereIn('country', $countries);
+		}
+
+		// filtrer par pays
+		$types = $request->input('types', []);
+
+		if (!empty($types)) {
+			$query->whereIn('type', $types);
+		}
+
+		// filtrer par range de prix
+		if ($request->filled('min_price')) {
+			$query->where('price', '>=', $request->input('min_price'));
+		}
+		if ($request->filled('max_price')) {
+			$query->where('price', '<=', $request->input('max_price'));
+		}
+
+
+		// trier
 		if ($request->has('tri')) {
 			list($criteria, $order) = explode("_", $request->tri);
 			$query->orderBy($criteria, $order);
@@ -104,6 +113,7 @@ class SearchController extends Controller
 			// par default
 			$query->orderBy('name', 'asc');
 		}
+
 
 		// Handling Pagination
 		$results = $query->paginate(30);
