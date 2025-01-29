@@ -10,11 +10,6 @@ use Illuminate\Support\Facades\Auth;
 class SearchController extends Controller
 {
 
-
-
-
-
-
 	public function autocomplete(Request $request)
 	{
 		$query = $request->get('query');
@@ -85,9 +80,6 @@ class SearchController extends Controller
 		}
 	}
 
-
-
-
 	public function showAddBottleForm($bottleId, Request $request)
 	{
 		// Récupérer la bouteille
@@ -136,19 +128,6 @@ class SearchController extends Controller
 			->get();
 
 		return view('search.index', compact('randomBottles', 'source', 'initialCountries', 'remainingCountries', 'remainingCount', 'types'));
-	}
-
-
-
-	/**
-	 * Traiter la demande de recherche et afficher les résultats.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @return \Illuminate\View\View
-	 */
-	public function search(Request $request)
-	{
-		return view('search.results');
 	}
 
 	public function searchApi(Request $request)
