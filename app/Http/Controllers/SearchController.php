@@ -27,7 +27,7 @@ class SearchController extends Controller
         // Si une requête de recherche est présente
         if ($request->has('query') && !empty($request->input('query'))) {
             $query = $request->input('query');
-            
+    
             // Rechercher les bouteilles correspondant à la requête
             $results = Bottle::where('name', 'LIKE', "%{$query}%")
                 ->orWhere('type', 'LIKE', "%{$query}%")
@@ -39,14 +39,24 @@ class SearchController extends Controller
                 'query' => $query,
                 'results' => $results,
                 'resultCount' => $results->count(),
-                'source' => $source, // Ajouter la source à la vue
+                'source' => $source, 
             ]);
         }
     
         // Si aucune requête de recherche, afficher les bouteilles aléatoires
         $randomBottles = Bottle::inRandomOrder()->take(5)->get();
     
-        return view('search.index', compact('randomBottles', 'source'));
+        // Récupérer les favoris de l'utilisateur connecté
+        $favorites = auth()->check()
+        ? auth()->user()->favorites()
+            ->join('bottles as b1', 'favorites.bottle_id', '=', 'b1.id') // Alias 'b1' pour la première jointure
+            ->select('b1.id') // Sélectionner l'ID de la première instance de 'bottles'
+            ->pluck('b1.id')
+            ->toArray()
+        : []; 
+    
+        // Retourner la vue avec les données nécessaires
+        return view('search.index', compact('randomBottles', 'source', 'favorites'));
     }
     
     

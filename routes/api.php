@@ -6,6 +6,7 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CellarController;
+use App\Http\Controllers\FavoriteController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -36,4 +37,6 @@ Route::middleware('auth:sanctum')->get('cellier/{cellar}/bouteille', [CellarCont
 Route::middleware('auth:sanctum')->patch('achat/{purchase}/quantite', [PurchaseController::class, 'updateQuantityApi']);
 Route::middleware('auth:sanctum')->patch('/mesBouteilles', [UserController::class, 'updateQuantityApi']);
 
-
+Route::middleware('auth:sanctum')->get('/favoris', [FavoriteController::class, 'allFavoritesApi']);
+Route::middleware('auth:sanctum')->post('/favoris', [FavoriteController::class, 'addFavoriteApi']);
+Route::middleware('auth:sanctum')->delete('/favoris/{bottle_id}', [FavoriteController::class, 'removeFavoriteApi']);

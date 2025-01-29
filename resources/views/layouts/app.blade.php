@@ -80,7 +80,7 @@
 							d="M321.2127,54.3591a13.3054,13.3054,0,0,0-12.294-8.4243H203.1539a13.3025,13.3025,0,0,0-12.279,8.3847,203.8036,203.8036,0,0,0-7.981,23.64H329.1061A208.59,208.59,0,0,0,321.2127,54.3591Z" />
 					</g>
 				</svg>Inventaire</a>
-			<a href="{{ route('user.showBottles') }}" class="nav-menu__item">
+			<a href="{{ route('favorites.index') }}" class="nav-menu__item">
 				<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
 					<g id="Wine_bottle">
 						<path
@@ -90,7 +90,7 @@
 							d="M291,59.0991A13.0991,13.0991,0,0,0,277.9009,46H234.0991A13.0989,13.0989,0,0,0,221,59.0991V85.373h70Z"
 							fill="#fefef2" />
 					</g>
-				</svg>Bouteilles
+				</svg>Favoris
 			</a>
 			<a href="{{ route('search.index') }}" class="nav-menu__item">
 				<svg enable-background="new 0 0 32 32" id="Glyph" version="1.1" viewBox="0 0 32 32" xml:space="preserve"

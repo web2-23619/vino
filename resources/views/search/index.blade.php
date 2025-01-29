@@ -29,8 +29,13 @@
 			<div>
 				<p>Prix: {{ number_format($bottle->price, 2) }} $</p>
 				<div class="card_bottle__actions">
-					<a href="{{ route('bottle.add', ['bottle_id' => $bottle->id, 'source' => session('add_bottle_source', 'default')]) }}" class="btn no-bg">Ajouter</a>
+					@if($source === 'favoris')
+						<a href="{{ route('favoris.add', ['bottleId' => $bottle->id]) }}" class="btn no-bg">Ajouter</a>
+					@else
+						<a href="{{ route('bottle.add', ['bottle_id' => $bottle->id, 'source' => $source]) }}" class="btn no-bg">Ajouter</a>
+					@endif
 				</div>
+				
 			</div>
 		</section>
 	</article>
