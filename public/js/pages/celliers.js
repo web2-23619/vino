@@ -21,15 +21,19 @@ import App from "../components/App.js";
         new Alerte(alerte);
     }
 
-    const btnsModaleConfirmation = document.querySelectorAll(
-        "[data-js-action='afficherModaleConfirmation']"
-    );
 
-    if (btnsModaleConfirmation) {
-        for (const btn of btnsModaleConfirmation) {
-            btn.addEventListener("click", afficherModaleSupressionCellier);
-        }
-    }
+    document.addEventListener("DOMContentLoaded", () => {
+        document.addEventListener("click", (event) => {
+            const modalButton = event.target.closest("[data-js-action='afficherModaleConfirmation']");
+            if (modalButton.matches("[data-js-type='trash']")) {
+                const h3Content = document.querySelector("header h3").textContent;
+                afficherModaleSupressionBouteille(event, h3Content);
+            } else {
+                afficherModaleSupressionCellier(event);
+            }
+        });
+    });
+    
 
         
     document.addEventListener("click", (event) => {
@@ -39,7 +43,7 @@ import App from "../components/App.js";
             changeQuantity(event, "augmenter");
         }
     });
-        
+
 
     function checkMenu(event) {
         const trigger = event.target;
@@ -55,6 +59,13 @@ import App from "../components/App.js";
     }
 
     
+    /**
+     * Affiche un message pour informer l'utilisateur qu'il n'y a pas de contenu
+     * dans la page actuelle.
+     * 
+     * Le message est stock  dans un template HTML et est ajouté au DOM.
+     * Si un bouton "Ajouter" est présent, il est supprimé.
+     */
     function displayNoContentMessage() {
         const template = document.querySelector("template#noPurchase");
         let content = template.content.cloneNode(true);
@@ -68,15 +79,26 @@ import App from "../components/App.js";
     }
 
 
+    /**
+     * Affiche la modale de suppression d'un cellier.
+     *
+     * La modale est créer avec les données suivantes :
+     * - l'ID du cellier à supprimer
+     * - le nom du cellier
+     * - l'action à effectuer (supprimerCellier)
+     * - le type d'action (supprimer)
+     * - l'élément HTML à mettre à jour suite à la suppression
+     *
+     * @param {Event} event L'évènement qui a déclencher la fonction
+     */
     function afficherModaleSupressionCellier(event) {
         menuOuvert = null;
 
         const declencheur = event.target;
         const cellierID = declencheur.dataset.jsCellier;
         const cellierNom = declencheur.dataset.jsName;
-        const elToChange = declencheur.closest("article");
-
-        const dropdown = elToChange.querySelector(".menu-deroulant > input");
+        const elToChange = document.querySelector(`#cellar-select option[value="${cellierID}"]`);
+        const dropdown = document.querySelector(".menu-deroulant > input");
         dropdown.checked = false;
 
         new ModaleAction(
@@ -89,6 +111,40 @@ import App from "../components/App.js";
         );
     }
 
+
+    /**
+     * Affiche la modale de suppression d'une bouteille d'un cellier.
+     *
+     * La modale est créer avec les données suivantes :
+     * - l'ID de l'association cellier_has_bouteille à supprimer
+     * - le nom de la bouteille
+     * - l'action à effectuer (retirerBouteille)
+     * - le type d'action (supprimer)
+     * - l'élément HTML à mettre à jour suite à la suppression
+     *
+     * @param {Event} event L'évènement qui a déclencher la fonction
+     * @param {String} name Le nom de la bouteille
+     */
+    async function afficherModaleSupressionBouteille(event, name) {
+        const declencheur = event.target;
+        const elToChange = declencheur.closest("article");
+        const h3Element = name;
+        console.log(elToChange);
+        const nom = elToChange.dataset.jsName;
+        console.log(h3Element);
+        const ids = elToChange.dataset.jsKey;
+
+        new ModaleAction(
+            ids,
+            nom,
+            "retirerBouteille",
+            "supprimer",
+            "cellier_has_bouteille",
+            elToChange
+        );
+    }
+    
+
     // Fonctionnalité pour le menu kebab et le select dans l'inventaire
 
     const currentCellar = document.querySelector("#cellar-select");
@@ -97,6 +153,15 @@ import App from "../components/App.js";
     const bottleTemplate = document.querySelector("#bottle-template");
 
 
+    /**
+     * Fonction qui injecte le contenu du template de menu déroulant (#kebab-menu)
+     * dans le DOM en remplaçant les valeurs par défaut par celles du cellier
+     * selectionné.
+     *
+     * La fonction est appelée lorsque le select du cellier est modifié.
+     *
+     * @listens select#cellar-select
+     */
     function selectTheCurrentValue(){
         const kebabMenuContent = kebabMenu.content.cloneNode(true);
 
@@ -125,6 +190,12 @@ import App from "../components/App.js";
 
     // fonction pour montrer la vue selon le cellier selectionner
 
+    /**
+     * Charge les bouteilles pour le cellier selectionné dans la vue.
+     * Appelée lorsque le select du cellier est modifié.
+     *
+     * @param {number} cellarId Identifiant du cellier selectionné.
+     */
     async function updateBottleView(cellarId) {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         try {
@@ -150,6 +221,12 @@ import App from "../components/App.js";
         }
     }
 
+    /**
+     * Charge les bouteilles pour le cellier selectionné dans la vue.
+     * 
+     * @param {Object} cellar Informations du cellier selectionné.
+     * @param {Array<Object>} bottles Informations des bouteilles du cellier.
+     */
     function renderBottles(cellar, bottles) {
     
         // Selectionne le conteneur
@@ -200,6 +277,12 @@ import App from "../components/App.js";
         });
     }
     
+    /**
+     * Met à jour la quantité d'une bouteille dans un cellier
+     * @param {Event} event Evénement déclenché par le clic sur le bouton "-" ou "+"
+     * @param {String} action Action à effectuer : "reduire" ou "augmenter"
+     * @returns {Promise<void>}
+     */
     async function changeQuantity(event, action) {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         const trigger = event.target;
@@ -253,3 +336,4 @@ import App from "../components/App.js";
 
     selectTheCurrentValue();
 })();
+

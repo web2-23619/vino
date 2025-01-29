@@ -18,15 +18,19 @@ class PurchaseController extends Controller
 	 */
 	public function index()
 	{
-		$countries = Bottle::select('country')
-			->distinct()
-			->get();
+		$countries = Bottle::select('country')->distinct()->get();
+
+		$countryNames = $countries->pluck('country')->toArray();
+
+		$initialCountries = array_slice($countryNames, 0, 5);
+		$remainingCountries = array_slice($countryNames, 5);
+		$remainingCount = count($remainingCountries);
 
 		$types = Bottle::select('type')
 			->distinct()
 			->get();
 
-		return view('purchase.index', ['countries' => $countries, 'types' => $types]);
+		return view('purchase.index', ['initialCountries' => $initialCountries, 'remainingCountries' => $remainingCountries, 'remainingCount' => $remainingCount, 'types' => $types]);
 	}
 
 	/**
@@ -162,13 +166,13 @@ class PurchaseController extends Controller
 	}
 
 	/**
-	 * display All
+	 * retourne tous les achats
 	 */
-	public function AllPurchaseApi()
+	public function AllPurchaseApi(Request $request)
 	{
 
 		$purchases = Purchase::join('bottles', 'purchases.bottle_id', '=', 'bottles.id')
-		->where('user_id', Auth::user()->id)
+			->where('user_id', Auth::user()->id)
 			->select('purchases.id as purchase_id', 'purchases.quantity as purchase_quantity', 'bottles.*')
 			->orderBy('bottles.name', 'asc')
 			->get();
@@ -178,7 +182,7 @@ class PurchaseController extends Controller
 			$empty = false;
 		}
 
-		return response()->json(['purchases' => $purchases, 'empty' => $empty], 200);
+		return response()->json(['purchases' => $purchases, 'empty' => $empty, 'filtered'=>false], 200);
 	}
 
 

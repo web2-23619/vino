@@ -3,38 +3,34 @@
 @section('title', "Liste d'achat")
 @section('content')
 <section>
-    <header data-js="header">
-        <h2>Liste d'achat</h2>
-    </header>
+	<header data-js="header">
+		<h2>Liste d'achat</h2>
+	</header>
+	<template id="alerte">
+		<div class="alerte">
+			<p>{{ session('erreur') }}</p>
+			<button data-js-action="fermer">x</button>
+		</div>
+	</template>
+	<div class="display-options">
+		@include('layouts.filtres',['initialCountries' => $initialCountries, 'remainingCountries' => $remainingCountries, 'remainingCount' => $remainingCount, 'types' => $types])
+		@include('layouts.sort')
+	</div>
+	<div data-js-list>
 
-    <!-- Cellar Dropdown -->
-    <!-- <div class="display-options">
-        <div class="order">
-            <label for="cellarDropdown">Sélectionnez un cellier</label>
-            <select id="cellarDropdown" name="cellar">
-                <option value="" disabled selected>Chargement des celliers...</option>
-            </select>
-        </div> -->
-
-        <div class="order">
-            <label for="order">Tri</label>
-            <select name="order" id="order">
-                <option value="name_asc">Nom ascendant: A-Z</option>
-                <option value="name_desc">Nom descendant: Z-A</option>
-                <option value="price_asc">Prix ascendant: 0 - 100</option>
-                <option value="price_desc">Prix descendant: 100 - 0</option>
-            </select>
-        </div>
-    </div>
-
-
-
-<!-- Alert Template -->
-<template id="alerte">
-    <div class="alerte">
-        <p>{{ session('erreur') }}</p>
-        <button data-js-action="fermer">x</button>
-    </div>
+	</div>
+</section>
+<!-- Template pour l'utilisation des modales, ne pas supprimer-->
+<template id="supprimerAchat">
+	<div class="modale-action">
+		<div class="modale-action__conteneur">
+			<p class="modale-action__message">Veuillez confirmer la supression de la bouteille <span data-js-replace="nom">NOM</span></p>
+			<div class="modale-action__boutons">
+				<button data-js-action="supprimer" class="btn btn_accent btn_thick">Supprimer</button>
+				<button data-js-action="annuler" class="btn btn_outline_dark btn_thick">Annuler</button>
+			</div>
+		</div>
+	</div>
 </template>
 
 <!-- Template for no purchases -->
@@ -47,8 +43,6 @@
         <a href="{{ route('search.index', ['source' => 'listeAchat']) }}" class="btn">Découvrir des bouteilles</a>
     </article>
 </template>
-
-<!-- Template for a bottle -->
 <template id="bottle">
     <article class="card_bottle" data-js-id="" data-js-Name="">
         <picture>

@@ -7,6 +7,7 @@
 	<title>{{ config('app.name') }} - @yield('title')</title>
 	<link rel="stylesheet" href="{{ asset('css/main.css') }}">
 	<script type="module" src="@yield('js')"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2/dist/quagga.min.js"></script>
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
@@ -36,13 +37,18 @@
 	@auth
 	<footer>
 		@if(Route::currentRouteName() == 'cellar.index')
-			<div>
-				<a href="{{ route('search.index', ['source' => 'cellier', 'cellar_id' => $cellar->id]) }}" class="btn btn_accent">Ajouter Bouteille</a>
-			</div>
+		<div>
+			<a href="{{ route('search.index', ['source' => 'cellier', 'cellar_id' => $cellar->id]) }}" class="btn btn_accent">Ajouter Bouteille</a>
+		</div>
 		@endif
 		@if(isset($addBottle))
 		<div>
 			<a href="{{ route('search.index') }}" class="btn-add">Ajouter {{$addBottle}}</a>
+		</div>
+		@endif
+		@if(Route::currentRouteName() == 'search.index')
+		<div>
+			<button class="btn btn_outline_dark" data-js="remonter">Remonter</button>
 		</div>
 		@endif
 		<!-- Ajouter un bouton "+ Bouteille" seulement sur la route 'cellar.showBottles' -->

@@ -10,6 +10,8 @@ body {
     flex-direction: column;
 
     height: 100dvh;
+
+    scroll-behavior: smooth;
 }
 
 body > * {
@@ -18,7 +20,7 @@ body > * {
 }
 
 body > header {
-    padding-block: var(--espace-s);
+    padding-top: var(--espace-s);
 }
 
 body > main {

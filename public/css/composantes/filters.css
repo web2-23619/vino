@@ -1,0 +1,87 @@
+.filters {
+    font-family: var(--police-regular);
+}
+
+.filters > form > details + div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-pico);
+    align-items: stretch;
+    justify-items: center;
+}
+
+.filters__pair {
+    width: 100%;
+
+	label{
+		display: inline-block;
+		width: 12ch;
+	};
+}
+
+.filters__criterion > summary {
+    font-weight: 600;
+}
+
+.filters__criterion[open] + .filters__content {
+    max-height: 100vh;
+    overflow: hidden;
+    transition: all 0.5s ease-in-out;
+}
+
+.filters__content {
+    height: auto;
+    max-height: 0;
+	overflow: hidden;
+    transition: all 0.5s ease;
+
+    > div {
+        max-height: 35vw;
+        overflow-y: scroll;
+    }
+}
+
+.filters * + button {
+    margin-top: var(--espace-nano);
+}
+
+/* ---- open filters ---- */
+.filters [id="btn-filters"] {
+    appearance: none;
+    cursor: pointer;
+    font-family: var(--police-regular);
+    font-size: var(--police-std);
+}
+
+.filters [id="btn-filters"]:not(:checked) + form {
+    opacity: 0;
+    pointer-events: none;
+}
+.filters [id="btn-filters"]::after {
+    content: "Filtrer";
+}
+
+.filters [id="btn-filters"]:checked::after {
+    content: "Filtrer";
+}
+
+.filters form {
+	box-sizing: border-box;
+    font-family: var(--police-regular);
+
+    position: fixed; /* Cover the entire viewport */
+	top: calc(var(--top) + var(--espace-m));
+	bottom: calc(var(--bottom) + var(--espace-xs));
+	left: 0;
+	width: 100%;
+    z-index: 10; /* Above the content */
+
+	overflow: scroll;
+
+    background-color: var(--clair);
+	padding-inline: var(--espace-m);
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--espace-xs);
+}
