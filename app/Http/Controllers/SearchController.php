@@ -9,6 +9,101 @@ use Illuminate\Support\Facades\Auth;
 
 class SearchController extends Controller
 {
+
+
+
+
+
+
+	public function autocomplete(Request $request)
+	{
+		$query = $request->get('query');
+
+		// Vérifier que la requête n'est pas vide
+		if (!$query || strlen($query) < 2) {
+			return response()->json([]);
+		}
+
+		// Rechercher les 3 meilleures correspondances
+		$matches = Bottle::where('name', 'LIKE', "%{$query}%")
+			->orWhere('country', 'LIKE', "%{$query}%")
+			->orWhere('type', 'LIKE', "%{$query}%")
+			->take(3)
+			->get(['id', 'name', 'country', 'type']);
+
+		return response()->json($matches);
+	}
+
+
+
+	public function addBottle(Request $request)
+	{
+		// Validation de la requête
+		$request->validate([
+			'cellar_id' => 'required|exists:cellars,id',
+			'bottle_id' => 'required|exists:bottles,id',
+			'quantity' => 'required|integer|min:1',
+		]);
+
+		$user = Auth::user();
+		$cellar = Cellar::where('id', $request->input('cellar_id'))
+			->where('user_id', $user->id)
+			->first();
+
+		if (!$cellar) {
+			return redirect()->route('cellar.index')->with('error', 'Cellier non trouvé ou accès non autorisé.');
+		}
+
+		$bottle = Bottle::find($request->input('bottle_id'));
+
+		// Vérifier si la bouteille existe déjà dans le cellier
+		$existingBottle = $cellar->bottles()->where('bottle_id', $bottle->id)->first();
+
+		if ($existingBottle) {
+			// Si la bouteille existe, mettre à jour la quantité
+			$currentQuantity = $existingBottle->pivot->quantity;
+			$newQuantity = $currentQuantity + $request->input('quantity');
+
+			$cellar->bottles()->updateExistingPivot($bottle->id, ['quantity' => $newQuantity]);
+
+			// Oublier les sessions après la mise à jour
+			session()->forget('add_bottle_source');
+			session()->forget('cellar_id');
+
+			return redirect()->route('cellar.showBottles', ['cellar' => $cellar->id])
+				->with('success', 'La quantité de la bouteille a été mise à jour avec succès!');
+		} else {
+			// Sinon, ajouter la bouteille au cellier
+			$cellar->bottles()->attach($bottle, ['quantity' => $request->input('quantity')]);
+
+			// Oublier les sessions après l'ajout
+			session()->forget('add_bottle_source');
+			session()->forget('cellar_id');
+
+			return redirect()->route('cellar.index', ['cellar' => $cellar->id])
+				->with('success', 'Bouteille ajoutée avec succès!');
+		}
+	}
+
+
+
+
+	public function showAddBottleForm($bottleId, Request $request)
+	{
+		// Récupérer la bouteille
+		$bottle = Bottle::findOrFail($bottleId);
+		$userCellars = Auth::user()->cellars;
+		$cellarId = $request->input('cellar_id', session('cellar_id'));
+		if ($cellarId) {
+			session(['cellar_id' => $cellarId]);
+		}
+
+		$source = session('add_bottle_source');
+		$selectedCellarName = $cellarId ? Cellar::find($cellarId)->name : null;
+
+		return view('bottle.addBottle', compact('bottle', 'userCellars', 'source', 'selectedCellarName'));
+	}
+
 	/**
 	 * afficher la page
 	 *
@@ -123,105 +218,5 @@ class SearchController extends Controller
 		$source = session('add_bottle_source', 'default');
 
 		return response()->json(['searchQuery' => $searchQuery, 'results' => $results, 'source' => $source], 200);
-	}
-
-	/**
-	 * Retourne les 3 meilleures correspondances pour une recherche d’autocomplétion.
-	 *
-	 * La requête doit contenir un paramètre `query` qui contient la chaîne de caractères
-	 * à rechercher.
-	 *
-	 * Si la requête est vide, une réponse vide est renvoyée.
-	 *
-	 * @param \Illuminate\Http\Request $request
-	 * @return \Illuminate\Http\Response
-	 */
-	public function autocomplete(Request $request)
-	{
-		$query = $request->get('query');
-
-		// Vérifier que la requête n'est pas vide
-		if (!$query || strlen($query) < 2) {
-			return response()->json([]);
-		}
-
-		// Rechercher les 3 meilleures correspondances
-		$matches = Bottle::where('name', 'LIKE', "%{$query}%")
-			->orWhere('country', 'LIKE', "%{$query}%")
-			->orWhere('type', 'LIKE', "%{$query}%")
-			->take(3)
-			->get(['id', 'name', 'country', 'type']);
-
-		return response()->json($matches);
-	}
-
-
-
-	public function addBottle(Request $request)
-	{
-		// Validation de la requête
-		$request->validate([
-			'cellar_id' => 'required|exists:cellars,id',
-			'bottle_id' => 'required|exists:bottles,id',
-			'quantity' => 'required|integer|min:1',
-		]);
-
-		$user = Auth::user();
-		$cellar = Cellar::where('id', $request->input('cellar_id'))
-			->where('user_id', $user->id)
-			->first();
-
-		if (!$cellar) {
-			return redirect()->route('cellar.index')->with('error', 'Cellier non trouvé ou accès non autorisé.');
-		}
-
-		$bottle = Bottle::find($request->input('bottle_id'));
-
-		// Vérifier si la bouteille existe déjà dans le cellier
-		$existingBottle = $cellar->bottles()->where('bottle_id', $bottle->id)->first();
-
-		if ($existingBottle) {
-			// Si la bouteille existe, mettre à jour la quantité
-			$currentQuantity = $existingBottle->pivot->quantity;
-			$newQuantity = $currentQuantity + $request->input('quantity');
-
-			$cellar->bottles()->updateExistingPivot($bottle->id, ['quantity' => $newQuantity]);
-
-			// Oublier les sessions après la mise à jour
-			session()->forget('add_bottle_source');
-			session()->forget('cellar_id');
-
-			return redirect()->route('cellar.showBottles', ['cellar' => $cellar->id])
-				->with('success', 'La quantité de la bouteille a été mise à jour avec succès!');
-		} else {
-			// Sinon, ajouter la bouteille au cellier
-			$cellar->bottles()->attach($bottle, ['quantity' => $request->input('quantity')]);
-
-			// Oublier les sessions après l'ajout
-			session()->forget('add_bottle_source');
-			session()->forget('cellar_id');
-
-			return redirect()->route('cellar.index', ['cellar' => $cellar->id])
-				->with('success', 'Bouteille ajoutée avec succès!');
-		}
-	}
-
-
-
-
-	public function showAddBottleForm($bottleId, Request $request)
-	{
-		// Récupérer la bouteille
-		$bottle = Bottle::findOrFail($bottleId);
-		$userCellars = Auth::user()->cellars;
-		$cellarId = $request->input('cellar_id', session('cellar_id'));
-		if ($cellarId) {
-			session(['cellar_id' => $cellarId]);
-		}
-
-		$source = session('add_bottle_source');
-		$selectedCellarName = $cellarId ? Cellar::find($cellarId)->name : null;
-
-		return view('bottle.addBottle', compact('bottle', 'userCellars', 'source', 'selectedCellarName'));
 	}
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\PurchaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\GoutteController;
+use App\Http\Controllers\FavoriteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,6 +87,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/recherche', [SearchController::class, 'search'])->name('search.results');
 	Route::get('/recherche-autocomplete', [SearchController::class, 'autocomplete'])->name('search.autocomplete');
 
+	Route::get('/favoris', [FavoriteController::class, 'index'])->name('favorites.index');
+	Route::get('/favoris/ajouter/{bottleId}', [FavoriteController::class, 'add'])->name('favoris.add');
+	Route::delete('/favoris/supprimer/{bottleId}', [FavoriteController::class, 'remove'])->name('favoris.remove');
+	Route::post('/favoris/toggle', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
 
 });
 

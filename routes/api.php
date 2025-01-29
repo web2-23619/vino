@@ -6,6 +6,7 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CellarController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\SearchController;
 
 /*
@@ -39,5 +40,9 @@ Route::middleware('auth:sanctum')->delete('supprimer/cellier/{cellar}', [CellarC
 Route::middleware('auth:sanctum')->delete('retirer/{cellar_id}/{bottle_id}', [CellarController::class, 'apiRemoveBottle']);
 Route::middleware('auth:sanctum')->patch('cellier/{cellar_id}/{bottle_id}', [CellarController::class, 'updateQuantityApi']);
 Route::middleware('auth:sanctum')->get('cellier/{cellar}/bouteille', [CellarController::class, 'showBottlesApi']);
+
+Route::middleware('auth:sanctum')->get('/favoris', [FavoriteController::class, 'allFavoritesApi']);
+Route::middleware('auth:sanctum')->post('/favoris', [FavoriteController::class, 'addFavoriteApi']);
+Route::middleware('auth:sanctum')->delete('/favoris/{bottle_id}', [FavoriteController::class, 'removeFavoriteApi']);
 
 Route::middleware('auth:sanctum')->post('/recherche', [SearchController::class, 'searchApi']);

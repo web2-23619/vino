@@ -62,8 +62,14 @@
 			<div>
 				<p>Prix: <span data-info="price"></span>$</p>
 				<div class="card_bottle__actions">
+					@if($source === 'favoris')
+						<a href="{{ route('favoris.add', ['bottleId' => $bottle->id]) }}" class="btn no-bg">Ajouter</a>
+					@else
+						<a href="{{ route('bottle.add', ['bottle_id' => $bottle->id, 'source' => $source]) }}" class="btn no-bg">Ajouter</a>
+					@endif
 					<a href="#" data-route-template="{{ route('bottle.add', ['bottle_id' => ':bottle_id', 'source' => ':source']) }}" class="btn no-bg">Ajouter</a>
 				</div>
+				
 			</div>
 		</section>
 	</article>

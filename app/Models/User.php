@@ -53,4 +53,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Purchase::class);
     }
+
+public function favorites()
+{
+    return $this->belongsToMany(Bottle::class, 'favorites', 'user_id', 'bottle_id');
+}
+
+
 }
