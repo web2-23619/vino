@@ -23,6 +23,38 @@ import Bottle from "../components/Bottle.js";
         }
     });
 
+    document.addEventListener("click", (event) => {
+        if (event.target.matches('[data-js-action="addToCellar"]')) {
+            const bottleCard = event.target.closest(".card_bottle");
+            const bottleId = bottleCard.getAttribute("data-js-id");
+    
+            let source = 'cellier'; 
+            if (window.location.href.includes("listeAchat")) {
+                source = 'listeAchat';
+            }
+    
+            // Manually construct the URL based on Laravel route structure
+            const url = `/cellier/bouteille/ajouter/${bottleId}?source=${source}`;
+            
+            // Debugging
+            console.log("Redirecting to:", url); 
+            window.location.href = url;
+        }
+    });
+
+    // Remove bottle from UI after addition
+document.addEventListener("DOMContentLoaded", function () {
+    const successMessage = document.querySelector(".alert-success");
+    if (successMessage && window.location.href.includes("inventaire")) {
+        const bottleId = new URLSearchParams(window.location.search).get("bottleId");
+        const bottleCard = document.querySelector(`[data-js-id="${bottleId}"]`);
+        if (bottleCard) {
+            bottleCard.remove();
+        }
+    }
+});
+    
+
     // récupérer et afficher les données
     let dataAll = await getAll();
     render(dataAll);

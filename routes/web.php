@@ -68,18 +68,18 @@ Route::middleware('auth')->group(function () {
 	Route::get('/modifier/cellier/{cellar}', [CellarController::class, 'edit'])->name('cellar.edit');
 	Route::put('/modifier/cellier/{cellar}', [CellarController::class, 'update'])->name('cellar.update');
 	Route::delete('supprimer/cellier/{cellar}', [CellarController::class, 'destroy'])->name('cellar.delete');
+	Route::post('/cellier/bouteille/ajouter', [CellarController::class, 'addBottleFromSelection'])->name('cellar.addBottleFromSelection');
 
 	Route::get('/mesBouteilles', [UserController::class, 'showBottles'])->name('user.showBottles');
 	Route::get('/cellier/{cellar}/bouteille', [CellarController::class, 'showBottles'])->name('cellar.showBottles');
 	
 	Route::get('/cellier/bouteille/ajouter/{bottle_id}', [SearchController::class, 'showAddBottleForm'])->name('bottle.add');
 	Route::post('/cellier/bouteille/ajouter', [SearchController::class, 'addBottle'])->name('bottle.add.submit');
+	
 
 	Route::get('/listeAchat/bouteille/ajouter/{bottle_id}', [PurchaseController::class, 'showAddBottleForm'])->name('achat.add');
 	Route::post('/listeAchat/bouteille/ajouter', [PurchaseController::class, 'addBottle'])->name('achat.add.submit');
-
-
-
+	Route::post('/listeAchat/ajouter-au-cellier', [PurchaseController::class, 'addToCellar'])->name('purchase.addToCellar');
 	Route::get('/listeAchat', [PurchaseController::class, 'index'])->name('purchase.index');
 
 	Route::get('/recherche', [SearchController::class, 'index'])->name('search.index');
@@ -90,22 +90,10 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/utilisateurSupprime', [AuthController::class, 'deletedUser']);
-
-
-// Route to retrieve user cellars (API-like route)
 Route::get('/api/user/cellars', [CellarController::class, 'getUserCellars'])->name('cellar.getUserCellars');
 
-// Route to display the form to add a bottle to a cellar
-Route::get('cellier/{cellarId}/bouteille/ajouter/{bottleId}', [CellarController::class, 'showAddBottleForm'])
-    ->name('cellar.showAddBottleForm');
 
 
-// Route to handle the submission of the "Add Bottle to Cellar" form
-Route::post('/cellier/bouteille/ajouter', [CellarController::class, 'addBottleFromSelection'])
-    ->name('cellar.addBottleFromSelection');
 
-// Route to handle adding a bottle directly from purchase logic
-Route::post('/listeAchat/ajouter-au-cellier', [PurchaseController::class, 'addToCellar'])
-    ->name('purchase.addToCellar');
 
-	
+

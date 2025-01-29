@@ -238,13 +238,13 @@ class PurchaseController extends Controller
 				]);
 			}
 	
-			// ✅ Remove the bottle from the purchases list (Liste d'achat)
+			// Remove the bottle from the purchases list (Liste d'achat)
 			DB::table('purchases')
 				->where('bottle_id', $validated['bottleId'])
 				->where('user_id', Auth::id())
 				->delete();
 	
-			// ✅ Redirect to the inventory page
+			// Redirect to the inventory page
 			return redirect()->route('inventaire')->with('success', 'Bouteille ajoutée avec succès!');
 	
 		} catch (\Exception $e) {

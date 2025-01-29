@@ -229,21 +229,7 @@ class CellarController extends Controller
 		]);
 	}
 
-	public function showAddBottleForm(Request $request, $bottleId)
-{
-    $bottle = Bottle::findOrFail($bottleId);
-    $userId = Auth::id();
-    
-    // Retrieve all cellars for the logged-in user
-    $userCellars = Cellar::where('user_id', $userId)->get();
-    
-    // Get the source from the request
-    $source = $request->query('source', 'cellier'); // Default to 'cellier' if not set
 
-    return view('bottle.addBottle', compact('bottle', 'userCellars', 'source'));
-}
-
-	
 public function addBottleFromSelection(Request $request)
 {
     $request->validate([
