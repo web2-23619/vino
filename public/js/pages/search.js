@@ -15,23 +15,16 @@ import Bottle from "../components/Bottle.js";
     let currentPage = 1;
     let maxPage = 1;
 
-    // Initial data load (optional, for when the page first loads)
+    // variables pour recherche et suggestion
+    const searchForm = document.querySelector(".search");
     const resultContainer = document.querySelector("[data-js-list]");
     const suggestionsContainer = document.querySelector(".search_suggestions");
     const searchInput = document.querySelector("#search");
-
     const barCodeScannerButton = document.querySelector(
         "[data-js-action='scanner']"
     );
 
-    const searchForm = document.querySelector(".search");
-    searchForm.addEventListener("submit", function (event) {
-        event.preventDefault();
-        currentPage = 1;
-        loadData(currentPage);
-    });
-
-    // pour autocomplete
+    // pour autocomplete & scanner
     document.addEventListener("DOMContentLoaded", function () {
         if (!searchInput || !suggestionsContainer) {
             console.error(
@@ -53,7 +46,6 @@ import Bottle from "../components/Bottle.js";
         }
 
         // Lancer le scanner au click en utilisant la camera de l'utilisateur
-
         barCodeScannerButton.addEventListener("click", function () {
             console.log("Scanner button clicked");
             // Selection de l'emplacement du scanner
@@ -186,6 +178,65 @@ import Bottle from "../components/Bottle.js";
         });
     });
 
+    // --- filtres ---
+    const filterFormHTML = document.querySelector("[data-js='filtersForm']");
+
+    //reinitialisation des filtres
+    const btnResetFilters = filterFormHTML.querySelector(
+        "[data-js='resetFilters']"
+    );
+    btnResetFilters.addEventListener("click", function (event) {
+        event.preventDefault();
+        filterFormHTML.reset();
+    });
+
+    filterFormHTML.addEventListener("submit", function (event) {
+        event.preventDefault();
+        console.log("submit filters");
+        currentPage = 1;
+        const selectedSort = document.querySelector("[name='sorting']:checked");
+        renderSortAndFilter(selectedSort.value);
+    });
+
+    //calcul de la hauteur du footer pour la position du filtre
+    const footerHTML = document.querySelector(".nav-menu");
+    const footerHeight = footerHTML.offsetHeight;
+    filterFormHTML.style.setProperty("--bottom", `${footerHeight}px`);
+    const btnFilters = document.querySelector("#btn-filters");
+    const btnFilterY = App.instance.getAbsoluteYPosition(btnFilters);
+    filterFormHTML.style.setProperty("--top", `${btnFilterY}px`);
+
+    //ouvrir et fermer filtres
+    btnFilters.addEventListener("change", function () {
+        document
+            .querySelector("[data-js-list]")
+            .classList.toggle("invisible", btnFilters.checked);
+    });
+
+    // tri
+    const sortingOptions = document.querySelectorAll("[name='sorting']");
+    sortingOptions.forEach(function (option) {
+        option.addEventListener("change", function () {
+            const selectedSort = document.querySelector(
+                "[name='sorting']:checked"
+            );
+            if (selectedSort) {
+                const sortOrder = selectedSort.value;
+                currentPage = 1;
+                renderSortAndFilter(sortOrder);
+            }
+        });
+    });
+
+    //lancer recherche
+    searchForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const selectedSort = document.querySelector("[name='sorting']:checked");
+        const sortOrder = selectedSort.value;
+        currentPage = 1;
+        renderSortAndFilter(sortOrder);
+    });
+
     //  ---- fonctions auxilières ----
     /**
      * charge et affiche les résultats
@@ -275,6 +326,135 @@ import Bottle from "../components/Bottle.js";
             heading.textContent = `Résultat pour "${searchQuery}"`;
 
             suggestionsContainer.style.display = "none";
+
+            currentPage++;
+            loading = false;
+        } catch (error) {
+            console.log(error);
+            loading = false;
+        }
+    }
+
+    /**
+     * trier et afficher
+     */
+    async function renderSortAndFilter(sortOrder, page = 1) {
+        // Prevent loading if there's an ongoing request
+        if (loading) return;
+        loading = true; // Set loading to true
+
+        // recupérer les données et afficher
+        try {
+            const searchQuery = document.querySelector("#search").value;
+
+            let formData = new FormData();
+            formData.append("query", searchQuery);
+
+            // construire tableau pour filtre de pays
+            const countries =
+                filterFormHTML.querySelectorAll("[name='country']");
+            countries.forEach(function (country) {
+                if (country.checked) {
+                    formData.append("countries[]", country.value);
+                }
+            });
+
+            // construire tableau pour filtre de type
+            const types = filterFormHTML.querySelectorAll("[name='type']");
+            types.forEach(function (type) {
+                if (type.checked) {
+                    formData.append("types[]", type.value);
+                }
+            });
+
+            // range de prix
+            const minPrice = document.querySelector("[name='min']").value;
+            const maxPrice = document.querySelector("[name='max']").value;
+
+            if (minPrice) {
+                formData.append("min_price", parseFloat(minPrice));
+            }
+            if (maxPrice) {
+                formData.append("max_price", parseFloat(maxPrice));
+            }
+
+            const csrfToken = document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content");
+            const response = await fetch(
+                `${App.instance.baseURL}/api/recherche?page=${page}&tri=${sortOrder}`,
+                {
+                    method: "post",
+                    body: formData,
+                    headers: {
+                        "X-CSRF-TOKEN": csrfToken, // Ajoute CSRF token
+                        Authorization:
+                            "Bearer " + localStorage.getItem("token"), // Ajoute le token
+                    },
+                }
+            );
+
+            const data = await response.json();
+
+            // //TODO: render
+            const nbResults = document.createElement("p");
+            if (data.results.total === 0) {
+                nbResults.textContent = "0 rétulat trouvé";
+            } else if (data.results.total === 1) {
+                nbResults.textContent = `${data.results.total} résultat trouvé`;
+            } else {
+                nbResults.textContent = `${data.results.total} résultats trouvés`;
+            }
+            const existingResults = resultContainer.querySelector("p");
+
+            if (page === 1) {
+                resultContainer.innerHTML = "";
+                existingResults.remove();
+                resultContainer.append(nbResults);
+            }
+
+            const template = document.querySelector(
+                "template#searchResultBottle"
+            );
+
+            data.results.data.forEach(
+                (bottle) =>
+                    new Bottle(
+                        bottle,
+                        "search",
+                        template,
+                        resultContainer,
+                        data.source
+                    )
+            );
+            maxPage = data.results.last_page;
+
+            // ajouter bouton afficher plus si pas derniere page
+            if (page < maxPage) {
+                const btnAfficherPlus = document.createElement("button");
+                btnAfficherPlus.textContent = "Afficher plus";
+                btnAfficherPlus.classList.add("btn");
+                btnAfficherPlus.classList.add("btn_outline_dark");
+                btnAfficherPlus.dataset.js = "afficherPlusBouteille";
+
+                resultContainer.append(btnAfficherPlus);
+                const btnAfficherPlusHtml = resultContainer.lastElementChild;
+
+                btnAfficherPlusHtml.addEventListener("click", function (event) {
+                    const existingBtnAfficherPlus = event.target;
+                    existingBtnAfficherPlus.remove();
+                    renderSort(sortOrder, currentPage);
+                });
+            }
+
+            const heading = document.querySelector(".search-header");
+            heading.textContent = `Résultat pour "${searchQuery}"`;
+
+            suggestionsContainer.style.display = "none";
+
+            //fermer les filtres
+            btnFilters.checked = false;
+            btnFilters.dispatchEvent(new Event("change"));
 
             currentPage++;
             loading = false;

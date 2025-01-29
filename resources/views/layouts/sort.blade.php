@@ -4,7 +4,7 @@
 	</details>
 	<div class="sorting__frame">
 		<div>
-			<input type="radio" id="name_asc" name="sorting" value="name_asc" checked />
+			<input type="radio" id="name_asc" name="sorting" value="name_asc" checked/>
 			<label for="name_asc">Nom: A-Z</label>
 		</div>
 		<div>
@@ -19,5 +19,5 @@
 			<input type="radio" id="price_desc" name="sorting" value="price_desc" />
 			<label for="price_desc">Prix: 100 - 0</label>
 		</div>
-	</div>
+</div>
 </div>

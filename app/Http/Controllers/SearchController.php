@@ -27,7 +27,20 @@ class SearchController extends Controller
 		// Si aucune requête de recherche, afficher les bouteilles aléatoires
 		$randomBottles = Bottle::inRandomOrder()->take(5)->get();
 
-		return view('search.index', compact('randomBottles', 'source'));
+		// recupérer donner pour afficher les filtres
+		$countries = Bottle::select('country')->distinct()->get();
+
+		$countryNames = $countries->pluck('country')->toArray();
+
+		$initialCountries = array_slice($countryNames, 0, 5);
+		$remainingCountries = array_slice($countryNames, 5);
+		$remainingCount = count($remainingCountries);
+
+		$types = Bottle::select('type')
+			->distinct()
+			->get();
+
+		return view('search.index', compact('randomBottles', 'source', 'initialCountries', 'remainingCountries', 'remainingCount', 'types'));
 	}
 
 
@@ -57,29 +70,6 @@ class SearchController extends Controller
 		$query = Bottle::query();
 		$searchQuery = $request->input('query');
 
-
-		//TODO: adapt
-		// Handling Sorting
-		if ($request->has('sort_by') && in_array($request->sort_by, ['name', 'created_at', 'price'])) {
-			$query->orderBy($request->sort_by, $request->sort_direction ?? 'asc');
-		} else {
-			// par default
-			$query->orderBy('name', 'asc');
-		}
-
-
-		//TODO: adapt
-		// Handling Filters by specific fields (checkboxes)
-		if ($request->has('filter_types')) {
-			$filterTypes = json_decode($request->filter_types, true); // Decode JSON to array
-			$query->whereIn('type', $filterTypes);
-		}
-		//TODO: adapt
-		if ($request->has('filter_countries')) {
-			$filterCountries = json_decode($request->filter_countries, true); // Decode JSON to array
-			$query->whereIn('country', $filterCountries);
-		}
-
 		// Rechercher les bouteilles correspondant à la requête
 		$searchTerms = explode(' ', $searchQuery); // Split search query into keyword
 		foreach ($searchTerms as $term) {
@@ -92,6 +82,39 @@ class SearchController extends Controller
 			});
 		}
 
+		// filtrer par pays
+		$countries = $request->input('countries', []);
+
+		if (!empty($countries)) {
+			$query->whereIn('country', $countries);
+		}
+
+		// filtrer par pays
+		$types = $request->input('types', []);
+
+		if (!empty($types)) {
+			$query->whereIn('type', $types);
+		}
+
+		// filtrer par range de prix
+		if ($request->filled('min_price')) {
+			$query->where('price', '>=', $request->input('min_price'));
+		}
+		if ($request->filled('max_price')) {
+			$query->where('price', '<=', $request->input('max_price'));
+		}
+
+
+		// trier
+		if ($request->has('tri')) {
+			list($criteria, $order) = explode("_", $request->tri);
+			$query->orderBy($criteria, $order);
+		} else {
+			// par default
+			$query->orderBy('name', 'asc');
+		}
+
+
 		// Handling Pagination
 		$results = $query->paginate(30);
 
@@ -102,17 +125,17 @@ class SearchController extends Controller
 		return response()->json(['searchQuery' => $searchQuery, 'results' => $results, 'source' => $source], 200);
 	}
 
-    /**
-     * Retourne les 3 meilleures correspondances pour une recherche d’autocomplétion.
-     *
-     * La requête doit contenir un paramètre `query` qui contient la chaîne de caractères
-     * à rechercher.
-     *
-     * Si la requête est vide, une réponse vide est renvoyée.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 * Retourne les 3 meilleures correspondances pour une recherche d’autocomplétion.
+	 *
+	 * La requête doit contenir un paramètre `query` qui contient la chaîne de caractères
+	 * à rechercher.
+	 *
+	 * Si la requête est vide, une réponse vide est renvoyée.
+	 *
+	 * @param \Illuminate\Http\Request $request
+	 * @return \Illuminate\Http\Response
+	 */
 	public function autocomplete(Request $request)
 	{
 		$query = $request->get('query');
