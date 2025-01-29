@@ -39,20 +39,6 @@ import Bottle from "../components/Bottle.js";
     const filterFormHTML = document.querySelector("[data-js='filtersForm']");
     filterFormHTML.addEventListener("submit", renderFilter);
 
-    //calcul de la hauteur du footer pour la position du filtre
-    const footerHTML = document.querySelector(".nav-menu");
-    const footerHeight = footerHTML.offsetHeight;
-    filterFormHTML.style.setProperty("--bottom", `${footerHeight}px`);
-    const btnFilters = document.querySelector("#btn-filters");
-    const btnFilterY = App.instance.getAbsoluteYPosition(btnFilters);
-    filterFormHTML.style.setProperty("--top", `${btnFilterY}px`);
-
-    btnFilters.addEventListener("change", function () {
-        document
-            .querySelector("[data-js-list]")
-            .classList.toggle("invisible", btnFilters.checked);
-    });
-
     //reinitialisation des filtres
     const btnResetFilters = filterFormHTML.querySelector(
         "[data-js='resetFilters']"
@@ -163,7 +149,7 @@ import Bottle from "../components/Bottle.js";
     function render(data) {
         const container = document.querySelector("[data-js-list]");
         const template = document.querySelector("template#bottle");
-		console.log(data);
+        console.log(data);
 
         if (!data.empty) {
             data.purchases.forEach((purchase) => {
@@ -246,8 +232,6 @@ import Bottle from "../components/Bottle.js";
             min.value === "" &&
             max.value === ""
         ) {
-            btnFilters.checked = false;
-            btnFilters.dispatchEvent(new Event("change"));
             clearAll();
             render(dataAll);
             purchases = dataAll.purchases;
@@ -278,14 +262,11 @@ import Bottle from "../components/Bottle.js";
                 empty: false,
                 filtered: true,
             };
-			console.log(dataFiltered.purchases.length === 0);
+            console.log(dataFiltered.purchases.length === 0);
             if (dataFiltered.purchases.length === 0) {
                 dataFiltered.empty = true;
             }
             purchases = filteredPurchase;
-
-            btnFilters.checked = false;
-            btnFilters.dispatchEvent(new Event("change"));
             clearAll();
             render(dataFiltered);
         }
