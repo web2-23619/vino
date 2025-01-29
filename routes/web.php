@@ -90,3 +90,22 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/utilisateurSupprime', [AuthController::class, 'deletedUser']);
+
+
+// Route to retrieve user cellars (API-like route)
+Route::get('/api/user/cellars', [CellarController::class, 'getUserCellars'])->name('cellar.getUserCellars');
+
+// Route to display the form to add a bottle to a cellar
+Route::get('cellier/{cellarId}/bouteille/ajouter/{bottleId}', [CellarController::class, 'showAddBottleForm'])
+    ->name('cellar.showAddBottleForm');
+
+
+// Route to handle the submission of the "Add Bottle to Cellar" form
+Route::post('/cellier/bouteille/ajouter', [CellarController::class, 'addBottleFromSelection'])
+    ->name('cellar.addBottleFromSelection');
+
+// Route to handle adding a bottle directly from purchase logic
+Route::post('/listeAchat/ajouter-au-cellier', [PurchaseController::class, 'addToCellar'])
+    ->name('purchase.addToCellar');
+
+	
