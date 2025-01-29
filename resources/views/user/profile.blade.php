@@ -38,7 +38,7 @@
 			<a href="{{ route('cellar.index') }}">
 				<p class="stat-number">{{ $cellarsCount }}</p>
 			</a>
-			<p class="stat-label">Celliers</p>
+			<p class="stat-label">Inventaire</p>
 		</div>
 
 		<!-- nombre de bouteilles -->
