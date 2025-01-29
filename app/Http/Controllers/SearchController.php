@@ -9,133 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class SearchController extends Controller
 {
-	/**
-	 * afficher la page
-	 *
-	 * @return \Illuminate\View\View
-	 */
-	public function index(Request $request)
-	{
-		// Conserver ou récupérer la source depuis l'URL ou la session
-		if ($request->has('source')) {
-			$source = $request->input('source');
-			session(['add_bottle_source' => $source]); // Mettre à jour la session
-		} else {
-			$source = session('add_bottle_source', 'default'); // Récupérer depuis la session ou par défaut
-		}
 
-		// Si aucune requête de recherche, afficher les bouteilles aléatoires
-		$randomBottles = Bottle::inRandomOrder()->take(5)->get();
-
-		// recupérer donner pour afficher les filtres
-		$countries = Bottle::select('country')->distinct()->get();
-
-		$countryNames = $countries->pluck('country')->toArray();
-
-		$initialCountries = array_slice($countryNames, 0, 5);
-		$remainingCountries = array_slice($countryNames, 5);
-		$remainingCount = count($remainingCountries);
-
-		$types = Bottle::select('type')
-			->distinct()
-			->get();
-
-		return view('search.index', compact('randomBottles', 'source', 'initialCountries', 'remainingCountries', 'remainingCount', 'types'));
-	}
-
-
-
-	/**
-	 * Traiter la demande de recherche et afficher les résultats.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @return \Illuminate\View\View
-	 */
-	public function search(Request $request)
-	{
-		return view('search.results');
-	}
-
-	public function searchApi(Request $request)
-	{
-		// Valider l’entrée de recherche
-		$request->validate([
-			'query' => 'required|string|min:2|max:255',
-		]);
-
-		if ($request->has('cellar_id')) {
-			session(['cellar_id' => $request->input('cellar_id')]);
-		}
-
-		$query = Bottle::query();
-		$searchQuery = $request->input('query');
-
-		// Rechercher les bouteilles correspondant à la requête
-		$searchTerms = explode(' ', $searchQuery); // Split search query into keyword
-		foreach ($searchTerms as $term) {
-			// Search for each keyword in 'name', 'country', and 'type' columns
-			$query->where(function ($query) use ($term) {
-				$query->where('name', 'like', '%' . $term . '%')
-					->orWhere('country', 'like', '%' . $term . '%')
-					->orWhere('type', 'like', '%' . $term . '%')
-					->orWhere('upc_saq', 'like', '%' . $term . '%');
-			});
-		}
-
-		// filtrer par pays
-		$countries = $request->input('countries', []);
-
-		if (!empty($countries)) {
-			$query->whereIn('country', $countries);
-		}
-
-		// filtrer par pays
-		$types = $request->input('types', []);
-
-		if (!empty($types)) {
-			$query->whereIn('type', $types);
-		}
-
-		// filtrer par range de prix
-		if ($request->filled('min_price')) {
-			$query->where('price', '>=', $request->input('min_price'));
-		}
-		if ($request->filled('max_price')) {
-			$query->where('price', '<=', $request->input('max_price'));
-		}
-
-
-		// trier
-		if ($request->has('tri')) {
-			list($criteria, $order) = explode("_", $request->tri);
-			$query->orderBy($criteria, $order);
-		} else {
-			// par default
-			$query->orderBy('name', 'asc');
-		}
-
-
-		// Handling Pagination
-		$results = $query->paginate(30);
-
-		// Récupérer les celliers de l’utilisatrice pour la liste déroulante
-		$userCellars = auth()->check() ? auth()->user()->cellars : [];
-		$source = session('add_bottle_source', 'default');
-
-		return response()->json(['searchQuery' => $searchQuery, 'results' => $results, 'source' => $source], 200);
-	}
-
-	/**
-	 * Retourne les 3 meilleures correspondances pour une recherche d’autocomplétion.
-	 *
-	 * La requête doit contenir un paramètre `query` qui contient la chaîne de caractères
-	 * à rechercher.
-	 *
-	 * Si la requête est vide, une réponse vide est renvoyée.
-	 *
-	 * @param \Illuminate\Http\Request $request
-	 * @return \Illuminate\Http\Response
-	 */
 	public function autocomplete(Request $request)
 	{
 		$query = $request->get('query');
@@ -206,9 +80,6 @@ class SearchController extends Controller
 		}
 	}
 
-
-
-
 	public function showAddBottleForm($bottleId, Request $request)
 	{
 		// Récupérer la bouteille
@@ -223,5 +94,108 @@ class SearchController extends Controller
 		$selectedCellarName = $cellarId ? Cellar::find($cellarId)->name : null;
 
 		return view('bottle.addBottle', compact('bottle', 'userCellars', 'source', 'selectedCellarName'));
+	}
+
+	/**
+	 * afficher la page
+	 *
+	 * @return \Illuminate\View\View
+	 */
+	public function index(Request $request)
+	{
+		// Conserver ou récupérer la source depuis l'URL ou la session
+		if ($request->has('source')) {
+			$source = $request->input('source');
+			session(['add_bottle_source' => $source]); // Mettre à jour la session
+		} else {
+			$source = session('add_bottle_source', 'default'); // Récupérer depuis la session ou par défaut
+		}
+
+		// Si aucune requête de recherche, afficher les bouteilles aléatoires
+		$randomBottles = Bottle::inRandomOrder()->take(5)->get();
+
+		// recupérer donner pour afficher les filtres
+		$countries = Bottle::select('country')->distinct()->get();
+
+		$countryNames = $countries->pluck('country')->toArray();
+
+		$initialCountries = array_slice($countryNames, 0, 5);
+		$remainingCountries = array_slice($countryNames, 5);
+		$remainingCount = count($remainingCountries);
+
+		$types = Bottle::select('type')
+			->distinct()
+			->get();
+
+		return view('search.index', compact('randomBottles', 'source', 'initialCountries', 'remainingCountries', 'remainingCount', 'types'));
+	}
+
+	public function searchApi(Request $request)
+	{
+		// Valider l’entrée de recherche
+		$request->validate([
+			'query' => 'required|string|min:2|max:255',
+		]);
+
+		if ($request->has('cellar_id')) {
+			session(['cellar_id' => $request->input('cellar_id')]);
+		}
+
+		$query = Bottle::query();
+		$searchQuery = $request->input('query');
+
+		// Rechercher les bouteilles correspondant à la requête
+		$searchTerms = explode(' ', $searchQuery); // Split search query into keyword
+		foreach ($searchTerms as $term) {
+			// Search for each keyword in 'name', 'country', and 'type' columns
+			$query->where(function ($query) use ($term) {
+				$query->where('name', 'like', '%' . $term . '%')
+					->orWhere('country', 'like', '%' . $term . '%')
+					->orWhere('type', 'like', '%' . $term . '%')
+					->orWhere('upc_saq', 'like', '%' . $term . '%');
+			});
+		}
+
+		// filtrer par pays
+		$countries = $request->input('countries', []);
+
+		if (!empty($countries)) {
+			$query->whereIn('country', $countries);
+		}
+
+		// filtrer par pays
+		$types = $request->input('types', []);
+
+		if (!empty($types)) {
+			$query->whereIn('type', $types);
+		}
+
+		// filtrer par range de prix
+		if ($request->filled('min_price')) {
+			$query->where('price', '>=', $request->input('min_price'));
+		}
+		if ($request->filled('max_price')) {
+			$query->where('price', '<=', $request->input('max_price'));
+		}
+
+
+		// trier
+		if ($request->has('tri')) {
+			list($criteria, $order) = explode("_", $request->tri);
+			$query->orderBy($criteria, $order);
+		} else {
+			// par default
+			$query->orderBy('name', 'asc');
+		}
+
+
+		// Handling Pagination
+		$results = $query->paginate(30);
+
+		// Récupérer les celliers de l’utilisatrice pour la liste déroulante
+		$userCellars = auth()->check() ? auth()->user()->cellars : [];
+		$source = session('add_bottle_source', 'default');
+
+		return response()->json(['searchQuery' => $searchQuery, 'results' => $results, 'source' => $source], 200);
 	}
 }

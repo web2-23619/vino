@@ -38,7 +38,11 @@
 				<div>
 					<p>Prix: {{ number_format($bottle->price, 2) }} $</p>
 					<div class="card_bottle__actions">
-						<a href="{{ route('bottle.add', ['bottle_id' => $bottle->id, 'source' => session('add_bottle_source', 'default')]) }}" class="btn no-bg">Ajouter</a>
+						@if($source === 'favoris')
+						<a href="#" data-route-template="{{ route('favoris.add', ['bottleId' => ':bottle_id']) }}" class="btn no-bg">Ajouter</a>
+						@else
+						<a href="#" data-route-template="{{ route('bottle.add', ['bottle_id' => ':bottle_id', 'source' => ':source']) }}" class="btn no-bg">Ajouter</a>
+						@endif
 					</div>
 				</div>
 			</section>
@@ -62,8 +66,14 @@
 			<div>
 				<p>Prix: <span data-info="price"></span>$</p>
 				<div class="card_bottle__actions">
+					@if($source === 'favoris')
+					<a href="#" data-route-template="{{ route('favoris.add', ['bottleId' => ':bottle_id']) }}" class="btn no-bg">Ajouter</a>
+					@else
 					<a href="#" data-route-template="{{ route('bottle.add', ['bottle_id' => ':bottle_id', 'source' => ':source']) }}" class="btn no-bg">Ajouter</a>
+					@endif
+
 				</div>
+
 			</div>
 		</section>
 	</article>
