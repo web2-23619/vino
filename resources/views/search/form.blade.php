@@ -1,4 +1,4 @@
-<form class="search" action="{{ route('search.results') }}" method="POST">
+<form class="search">
 	@csrf
 	<div class="form-group">
 		<label for="search">Explorez par nom, type de vin ou origine</label>

@@ -84,7 +84,6 @@ Route::middleware('auth')->group(function () {
 	Route::get('/listeAchat', [PurchaseController::class, 'index'])->name('purchase.index');
 
 	Route::get('/recherche', [SearchController::class, 'index'])->name('search.index');
-    Route::post('/recherche', [SearchController::class, 'search'])->name('search.results');
 	Route::get('/recherche-autocomplete', [SearchController::class, 'autocomplete'])->name('search.autocomplete');
 
 	Route::get('/favoris', [FavoriteController::class, 'index'])->name('favorites.index');
