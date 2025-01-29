@@ -11,6 +11,44 @@ import App from "../components/App.js";
         ".menu-deroulant > [type='checkbox']"
     );
 
+    //filtres
+    const filterFormHTML = document.querySelector("[data-js='filtersForm']");
+    filterFormHTML.addEventListener("submit", renderFilter);
+
+
+    // affichage de la liste complete de pays
+    const btnAfficherPlus = document.querySelector("[data-js='afficherPlus']");
+    const btnAfficherMoins = document.querySelector(
+        "[data-js='afficherMoins']"
+    );
+    btnAfficherPlus.addEventListener("click", function (event) {
+        const trigger = event.target;
+        trigger.nextElementSibling.classList.remove("invisible");
+        btnAfficherMoins.classList.remove("invisible");
+        btnAfficherPlus.classList.add("invisible");
+    });
+
+    btnAfficherMoins.addEventListener("click", function (event) {
+        const trigger = event.target;
+        trigger.previousElementSibling.classList.add("invisible");
+        btnAfficherMoins.classList.add("invisible");
+        btnAfficherPlus.classList.remove("invisible");
+        document.querySelector("h1").scrollIntoView();
+    });
+
+
+
+    //reinitialisation des filtres
+    const btnResetFilters = filterFormHTML.querySelector(
+        "[data-js='resetFilters']"
+    );
+    btnResetFilters.addEventListener("click", function (event) {
+        event.preventDefault();
+        filterFormHTML.reset();
+        renderBottles({ id: currentBottles[0]?.cellar_id || 0 }, currentBottles);
+    });
+    
+
     for (const menu of menusHTML) {
         menu.addEventListener("change", checkMenu);
     }
@@ -329,6 +367,75 @@ import App from "../components/App.js";
             }
         });
         renderBottles({ id: currentBottles[0]?.cellar_id || 0 }, currentBottles);
+    }
+
+
+    /**
+    * afficher données filterés
+    */
+    async function renderFilter(event) {
+        event.preventDefault();
+    
+        // Filter
+        const countriesHTML = filterFormHTML.querySelectorAll("[name='country']");
+        const countries = [];
+        for (const country of countriesHTML) {
+            if (country.checked) {
+                countries.push(country.value);
+            }
+        }
+    
+        const typesHTML = filterFormHTML.querySelectorAll("[name='type']");
+        const types = [];
+        for (const type of typesHTML) {
+            if (type.checked) {
+                types.push(type.value);
+            }
+        }
+    
+        let filteredBottle = currentBottles;
+    
+        if (
+            countries.length === 0 &&
+            types.length === 0 &&
+            min.value === "" &&
+            max.value === ""
+        ) {
+            filteredBottle = [...currentBottles];
+        } else {
+            if (countries.length > 0) {
+                filteredBottle = filteredBottle.filter((bottle) =>
+                    countries.includes(bottle.country)
+                );
+            }
+            if (types.length > 0) {
+                filteredBottle = filteredBottle.filter((bottle) =>
+                    types.includes(bottle.type)
+                );
+            }
+            if (min.value !== "") {
+                filteredBottle = filteredBottle.filter(
+                    (bottle) => bottle.price >= parseFloat(min.value)
+                );
+            }
+            if (max.value !== "") {
+                filteredBottle = filteredBottle.filter(
+                    (bottle) => bottle.price <= parseFloat(max.value)
+                );
+            }
+        }
+    
+        const dataFiltered = {
+            bottles: filteredBottle,
+            empty: false,
+            filtered: true,
+        };
+    
+        if (dataFiltered.bottles.length === 0) {
+            dataFiltered.empty = true;
+        }
+    
+        renderBottles({ id: currentBottles[0]?.cellar_id || 0 }, filteredBottle);
     }
     
     
