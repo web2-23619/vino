@@ -271,7 +271,6 @@ import App from "../components/App.js";
                 displayAddBottleBtn()
             }
         }
-
     });
 
     // fonction pour montrer la vue selon le cellier selectionner
