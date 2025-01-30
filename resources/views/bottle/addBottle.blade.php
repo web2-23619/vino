@@ -8,7 +8,7 @@
 		<h2 class="register-header">Ajouter la bouteille</h2>
 	</header>
 	<!-- Formulaire avec action conditionnelle -->
-	<form class="form" id="addBottleForm" method="POST" action="{{ route('purchase.addToCellar') }}">
+	<form class="form" id="addBottleForm" method="POST">
 		@csrf
 		<input type="hidden" name="bottle_id" value="{{ $bottle->id }}">
 		<input type="hidden" name="cellar_id" id="cellar_id" value="{{ session('cellar_id') }}">
