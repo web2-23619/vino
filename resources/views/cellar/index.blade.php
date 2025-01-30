@@ -52,7 +52,7 @@
 			Il semblerait que vous n'ayez rien dans votre cellier.
 		</h3>
 		<p>Remplissez votre cellier en ajoutant des bouteilles.</p>
-		<a href="{{ route('search.index', ['source' => 'cellier', 'cellar_id' => $cellar->id]) }}" class="btn btn_accent">Découvrir des bouteilles</a>
+		<a href="href=" #" data-template-route="{{ rawurldecode(route('search.index', ['source' => 'cellier', 'cellar_id' => ':cellar_id'])) }}" class="btn btn_accent">Découvrir des bouteilles</a>
 	</article>
 </template>
 <section class="cellier-products">

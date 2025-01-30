@@ -64,11 +64,19 @@ import App from "../components/App.js";
      * Le message est stock  dans un template HTML et est ajouté au DOM.
      * Si un bouton "Ajouter" est présent, il est supprimé.
      */
-    function displayNoContentMessage() {
+    function displayNoContentMessage(cellar_id) {
         const template = document.querySelector("template#noPurchase");
         let content = template.content.cloneNode(true);
         let sectionHTML = document.querySelector("main > section");
         sectionHTML.append(content);
+        const button = document.querySelector("[data-template-route]");
+        console.log(button);
+        const templateRoute = button.dataset.templateRoute;
+        const updatedRedirection = templateRoute.replace(
+            ":cellar_id",
+            String(cellar_id)
+        );
+        button.setAttribute("href", updatedRedirection);
 
         const boutonAjout = document.querySelector("footer > div");
         if (boutonAjout) {
@@ -266,7 +274,7 @@ import App from "../components/App.js";
 
         // S'il y a aucune bouteille, affiche un message
         if (bottles.length === 0) {
-            displayNoContentMessage();
+            displayNoContentMessage(currentCellar.value);
             return;
         }
 
