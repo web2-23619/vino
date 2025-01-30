@@ -28,27 +28,23 @@ import Bottle from "../components/Bottle.js";
             const bottleCard = event.target.closest(".card_bottle");
 
             const bottleId = bottleCard.getAttribute("data-js-id");
-
-            const quantityElement = bottleCard.querySelector(
-                "[data-info='quantity']"
-            );
-            const quantityInput = bottleCard.querySelector(
-                "input[data-js-quantity]"
-            );
-
+    
+            // Trouver l’élément de quantité à l’intérieur de la carte
+            const quantityElement = bottleCard.querySelector("[data-info='quantity']");
+            const quantityInput = bottleCard.querySelector("input[data-js-quantity]");
+    
+            // Récupérer la quantité de l’élément affiché et la stocker dans l’entrée
             const bottleQuantity = quantityElement.textContent.trim();
             quantityInput.value = bottleQuantity;
-
-            let source = window.location.href.includes("listeAchat")
-                ? "listeAchat"
-                : "cellier";
-
+    
+            let source = window.location.href.includes("listeAchat") ? "listeAchat" : "cellier";
+    
+            // Passer 'quantity' dans la chaîne de requête
             window.location.href = `/listeAchat/bouteille/ajouter/${bottleId}?source=${source}&quantity=${bottleQuantity}`;
         }
     });
-
-    // Remove bottle from UI after addition
-
+    
+    // Retirer la bouteille de l’interface utilisateur après l’ajout
     document.addEventListener("DOMContentLoaded", function () {
         const successMessage = document.querySelector(".alert-success");
         if (successMessage && window.location.href.includes("inventaire")) {
