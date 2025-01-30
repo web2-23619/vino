@@ -69,11 +69,17 @@ import Bottle from "../components/Bottle.js";
     render(dataAll);
     let purchases = dataAll.purchases;
 
+    //affichage du bouton ajouter bouteille selon l'ouverture des filtres et tri
+    const sortingDetails = document.querySelector(".sorting > details");
+    const filterDetails = document.querySelector(".filters > details");
+
+    sortingDetails.addEventListener("toggle", modifyDiplayAddBtn);
+    filterDetails.addEventListener("toggle", modifyDiplayAddBtn);
+
     // changer l'ordre d'affichage selon la selection
     const sortingOptions = document.querySelector(".sorting__frame");
     sortingOptions.addEventListener("click", function () {
         const selectedSort = document.querySelector("[name='sorting']:checked");
-        const sortingDetails = document.querySelector(".sorting > details");
         sortingDetails.removeAttribute("open");
         renderSort(selectedSort.value);
     });
@@ -81,7 +87,6 @@ import Bottle from "../components/Bottle.js";
     //filtres
     const filterFormHTML = document.querySelector("[data-js='filtersForm']");
     filterFormHTML.addEventListener("submit", function () {
-        const filterDetails = document.querySelector(".filters > details");
         filterDetails.removeAttribute("open");
         renderFilter();
     });
@@ -317,6 +322,15 @@ import Bottle from "../components/Bottle.js";
             purchases = filteredPurchase;
             clearAll();
             render(dataFiltered);
+        }
+    }
+
+    function modifyDiplayAddBtn() {
+        const btnAjouterBouteilleHTML = document.querySelector("footer>div");
+        if (sortingDetails.open || filterDetails.open) {
+            btnAjouterBouteilleHTML.classList.add("invisible");
+        } else {
+            btnAjouterBouteilleHTML.classList.remove("invisible");
         }
     }
 })();

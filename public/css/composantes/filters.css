@@ -37,7 +37,7 @@
 	overflow: hidden;
     transition: all 0.5s ease;
 
-    > div {
+    > div:not(.filters__pair) {
         max-height: 35vw;
         overflow-y: scroll;
     }
@@ -55,6 +55,8 @@
 	display: flex;
 	flex-direction: column;
 	gap: var(--espace-xs);
+
+	margin-block: var(--espace-xs);
 }
 
 .filters summary:has(.filters__chevron) {
