@@ -15,6 +15,21 @@
 		<input type="hidden" name="cellar_id" id="cellar_id" value="{{ session('cellar_id') }}">
 		<input type="hidden" name="source" value="{{ $source }}">
 
+		<article class="card_bottle" data-js-key="{{ $bottle->id }}">
+			<picture>
+				<img src="{{ $bottle->image_url }}" alt="Image de la bouteille">
+			</picture>
+			<section>
+				<header>
+					<p class="card_bottle__metainfo">{{ ucfirst($bottle->type) }}</p>
+					<h3>{{ $bottle->name }}</h3>
+					<p class="card_bottle__metainfo">{{ $bottle->volume }} ml | {{ $bottle->country }}</p>
+				</header>
+				<div>
+					<p>Prix: {{ number_format($bottle->price, 2) }} $</p>
+				</div>
+			</section>
+		</article>
 		<!-- Quantité à ajouter -->
 		<div class="form-group">
 			<label for="quantity">Quantité :</label>
