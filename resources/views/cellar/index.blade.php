@@ -59,6 +59,9 @@
     <template id="bottle-template">
         <article class="card_bottle" data-js-key="" data-js-Name="">
             <picture>
+				<button class="favorite-icon" data-js-favorite="false" title="Ajouter aux favoris">
+					🤍
+				</button>
                 <img src="" alt="">
             </picture>
             <section>

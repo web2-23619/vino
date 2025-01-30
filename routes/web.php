@@ -92,6 +92,7 @@ Route::middleware('auth')->group(function () {
 	Route::get('/favoris/ajouter/{bottleId}', [FavoriteController::class, 'add'])->name('favoris.add');
 	Route::delete('/favoris/supprimer/{bottleId}', [FavoriteController::class, 'remove'])->name('favoris.remove');
 	Route::post('/favoris/toggle', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
+	Route::post('/toggle-favorite/{bottleId}', [FavoriteController::class, 'toggleFavoriteBottle']);
 
 });
 
