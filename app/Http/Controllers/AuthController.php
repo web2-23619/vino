@@ -78,45 +78,6 @@ class AuthController extends Controller
 		], 401);
 	}
 
-	
-	public function apiRegister(Request $request)
-{
-    // Validate the incoming request
-    $validated = $request->validate([
-        'username' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'email', 'unique:users,email'],
-        'password' => ['required', 'string', 'min:6', 'confirmed'],
-    ]);
-
-    // Create a new user
-    $user = User::create([
-        'username' => $validated['username'],
-        'email' => $validated['email'],
-        'password' => Hash::make($validated['password']),
-    ]);
-
-	$user->cellars()->create([
-        'name' => 'Mon cellier',
-    ]);
-
-	$credentials= $request->only('email','password');
-	Auth::validate($credentials);
-	
-    // Log in the user and create a token
-	// $user = Auth::getProvider()->retrieveByCredentials($credentials);
-	 Auth::login($user);
-	//$request->session()->regenerate();
-    $token = $user->createToken('Vino')->plainTextToken;
-
-    // Return a successful response
-    return response()->json([
-        'message' => 'Inscription réussie!',
-        'token' => $token,
-        'redirect' => route('user.profile'),
-		// 'log'=> $log,
-		// 'user'=>$user
-    ]);
-}
 
 	
 	/**
