@@ -69,11 +69,12 @@ import Bottle from "../components/Bottle.js";
                     },
                     decoder: {
                         readers: [
-                            "code_128_reader",
-                            "ean_reader",
-                            "upc_reader",
+                            "ean_13_reader",     // For EAN-13 barcodes
                         ],
                     },
+                    locate: true,
+                    numOfWorkers: 1,
+                    halfSample: false,
                 },
                 function (err) {
                     if (err) {

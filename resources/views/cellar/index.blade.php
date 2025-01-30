@@ -6,6 +6,9 @@
 	<header data-js="header">
 		<h2>Inventaire</h2>
 	</header>
+	<small id="cellier-instruction">
+		<p>Cliquez sur ⋮ pour gérer un cellier</p>
+	</small>
 	<template id="alerte">
 		<div class="alerte">
 			<p>{{ session('erreur') }}</p>
@@ -46,6 +49,7 @@
 		</select>
 	</div>
 </section>
+
 <template id="noPurchase">
 	<article class="noContent">
 		<h3>
@@ -55,6 +59,10 @@
 		<a href="href=" #" data-template-route="{{ rawurldecode(route('search.index', ['source' => 'cellier', 'cellar_id' => ':cellar_id'])) }}" class="btn btn_accent">Découvrir des bouteilles</a>
 	</article>
 </template>
+<div class="display-options">
+	@include('layouts.filtres',['initialCountries' => $initialCountries, 'remainingCountries' => $remainingCountries, 'remainingCount' => $remainingCount, 'types' => $types])
+	@include('layouts.sort')
+</div>
 <section class="cellier-products">
     <template id="bottle-template">
         <article class="card_bottle" data-js-key="" data-js-Name="">
@@ -73,6 +81,7 @@
 					<p class="card_bottle__metainfo"></p>
 				</header>
 				<div>
+        					<p>$ <span data-info="price">PRIX</span></p>
 					<div class="card_bottle__actions">
 						<button data-js-action="afficherModaleConfirmation" data-js-type="trash">
 							<svg enable-background="new 0 0 32 32" id="Glyph" version="1.1" viewBox="0 0 32 32" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
