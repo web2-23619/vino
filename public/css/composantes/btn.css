@@ -78,6 +78,7 @@
     width: 100%;
     padding: var(--espace-nano);
     transition: background-color var(--duree-std), transform var(--duree-x-rapide) ease-in-out;
+	margin-top: var(--espace-xs);
 }
 
 .btn_scanner:active{
