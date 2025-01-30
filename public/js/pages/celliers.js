@@ -14,8 +14,7 @@ import App from "../components/App.js";
     //filtres
     const filterFormHTML = document.querySelector("[data-js='filtersForm']");
     filterFormHTML.addEventListener("submit", renderFilter);
-    const btnFilters = document.querySelector("#btn-filters");
-
+    const chevronDetails = document.querySelector(".filters > details");
 
     // affichage de la liste complete de pays
     const btnAfficherPlus = document.querySelector("[data-js='afficherPlus']");
@@ -437,7 +436,7 @@ import App from "../components/App.js";
         }
     
         renderBottles({ id: currentBottles[0]?.cellar_id || 0 }, filteredBottle);
-        btnFilters.checked = false;
+        chevronDetails.removeAttribute('open');
     }
     
     
