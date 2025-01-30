@@ -124,7 +124,7 @@ import App from "../components/App.js";
     function displayNoContentMessage() {
         const template = document.querySelector("template#noPurchase");
         let content = template.content.cloneNode(true);
-        let sectionHTML = document.querySelector("main > section");
+        let sectionHTML = document.querySelector("main > section.cellier-products");
         sectionHTML.append(content);
 
         const boutonAjout = document.querySelector("footer > div");

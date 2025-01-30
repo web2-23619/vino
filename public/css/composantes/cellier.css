@@ -45,4 +45,5 @@
     align-items: center;
     display: flex;
     gap: var(--espace-nano);
+    margin-bottom: var(--espace-s);
 }
