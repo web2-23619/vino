@@ -77,9 +77,10 @@ return redirect()->route('user.profile')->with('success', 'Utilisateur créé av
 		});
 	
 		$toBuyCount = $user->purchases()->sum('quantity'); 
-	
-		
-		return view('user.profile', compact('user', 'cellarsCount', 'bottlesCount', 'toBuyCount'));
+	    
+		// Récupérer le nombre de favoris
+		$favorisCount = $user->favorites()->count() ;	
+		return view('user.profile', compact('user', 'cellarsCount', 'bottlesCount', 'toBuyCount', 'favorisCount'));
 	}
 
 
