@@ -89,17 +89,34 @@ class PurchaseController extends Controller
 		// return redirect()->route('cellar.index')->with('succes', 'Cellier modifié avec succès!');
 	}
 
-	public function showAddBottleForm($bottle_id)
-	{
+	//public function showAddBottleForm($bottle_id)
+	//{
 		// Récupérer la bouteille par ID
-		$bottle = Bottle::findOrFail($bottle_id);
+		//$bottle = Bottle::findOrFail($bottle_id);
 
 		// Récupérer la liste d'achat de l'utilisateur connecté
-		$userCellars = Auth::user()->cellars;
+		//$userCellars = Auth::user()->cellars;
 
 		// Retourner la vue pour le formulaire d'ajout de la bouteille
-		return view('bottle.addBottlePurchase', compact('bottle', 'userCellars'));
-	}
+		//return view('bottle.addBottlePurchase', compact('bottle', 'userCellars'));
+	//}
+
+	public function showAddBottleForm($bottle_id)
+{
+    $bottle = Bottle::findOrFail($bottle_id);
+    $userCellars = Auth::user()->cellars;
+
+    // Retrieve 'source' from the request query parameter
+    $source = request()->query('source', 'cellier'); 
+
+    // If the source is 'listeAchat', override it to 'cellier' so users can select a cellar
+    if ($source == 'listeAchat') {
+        $source = 'cellier';
+    }
+
+    return view('bottle.addBottle', compact('bottle', 'userCellars', 'source'));
+}
+
 
 	public function addBottle(Request $request)
 	{
@@ -204,53 +221,79 @@ class PurchaseController extends Controller
 		}
 	}
 	public function addToCellar(Request $request)
-	{
-		try {
-			$validated = $request->validate([
-				'bottleId' => 'required|integer|exists:bottles,id',
-				'cellarId' => 'required|integer|exists:cellars,id',
-				'quantity' => 'required|integer|min:1',
-			]);
-	
-			// 🔹 Check if the bottle already exists in the selected cellar
-			$cellarBottle = DB::table('cellar_has_bottles')
-				->where('bottle_id', $validated['bottleId'])
-				->where('cellar_id', $validated['cellarId'])
-				->first();
-	
-			if ($cellarBottle) {
-				// 🔹 If the bottle is already in the cellar, update the quantity
-				DB::table('cellar_has_bottles')
-					->where('bottle_id', $validated['bottleId'])
-					->where('cellar_id', $validated['cellarId'])
-					->update([
-						'quantity' => $cellarBottle->quantity + $validated['quantity'],
-						'updated_at' => now(),
-					]);
-			} else {
-				// 🔹 If the bottle is new, insert it into the cellar
-				DB::table('cellar_has_bottles')->insert([
-					'cellar_id' => $validated['cellarId'],
-					'bottle_id' => $validated['bottleId'],
-					'quantity' => $validated['quantity'],
-					'created_at' => now(),
-					'updated_at' => now(),
-				]);
-			}
-	
-			// Remove the bottle from the purchases list (Liste d'achat)
-			DB::table('purchases')
-				->where('bottle_id', $validated['bottleId'])
-				->where('user_id', Auth::id())
-				->delete();
-	
-			// Redirect to the inventory page
-			return redirect()->route('inventaire')->with('success', 'Bouteille ajoutée avec succès!');
-	
-		} catch (\Exception $e) {
-			return response()->json(['error' => 'Erreur lors de l\'ajout'], 500);
-		}
-	}
-	
+{
+    try {
+        // ✅ Validate request
+        $validated = $request->validate([
+            'bottleId' => 'required|integer|exists:bottles,id',
+            'cellarId' => 'required|integer|exists:cellars,id',
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        \Log::info('Validated data:', $validated);
+
+        // ✅ Check if the bottle already exists in the cellar
+        $cellarBottle = DB::table('cellar_has_bottles')
+            ->where('bottle_id', $validated['bottleId'])
+            ->where('cellar_id', $validated['cellarId'])
+            ->first();
+
+        if ($cellarBottle) {
+            // ✅ Update quantity if bottle exists
+            DB::table('cellar_has_bottles')
+                ->where('bottle_id', $validated['bottleId'])
+                ->where('cellar_id', $validated['cellarId'])
+                ->update([
+                    'quantity' => $cellarBottle->quantity + $validated['quantity'],
+                    'updated_at' => now(),
+                ]);
+            \Log::info('Bottle quantity updated in cellar.');
+        } else {
+            // ✅ Insert if bottle is new
+            DB::table('cellar_has_bottles')->insert([
+                'cellar_id' => $validated['cellarId'],
+                'bottle_id' => $validated['bottleId'],
+                'quantity' => $validated['quantity'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+            \Log::info('New bottle added to cellar.');
+        }
+
+        // ✅ Verify if bottle exists in purchases before deletion
+        $purchaseExists = DB::table('purchases')
+            ->where('bottle_id', $validated['bottleId'])
+            ->where('user_id', Auth::id())
+            ->exists();
+
+        \Log::info('Does purchase exist before deletion?', ['exists' => $purchaseExists]);
+
+        if (!$purchaseExists) {
+            \Log::error('Purchase entry not found, skipping deletion.');
+        } else {
+            // Force execution and return the delete result
+$deletedRows = DB::table('purchases')
+->where('bottle_id', $validated['bottleId'])
+->where('user_id', Auth::id())
+->delete();
+
+if ($deletedRows === 0) {
+return response()->json(['error' => 'Delete failed, bottle still in purchases'], 500);
+}
+
+\Log::info('Successfully deleted bottle from purchases:', ['count' => $deletedRows]);
+
+        }
+
+        // ✅ Redirect to inventory page
+        return redirect()->route('inventaire')->with('success', 'Bouteille ajoutée avec succès!');
+
+    } catch (\Exception $e) {
+        \Log::error('Erreur lors de l\'ajout au cellier', ['error' => $e->getMessage()]);
+        return response()->json(['error' => 'Erreur lors de l\'ajout'], 500);
+    }
+}
 
 }
+
+
