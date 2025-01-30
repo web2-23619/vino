@@ -30,7 +30,9 @@ class CellarController extends Controller
 			->get();
 
 		// Retourner la vue avec la liste des celliers
+
 		return view('cellar.index', ['cellars' => $cellars], ['initialCountries' => $initialCountries, 'remainingCountries' => $remainingCountries, 'remainingCount' => $remainingCount, 'types' => $types]);
+
 	}
 
 
@@ -152,6 +154,7 @@ class CellarController extends Controller
 
 	public function showBottlesApi($cellarId)
 	{
+		$user = Auth::user(); 
 		// Trouver le cellier par son ID
 		$cellar = Cellar::with('bottles')->find($cellarId);
 	
@@ -161,7 +164,7 @@ class CellarController extends Controller
 		}
 	
 		// Recupere les bouteilles
-		$bottles = $cellar->bottles->map(function ($bottle) {
+		$bottles = $cellar->bottles->map(function ($bottle) use ($user) {
 			return [
 				'id' => $bottle->id,
 				'name' => $bottle->name,
@@ -171,6 +174,7 @@ class CellarController extends Controller
 				'volume' => $bottle->volume,
 				'type' => $bottle->type,
 				'quantity' => $bottle->pivot->quantity,
+				'is_favorite' => $user ? $user->isFavorite($bottle->id) : false,
 			];
 		});
 

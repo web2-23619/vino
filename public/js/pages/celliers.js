@@ -121,11 +121,19 @@ import App from "../components/App.js";
      * Le message est stock  dans un template HTML et est ajouté au DOM.
      * Si un bouton "Ajouter" est présent, il est supprimé.
      */
-    function displayNoContentMessage() {
+    function displayNoContentMessage(cellar_id) {
         const template = document.querySelector("template#noPurchase");
         let content = template.content.cloneNode(true);
         let sectionHTML = document.querySelector("main > section.cellier-products");
         sectionHTML.append(content);
+        const button = document.querySelector("[data-template-route]");
+        console.log(button);
+        const templateRoute = button.dataset.templateRoute;
+        const updatedRedirection = templateRoute.replace(
+            ":cellar_id",
+            String(cellar_id)
+        );
+        button.setAttribute("href", updatedRedirection);
 
         const boutonAjout = document.querySelector("footer > div");
         if (boutonAjout) {
@@ -341,7 +349,7 @@ import App from "../components/App.js";
      * @param {Array<Object>} bottles Informations des bouteilles du cellier.
      */
     function renderBottles(cellar, bottles) {
-        // Selectionne le conteneur
+        // Sélectionne le conteneur
         const bottlesContainer = document.querySelector(".cellier-products");
 
         // Supprime les articles existants
@@ -350,10 +358,10 @@ import App from "../components/App.js";
 
         // S'il y a aucune bouteille, affiche un message
         if (bottles.length === 0) {
-            displayNoContentMessage();
+            displayNoContentMessage(currentCellar.value);
             return;
         }
-
+    
         // Cache le message "Aucune bouteille"
         const noContentMessage = document.querySelector(".noContent");
         if (noContentMessage) {
@@ -400,6 +408,52 @@ import App from "../components/App.js";
 
             const price = clone.querySelector("[data-info='price']");
             price.textContent = bottle.price;
+    
+            // Ajouter l'événement click pour gérer l'ajout et le retrait des favoris
+            const heartIcon = clone.querySelector(".favorite-icon");
+    
+            // Si la bouteille est déjà un favori, mets le cœur en rouge
+            if (bottle.is_favorite) {
+                heartIcon.dataset.jsFavorite = "true";
+                heartIcon.innerHTML = "❤️";  // Cœur rouge
+                heartIcon.title = "Retirer des favoris";
+            } else {
+                heartIcon.dataset.jsFavorite = "false";
+                heartIcon.innerHTML = "🤍";  // Cœur vide
+                heartIcon.title = "Ajouter aux favoris";
+            }
+    
+            heartIcon.addEventListener("click", async () => {
+                const bottleId = heartIcon.closest(".card_bottle").dataset.jsId;
+                const isFavorite = heartIcon.dataset.jsFavorite === "true";
+    
+                // Envoie une requête pour changer le statut du favori
+                const response = await fetch(`/favoris/toggle`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                    },
+                    body: JSON.stringify({ bottle_id: bottleId }),
+                });
+    
+                if (response.ok) {
+                    const data = await response.json();
+    
+                    // Mettre à jour l'état de l'icône du cœur en fonction de la réponse
+                    if (data.status === "added") {
+                        heartIcon.dataset.jsFavorite = "true";
+                        heartIcon.innerHTML = "❤️"; // Cœur rouge
+                        heartIcon.title = "Retirer des favoris";
+                    } else {
+                        heartIcon.dataset.jsFavorite = "false";
+                        heartIcon.innerHTML = "🤍"; // Cœur vide
+                        heartIcon.title = "Ajouter aux favoris";
+                    }
+                } else {
+                    console.error("Erreur lors du changement du statut du favori");
+                }
+            });
 
             // Ajoute la bouteille au conteneur
             bottlesContainer.appendChild(clone);

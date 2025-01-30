@@ -58,6 +58,30 @@ public function favorites()
 {
     return $this->belongsToMany(Bottle::class, 'favorites', 'user_id', 'bottle_id');
 }
+    // Récupérer toutes les bouteilles favorites d'un utilisateur
+    public function favoriteBottles()
+    {
+        return $this->hasMany(FavoriteBottle::class, 'user_id');
+    }
 
+    // Vérifier si une bouteille est favorite pour un utilisateur donné
+    public function isFavorite($bottleId)
+    {
+        return $this->favorites()->where('bottle_id', $bottleId)->exists();
+    }
+
+    // Ajouter ou supprimer une bouteille des favoris
+    public function toggleFavorite($bottleId)
+    {
+        $favorite = $this->favoriteBottles()->where('bottle_id', $bottleId)->first();
+
+        if ($favorite) {
+            // Supprimer du tableau des favoris
+            $favorite->delete();
+        } else {
+            // Ajouter aux favoris
+            $this->favoriteBottles()->create(['bottle_id' => $bottleId]);
+        }
+    }
 
 }
