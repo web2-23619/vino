@@ -63,6 +63,8 @@ Route::middleware('auth')->group(function () {
 	Route::post('/deconnexion', [AuthController::class, 'destroy'])->name('logout');
 	Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
 
+	
+
 	Route::get('/inventaire', [CellarController::class, 'index'])->name('cellar.index');
 	Route::get('inventaire/creer/cellier', [CellarController::class, 'create'])->name('cellar.create');
 	Route::post('/creer/cellier', [CellarController::class, 'store'])->name('cellar.store');
@@ -80,7 +82,7 @@ Route::middleware('auth')->group(function () {
 
 	Route::get('/listeAchat/bouteille/ajouter/{bottle_id}', [PurchaseController::class, 'showAddBottleForm'])->name('achat.add');
 	Route::post('/listeAchat/bouteille/ajouter', [PurchaseController::class, 'addBottle'])->name('achat.add.submit');
-	Route::post('/listeAchat/ajouter-au-cellier', [PurchaseController::class, 'addToCellar'])->name('purchase.addToCellar');
+	Route::post('/listeAchat/ajouter-au-cellier/{bottle_id}', [PurchaseController::class, 'addToCellar'])->name('purchase.addToCellar');
 	Route::get('/listeAchat', [PurchaseController::class, 'index'])->name('purchase.index');
 
 	Route::get('/recherche', [SearchController::class, 'index'])->name('search.index');
@@ -95,7 +97,6 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/utilisateurSupprime', [AuthController::class, 'deletedUser']);
 Route::get('/api/user/cellars', [CellarController::class, 'getUserCellars'])->name('cellar.getUserCellars');
-
 
 
 

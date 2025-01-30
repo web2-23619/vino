@@ -33,10 +33,13 @@
 }
 /* Stats Section */
 .profile-stats {
-    display: flex;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: var(--espace-s); 
+    justify-content: center;
+    align-items: center;
     margin-bottom: var(--espace-m);
-    margin-top: var(--espace-m);
+    margin-top: var(--espace-l);
 }
 
 .stat-item {

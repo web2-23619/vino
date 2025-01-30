@@ -26,23 +26,26 @@ import Bottle from "../components/Bottle.js";
     document.addEventListener("click", (event) => {
         if (event.target.matches('[data-js-action="addToCellar"]')) {
             const bottleCard = event.target.closest(".card_bottle");
-            if (!bottleCard) {
-                console.error("❌ Could not find bottle container.");
-                return;
-            }
     
             const bottleId = bottleCard.getAttribute("data-js-id");
-            if (!bottleId) {
-                console.error("❌ No bottle ID found! Check if `.card_bottle` has `data-js-id`.");
-                return;
-            }
+    
+            // ✅ Find the quantity element inside the card
+            const quantityElement = bottleCard.querySelector("[data-info='quantity']");
+            const quantityInput = bottleCard.querySelector("input[data-js-quantity]");
+    
+            // ✅ Get the quantity from the displayed element and store it in the input
+            const bottleQuantity = quantityElement.textContent.trim();
+            quantityInput.value = bottleQuantity;
     
             let source = window.location.href.includes("listeAchat") ? "listeAchat" : "cellier";
     
-            // Redirect with the correct bottle_id
-            window.location.href = `/listeAchat/bouteille/ajouter/${bottleId}?source=${source}`;
+            // ✅ Pass `quantity` in the query string
+            window.location.href = `/listeAchat/bouteille/ajouter/${bottleId}?source=${source}&quantity=${bottleQuantity}`;
         }
     });
+    
+    
+    
     
     // Remove bottle from UI after addition
 
@@ -56,7 +59,6 @@ import Bottle from "../components/Bottle.js";
             }
         }
     });
-    
     
 
     // récupérer et afficher les données

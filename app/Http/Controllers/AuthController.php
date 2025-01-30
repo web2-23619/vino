@@ -43,7 +43,7 @@ class AuthController extends Controller
 			$request->session()->regenerate();
 
 			
-			return redirect()->route('cellar.index')->with('success', 'Connexion réussie!');
+			return redirect()->route('user.profile')->with('success', 'Connexion réussie!');
 		}
 
 		return redirect(route('login'))
@@ -99,12 +99,12 @@ class AuthController extends Controller
         'name' => 'Mon cellier',
     ]);
 
-	//$credentials= $request->only('email','password');
-	//Auth::validate($credentials);
+	$credentials= $request->only('email','password');
+	Auth::validate($credentials);
 	
     // Log in the user and create a token
 	// $user = Auth::getProvider()->retrieveByCredentials($credentials);
-	Auth::login($user);
+	 Auth::login($user);
 	//$request->session()->regenerate();
     $token = $user->createToken('Vino')->plainTextToken;
 
@@ -113,8 +113,8 @@ class AuthController extends Controller
         'message' => 'Inscription réussie!',
         'token' => $token,
         'redirect' => route('user.profile'),
-		//'log'=> $log,
-		//'user'=>$user
+		// 'log'=> $log,
+		// 'user'=>$user
     ]);
 }
 

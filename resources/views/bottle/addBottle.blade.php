@@ -18,7 +18,9 @@
         <!-- Quantité à ajouter -->
         <div class="form-group">
             <label for="quantity">Quantité :</label>
-            <input type="number" name="quantity" id="quantity" min="1" required>
+            <input type="number" name="quantity" id="quantity" value="{{ old('quantity', $quantity) }}" min="1" required>
+           
+
         </div>
 
         @if($source == 'listeAchat')

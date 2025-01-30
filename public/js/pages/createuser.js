@@ -45,11 +45,14 @@ async function register(event) {
         });
 
         const data = await response.json();
+        //console.log("Registration response:", data);
 
-        console.log(data);
+        //console.log(data);
 
         if (response.ok) {
             localStorage.setItem("token", data.token);
+            //console.log("Redirecting to:", data.redirect);
+            window.location.href = data.redirect; 
             //window.location.href = `${App.instance.baseURL}/profile`;
         } else {
             // Display error message

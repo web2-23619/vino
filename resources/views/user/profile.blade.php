@@ -32,31 +32,39 @@
 		</div>
 
 	<!-- Stats de profil -->
-	<div class="profile-stats">
-		<!-- nombre de celliers -->
-		<div class="stat-item">
-			<a href="{{ route('cellar.index') }}">
-				<p class="stat-number">{{ $cellarsCount }}</p>
-			</a>
-			<p class="stat-label">Inventaire</p>
-		</div>
+<div class="profile-stats">
+    <!-- nombre de celliers -->
+    <div class="stat-item">
+        <a href="{{ route('cellar.index') }}">
+            <p class="stat-number">{{ $cellarsCount }}</p>
+        </a>
+        <p class="stat-label">Inventaire</p>
+    </div>
 
-		<!-- nombre de bouteilles -->
-		<div class="stat-item">
-			<a href="{{ route('user.showBottles', $user->id) }}">
-				<p class="stat-number">{{ $bottlesCount }}</p>
-			</a>
-			<p class="stat-label">Bouteilles</p>
-		</div>
+    <!-- nombre de bouteilles -->
+    <div class="stat-item">
+        <a href="{{ route('cellar.index') }}">
+            <p class="stat-number">{{ $bottlesCount }}</p>
+        </a>
+        <p class="stat-label">Bouteilles</p>
+    </div>
 
-		<!-- a acheter -->
-		<div class="stat-item">
-			<a href="{{ route('purchase.index') }}">
-				<p class="stat-number">{{ $toBuyCount }}</p>
-			</a>
-			<p class="stat-label">À acheter</p>
-		</div>
-	</div>
+    <!-- à acheter -->
+    <div class="stat-item">
+        <a href="{{ route('purchase.index') }}">
+            <p class="stat-number">{{ $toBuyCount }}</p>
+        </a>
+        <p class="stat-label">À acheter</p>
+    </div>
+
+    <!-- favoris -->
+    <div class="stat-item">
+        <a href="{{ route('favorites.index') }}">
+            <p class="stat-number">{{ $favorisCount }}</p>
+        </a>
+        <p class="stat-label">Favoris</p>
+    </div>
+</div>
 
 
 	<!-- Confirmation Modal pour Supprimer -->
