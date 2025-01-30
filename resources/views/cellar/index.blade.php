@@ -6,6 +6,9 @@
 	<header data-js="header">
 		<h2>Inventaire</h2>
 	</header>
+	<small id="cellier-instruction">
+		<p>Cliquez sur ⋮ pour gérer un cellier</p>
+	</small>
 	<template id="alerte">
 		<div class="alerte">
 			<p>{{ session('erreur') }}</p>

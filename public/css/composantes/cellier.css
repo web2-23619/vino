@@ -47,3 +47,9 @@
     gap: var(--espace-nano);
     margin-bottom: var(--espace-s);
 }
+
+[id=cellier-instruction] {
+    display: block;
+    font-weight: initial;
+    margin-bottom: 10px;
+}
