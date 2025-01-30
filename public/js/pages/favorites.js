@@ -62,7 +62,9 @@ import Bottle from "../components/Bottle.js";
      * @returns {object} Un objet JSON contenant les favoris (favorites) de l'utilisateur.
      */
     async function getAllFavorites() {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+        const csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content");
         const response = await fetch(`${App.instance.baseURL}/api/favoris`, {
             method: "GET",
             headers: {
@@ -73,7 +75,7 @@ import Bottle from "../components/Bottle.js";
         });
 
         const data = await response.json();
-        console.log(data); 
+        console.log(data);
         return data;
     }
 
@@ -83,50 +85,75 @@ import Bottle from "../components/Bottle.js";
      * @param {object} data - Les données des favoris.
      * @param {Array} data.favorites - Un tableau contenant les objets des favoris.
      */
-function render(data) {
-    const container = document.querySelector("[data-js-list]");
-    const template = document.querySelector("template#favoriteBottle");
-    const actionButtonTemplate = document.querySelector("template#action-button");
-    
-    // Si des favoris existent, on les affiche, sinon, un message vide
-    if (data && data.favorites && data.favorites.length > 0) {
-        data.favorites.forEach(favorite => {
-            const favoriteClone = template.content.cloneNode(true);
-            favoriteClone.querySelector("[data-js-id]").dataset.jsId = favorite.id;
-            favoriteClone.querySelector("[data-info='img']").src = favorite.image_url;
-            favoriteClone.querySelector("[data-info='name']").textContent = favorite.name;
-            favoriteClone.querySelector("[data-info='price']").textContent = favorite.price;
-            favoriteClone.querySelector("[data-info='volume']").textContent = favorite.volume;
-            favoriteClone.querySelector("[data-info='country']").textContent = favorite.country;
-            favoriteClone.querySelector("[data-info='type']").textContent = favorite.type;
+    function render(data) {
+        const container = document.querySelector("[data-js-list]");
+        const template = document.querySelector("template#favoriteBottle");
+        const actionButtonTemplate = document.querySelector(
+            "template#action-button"
+        );
 
-                        const favoriteIcon = favoriteClone.querySelector('.favorite-icon');
-            favoriteIcon.dataset.jsFavorite = 'true';
-            favoriteIcon.innerHTML = '❤️';
-            favoriteIcon.title = 'Retirer des favoris';
+        // Si des favoris existent, on les affiche, sinon, un message vide
+        if (data && data.favorites && data.favorites.length > 0) {
+            data.favorites.forEach((favorite) => {
+                const favoriteClone = template.content.cloneNode(true);
+                favoriteClone.querySelector("[data-js-id]").dataset.jsId =
+                    favorite.id;
+                favoriteClone.querySelector("[data-info='img']").src =
+                    favorite.image_url;
+                favoriteClone.querySelector("[data-info='name']").textContent =
+                    favorite.name;
+                favoriteClone.querySelector("[data-info='price']").textContent =
+                    favorite.price;
+                favoriteClone.querySelector(
+                    "[data-info='volume']"
+                ).textContent = favorite.volume;
+                favoriteClone.querySelector(
+                    "[data-info='country']"
+                ).textContent = favorite.country;
+                favoriteClone.querySelector("[data-info='type']").textContent =
+                    favorite.type;
 
-            // Ajouter des actions aux boutons
-            favoriteClone.querySelector("[data-js-action='removeFromFavorites']").addEventListener("click", (e) => {
-                e.preventDefault(); // Empêche tout comportement par défaut
-                
-                const bottleElement = e.target.closest(".card_bottle"); // Récupère l'élément de la bouteille
-                const bottleName = bottleElement.querySelector("[data-info='name']").textContent; // Récupère le nom
-            
-                new ModaleAction(favorite.id, bottleName, "supprimerFavoris", "supprimer", "favoris", bottleElement);
+                const favoriteIcon =
+                    favoriteClone.querySelector(".favorite-icon");
+                favoriteIcon.dataset.jsFavorite = "true";
+                favoriteIcon.innerHTML = "❤️";
+                favoriteIcon.title = "Retirer des favoris";
+
+                // Ajouter des actions aux boutons
+                favoriteClone
+                    .querySelector("[data-js-action='removeFromFavorites']")
+                    .addEventListener("click", (e) => {
+                        e.preventDefault(); // Empêche tout comportement par défaut
+
+                        const bottleElement = e.target.closest(".card_bottle"); // Récupère l'élément de la bouteille
+                        const bottleName =
+                            bottleElement.querySelector(
+                                "[data-info='name']"
+                            ).textContent; // Récupère le nom
+
+                        new ModaleAction(
+                            favorite.id,
+                            bottleName,
+                            "supprimerFavoris",
+                            "supprimer",
+                            "favoris",
+                            bottleElement
+                        );
+                    });
+
+                favoriteClone.querySelector("[data-js-action='moveToCellar']");
+                favoriteClone.querySelector(
+                    "[data-js-action='moveToPurchaseList']"
+                );
+
+                container.appendChild(favoriteClone);
             });
-            
-            favoriteClone.querySelector("[data-js-action='moveToCellar']");
-            favoriteClone.querySelector("[data-js-action='moveToPurchaseList']");
 
-            container.appendChild(favoriteClone);
-        });
-
-        displayAddBottleBtn();
-    } else {
-        displayNoContentMessage();
+            displayAddBottleBtn();
+        } else {
+            displayNoContentMessage();
+        }
     }
-}
-
 
     /**
      * Supprime un favori.
@@ -134,15 +161,20 @@ function render(data) {
      * @param {string} id - L'ID du favori à supprimer.
      */
     async function removeFavorite(id) {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
-        const response = await fetch(`${App.instance.baseURL}/api/favoris/${id}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": csrfToken,
-                Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-        });
+        const csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content");
+        const response = await fetch(
+            `${App.instance.baseURL}/api/favoris/${id}`,
+            {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken,
+                    Authorization: "Bearer " + localStorage.getItem("token"),
+                },
+            }
+        );
         if (response.ok) {
             favorites = favorites.filter((favorite) => favorite.id !== id);
             clearAll();
@@ -164,20 +196,20 @@ function render(data) {
     //     }
     // });
 
-    
-    document.addEventListener("click", function () {
-        document.querySelectorAll("[data-js-action='moveToCellar']").forEach(button => {
+    document
+        .querySelectorAll("[data-js-action='moveToCellar']")
+        .forEach((button) => {
             button.addEventListener("click", function (event) {
                 event.preventDefault(); // Empêche l'action par défaut du lien
-    
+
                 // Récupérer l'ID de la bouteille
                 const bottleElement = event.target.closest(".card_bottle");
                 const bottleId = bottleElement.getAttribute("data-js-id");
-    
+
                 if (bottleId) {
                     // Construire l'URL de redirection
                     const url = `/cellier/bouteille/ajouter/${bottleId}?source=cellier`;
-    
+
                     // Rediriger vers l'URL
                     window.location.href = url;
                 } else {
@@ -185,19 +217,20 @@ function render(data) {
                 }
             });
         });
-    });
-        document.querySelectorAll("[data-js-action='moveToPurchaseList']").forEach(button => {
+    document
+        .querySelectorAll("[data-js-action='moveToPurchaseList']")
+        .forEach((button) => {
             button.addEventListener("click", function (event) {
                 event.preventDefault(); // Empêche l'action par défaut du lien
-    
+
                 // Récupérer l'ID de la bouteille
                 const bottleElement = event.target.closest(".card_bottle");
                 const bottleId = bottleElement.getAttribute("data-js-id");
-    
+
                 if (bottleId) {
                     // Construire l'URL de redirection
                     const url = `/cellier/bouteille/ajouter/${bottleId}?source=listeAchat`;
-    
+
                     // Rediriger vers l'URL
                     window.location.href = url;
                 } else {
@@ -205,33 +238,34 @@ function render(data) {
                 }
             });
         });
-    
 
-    document.querySelectorAll('.favorite-icon').forEach(icon => {
-        icon.addEventListener('click', async () => {
-            const bottleId = icon.closest('.card_bottle').dataset.jsId;
-            const isFavorite = icon.dataset.jsFavorite === 'true';
-            
+    document.querySelectorAll(".favorite-icon").forEach((icon) => {
+        icon.addEventListener("click", async () => {
+            const bottleId = icon.closest(".card_bottle").dataset.jsId;
+            const isFavorite = icon.dataset.jsFavorite === "true";
+
             // Envoie une requête pour changer le statut du favori
             const response = await fetch(`/favoris/toggle`, {
-                method: 'POST',
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector(
+                        'meta[name="csrf-token"]'
+                    ).content,
                 },
-                body: JSON.stringify({ bottle_id: bottleId })
+                body: JSON.stringify({ bottle_id: bottleId }),
             });
-    
+
             if (response.ok) {
                 // Mettre à jour l'état de l'icône du cœur
                 icon.dataset.jsFavorite = !isFavorite;
-                icon.innerHTML = !isFavorite ? '❤️' : '🤍';
-                icon.title = !isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris';
+                icon.innerHTML = !isFavorite ? "❤️" : "🤍";
+                icon.title = !isFavorite
+                    ? "Retirer des favoris"
+                    : "Ajouter aux favoris";
             }
         });
     });
-    
-
 })();
 
 // document.addEventListener('DOMContentLoaded', () => {

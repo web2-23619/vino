@@ -90,7 +90,11 @@ class SearchController extends Controller
 			session(['cellar_id' => $cellarId]);
 		}
 
-		$source = session('add_bottle_source');
+		if ($request->has('source')) {
+			$source = $request->input('source');
+			session(['add_bottle_source' => $source]); // Mettre à jour la session
+		}
+
 		$selectedCellarName = $cellarId ? Cellar::find($cellarId)->name : null;
 
 		return view('bottle.addBottle', compact('bottle', 'userCellars', 'source', 'selectedCellarName'));
