@@ -1,9 +1,13 @@
-.display-options > *{
+.display-options > * {
     font-family: var(--police-regular);
     border: var(--bordure-s) solid var(--tres-fonce);
     border-radius: var(--rayon-s);
     padding: var(--espace-nano) var(--espace-s);
     font-size: var(--police-std);
 
-	margin-bottom: var(--espace-xs);
+    margin-bottom: var(--espace-xs);
+
+    :hover {
+        cursor: pointer;
+    }
 }
