@@ -26,57 +26,65 @@ import Bottle from "../components/Bottle.js";
     document.addEventListener("click", (event) => {
         if (event.target.matches('[data-js-action="addToCellar"]')) {
             const bottleCard = event.target.closest(".card_bottle");
-    
+
             const bottleId = bottleCard.getAttribute("data-js-id");
-    
-            // ✅ Find the quantity element inside the card
-            const quantityElement = bottleCard.querySelector("[data-info='quantity']");
-            const quantityInput = bottleCard.querySelector("input[data-js-quantity]");
-    
-            // ✅ Get the quantity from the displayed element and store it in the input
+
+            const quantityElement = bottleCard.querySelector(
+                "[data-info='quantity']"
+            );
+            const quantityInput = bottleCard.querySelector(
+                "input[data-js-quantity]"
+            );
+
             const bottleQuantity = quantityElement.textContent.trim();
             quantityInput.value = bottleQuantity;
-    
-            let source = window.location.href.includes("listeAchat") ? "listeAchat" : "cellier";
-    
-            // ✅ Pass `quantity` in the query string
+
+            let source = window.location.href.includes("listeAchat")
+                ? "listeAchat"
+                : "cellier";
+
             window.location.href = `/listeAchat/bouteille/ajouter/${bottleId}?source=${source}&quantity=${bottleQuantity}`;
         }
     });
-    
-    
-    
-    
+
     // Remove bottle from UI after addition
 
     document.addEventListener("DOMContentLoaded", function () {
         const successMessage = document.querySelector(".alert-success");
         if (successMessage && window.location.href.includes("inventaire")) {
-            const bottleId = new URLSearchParams(window.location.search).get("bottle_id");
-            const bottleCard = document.querySelector(`[data-js-id="${bottleId}"]`);
+            const bottleId = new URLSearchParams(window.location.search).get(
+                "bottle_id"
+            );
+            const bottleCard = document.querySelector(
+                `[data-js-id="${bottleId}"]`
+            );
             if (bottleCard) {
                 bottleCard.remove();
             }
         }
     });
-    
 
     // récupérer et afficher les données
     let dataAll = await getAll();
     render(dataAll);
     let purchases = dataAll.purchases;
 
-
     // changer l'ordre d'affichage selon la selection
     const sortingOptions = document.querySelector(".sorting__frame");
     sortingOptions.addEventListener("click", function () {
         const selectedSort = document.querySelector("[name='sorting']:checked");
+        const sortingDetails = document.querySelector(".sorting > details");
+        sortingDetails.removeAttribute("open");
         renderSort(selectedSort.value);
     });
 
     //filtres
     const filterFormHTML = document.querySelector("[data-js='filtersForm']");
-    filterFormHTML.addEventListener("submit", renderFilter);
+    filterFormHTML.addEventListener("submit", function () {
+        const filterDetails = document.querySelector(".filters > details");
+        filterDetails.removeAttribute("open");
+        renderFilter();
+    });
 
     //reinitialisation des filtres
     const btnResetFilters = filterFormHTML.querySelector(
