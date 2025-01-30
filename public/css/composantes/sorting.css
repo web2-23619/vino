@@ -16,3 +16,11 @@
 .sorting details[open] .sorting__chevron {
     transform: rotate(90deg);
 }
+
+.sorting__frame {
+    padding-block: var(--espace-xs);
+
+    div + div {
+        margin-top: var(--espace-nano);
+    }
+}

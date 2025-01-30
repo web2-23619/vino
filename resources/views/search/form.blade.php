@@ -1,6 +1,5 @@
 <form class="search">
 	@csrf
-	<div class="form-group">
 		<label for="search">Explorez par nom, type de vin ou origine</label>
 		<div class="search-container">
 			<input
@@ -60,5 +59,4 @@
 				</g>
 				</svg>
 		</button>
-	</div>
 </form>

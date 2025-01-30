@@ -55,8 +55,10 @@
 					</div>
 				</div>
 			</section>
-			<button class="btn btn_outline_dark" data-js="resetFilters">Reinitialiser</button>
-			<button class="btn">Appliquer</button>
+			<div>
+				<button class="btn btn_outline_dark" data-js="resetFilters">Reinitialiser</button>
+				<button class="btn">Appliquer</button>
+			</div>
 		</form>
 	</details>
 </div>

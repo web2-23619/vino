@@ -192,18 +192,12 @@ import Bottle from "../components/Bottle.js";
 
     filterFormHTML.addEventListener("submit", function (event) {
         event.preventDefault();
+        const fitlerDetails = document.querySelector(".filters > details");
+        fitlerDetails.removeAttribute("open");
         currentPage = 1;
         const selectedSort = document.querySelector("[name='sorting']:checked");
         renderSortAndFilter(selectedSort.value);
     });
-
-    //calcul de la hauteur du footer pour la position du filtre
-    const footerHTML = document.querySelector(".nav-menu");
-    const footerHeight = footerHTML.offsetHeight;
-    filterFormHTML.style.setProperty("--bottom", `${footerHeight}px`);
-    const btnFilters = document.querySelector("#btn-filters");
-    const btnFilterY = App.instance.getAbsoluteYPosition(btnFilters);
-    filterFormHTML.style.setProperty("--top", `${btnFilterY}px`);
 
     // tri
     const sortingOptions = document.querySelectorAll("[name='sorting']");
@@ -217,6 +211,8 @@ import Bottle from "../components/Bottle.js";
                 currentPage = 1;
                 renderSortAndFilter(sortOrder);
             }
+            const sortingDetails = document.querySelector(".sorting > details");
+            sortingDetails.removeAttribute("open");
         });
     });
 
@@ -275,10 +271,8 @@ import Bottle from "../components/Bottle.js";
             const csrfToken = document
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute("content");
-				        const urlParams = new URLSearchParams(
-                            window.location.search
-                        );
-                        let source = urlParams.get("source");
+            const urlParams = new URLSearchParams(window.location.search);
+            let source = urlParams.get("source");
             const response = await fetch(
                 `${App.instance.baseURL}/api/recherche?source=${source}&page=${page}&tri=${sortOrder}`,
                 {
