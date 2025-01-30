@@ -41,7 +41,7 @@
 						@if($source === 'favoris')
 						<a href="{{ route('favoris.add', ['bottleId' => $bottle->id]) }}" class="btn no-bg">Ajouter</a>
 						@else
-						<a href="{{ route('bottle.add', ['bottle_id' => $bottle->id, 'source' => $source]) }}" class="btn no-bg">Ajouter</a>
+						<a href="{{ route('bottle.add', ['bottle_id' => $bottle->id, 'source' => $source, 'cellar_id' => $cellar_id]) }}" class="btn no-bg">Ajouter</a>
 						@endif
 					</div>
 				</div>
@@ -69,9 +69,8 @@
 					@if($source === 'favoris')
 					<a href="#" data-route-template="{{ route('favoris.add', ['bottleId' => ':bottle_id']) }}" class="btn no-bg">Ajouter</a>
 					@else
-					<a href="#" data-route-template="{{ route('bottle.add', ['bottle_id' => ':bottle_id', 'source' => ':source']) }}" class="btn no-bg">Ajouter</a>
+					<a href="#" data-route-template="{{ route('bottle.add', ['bottle_id' => ':bottle_id', 'source' => $source, 'cellar_id' => $cellar_id]) }}" class="btn no-bg">Ajouter</a>
 					@endif
-
 				</div>
 
 			</div>

@@ -143,8 +143,6 @@ class PurchaseController extends Controller
 			// Mettre à jour la quantité de la bouteille
 			$existingPurchase->update(['quantity' => $newQuantity]);
 
-			// Oublier la session après la mise à jour
-			session()->forget('add_bottle_source');
 
 			return redirect()->route('purchase.index')
 				->with('success', 'La quantité de la bouteille a été mise à jour avec succès!');
@@ -155,9 +153,6 @@ class PurchaseController extends Controller
 				'bottle_id' => $request->input('bottle_id'),
 				'quantity' => $request->input('quantity'),
 			]);
-
-			// Oublier la session après l'ajout
-			session()->forget('add_bottle_source');
 
 			return redirect()->route('purchase.index')
 				->with('success', 'Bouteille ajoutée avec succès!');

@@ -38,8 +38,9 @@ export default class Bottle {
             this.#changeQuantity = this.#changePurchaseQuantity;
         } else if (this.#page === "search") {
             this.#jsKey = data.id;
-            this.#source = source;
         }
+
+		console.log(this.#source);
 
         this.#render();
     }
@@ -99,7 +100,6 @@ export default class Bottle {
 
             const updatedRoute = routeTemplate
                 .replace(":bottle_id", this.#jsKey)
-                .replace(":source", this.#source);
 
             btnAdd.href = updatedRoute;
         }

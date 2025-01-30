@@ -61,19 +61,11 @@ class SearchController extends Controller
 
 			$cellar->bottles()->updateExistingPivot($bottle->id, ['quantity' => $newQuantity]);
 
-			// Oublier les sessions après la mise à jour
-			session()->forget('add_bottle_source');
-			session()->forget('cellar_id');
-
 			return redirect()->route('cellar.showBottles', ['cellar' => $cellar->id])
 				->with('success', 'La quantité de la bouteille a été mise à jour avec succès!');
 		} else {
 			// Sinon, ajouter la bouteille au cellier
 			$cellar->bottles()->attach($bottle, ['quantity' => $request->input('quantity')]);
-
-			// Oublier les sessions après l'ajout
-			session()->forget('add_bottle_source');
-			session()->forget('cellar_id');
 
 			return redirect()->route('cellar.index', ['cellar' => $cellar->id])
 				->with('success', 'Bouteille ajoutée avec succès!');
@@ -85,19 +77,20 @@ class SearchController extends Controller
 		// Récupérer la bouteille
 		$bottle = Bottle::findOrFail($bottleId);
 		$userCellars = Auth::user()->cellars;
-		$cellarId = $request->input('cellar_id', session('cellar_id'));
-		if ($cellarId) {
-			session(['cellar_id' => $cellarId]);
+
+		if ($request->has('cellar_id')) {
+			$cellar_id = $request->input('cellar_id');
+		} else {
+			$cellar_id = null;
 		}
 
 		if ($request->has('source')) {
 			$source = $request->input('source');
-			session(['add_bottle_source' => $source]); // Mettre à jour la session
 		}
 
-		$selectedCellarName = $cellarId ? Cellar::find($cellarId)->name : null;
+		$selectedCellarName = $cellar_id ? Cellar::find($cellar_id)->name : null;
 
-		return view('bottle.addBottle', compact('bottle', 'userCellars', 'source', 'selectedCellarName'));
+		return view('bottle.addBottle', compact('bottle', 'userCellars', 'source', 'selectedCellarName', 'cellar_id'));
 	}
 
 	/**
@@ -110,11 +103,14 @@ class SearchController extends Controller
 		// Conserver ou récupérer la source depuis l'URL ou la session
 		if ($request->has('source')) {
 			$source = $request->input('source');
-			session(['add_bottle_source' => $source]); // Mettre à jour la session
-		} else {
-			$source = session('add_bottle_source', 'default'); // Récupérer depuis la session ou par défaut
 		}
-
+		if ($request->has('cellar_id')) {
+			$cellar_id = $request->input('cellar_id');
+		} else{
+			$cellar_id = null;
+		}
+		
+		
 		// Si aucune requête de recherche, afficher les bouteilles aléatoires
 		$randomBottles = Bottle::inRandomOrder()->take(5)->get();
 
@@ -131,7 +127,7 @@ class SearchController extends Controller
 			->distinct()
 			->get();
 
-		return view('search.index', compact('randomBottles', 'source', 'initialCountries', 'remainingCountries', 'remainingCount', 'types'));
+		return view('search.index', compact('randomBottles', 'source', 'initialCountries', 'remainingCountries', 'remainingCount', 'types', 'cellar_id'));
 	}
 
 	public function searchApi(Request $request)
@@ -141,9 +137,16 @@ class SearchController extends Controller
 			'query' => 'required|string|min:2|max:255',
 		]);
 
-		if ($request->has('cellar_id')) {
-			session(['cellar_id' => $request->input('cellar_id')]);
+		// Conserver ou récupérer la source depuis l'URL ou la session
+		if ($request->has('source')) {
+			$source = $request->input('source');
 		}
+		if ($request->has('cellar_id')) {
+			$cellar_id = $request->input('cellar_id');
+		} else {
+			$cellar_id = null;
+		}
+		
 
 		$query = Bottle::query();
 		$searchQuery = $request->input('query');
@@ -198,8 +201,8 @@ class SearchController extends Controller
 
 		// Récupérer les celliers de l’utilisatrice pour la liste déroulante
 		$userCellars = auth()->check() ? auth()->user()->cellars : [];
-		$source = session('add_bottle_source', 'default');
+		$source = $request->input('source');
 
-		return response()->json(['searchQuery' => $searchQuery, 'results' => $results, 'source' => $source], 200);
+		return response()->json(['searchQuery' => $searchQuery, 'results' => $results, 'source' => $source, 'cellar_id' => $cellar_id], 200);
 	}
 }
