@@ -88,10 +88,8 @@ import Bottle from "../components/Bottle.js";
             // Écouteur d'évènement pour la détection d'un barcode
             Quagga.onDetected((data) => {
                 console.log("Barcode detected:", data.codeResult.code);
-                const url = `/recherche?query=${encodeURIComponent(
-                    data.codeResult.code
-                )}&source=${encodeURIComponent(source)}`;
-                window.location.href = url;
+
+                //TODO: lancer recherche au scan
 
                 Quagga.stop();
                 scannerContent.innerHTML = "";
@@ -154,12 +152,10 @@ import Bottle from "../components/Bottle.js";
                             suggestion.addEventListener(
                                 "click",
                                 function (event) {
-                                    event.preventDefault();
                                     searchInput.value = item.name;
                                     suggestionsContainer.style.display = "none";
-                                    resultContainer.focus();
-                                    currentPage = 1;
-                                    loadData(currentPage);
+									const btnSubmit = searchForm.querySelector("[type='submit']");
+									btnSubmit.click();
                                 }
                             );
 
@@ -228,7 +224,7 @@ import Bottle from "../components/Bottle.js";
     /**
      * trier et afficher
      */
-    async function renderSortAndFilter(sortOrder, page = 1) {
+    async function renderSortAndFilter(sortOrder = "name_asc", page = 1) {
         // Prevent loading if there's an ongoing request
         if (loading) return;
         loading = true; // Set loading to true
@@ -288,7 +284,6 @@ import Bottle from "../components/Bottle.js";
 
             const data = await response.json();
 
-            // //TODO: render
             const nbResults = document.createElement("p");
             if (data.results.total === 0) {
                 nbResults.textContent = "0 rétulat trouvé";
