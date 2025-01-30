@@ -12,12 +12,12 @@ class CellarController extends Controller
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index()
+	public function index($cellar_id = null)
 	{
 		$user_id = Auth::user()->id;
 		$cellars = Cellar::select()->where('user_id', $user_id)->orderBy('name')->get();
 		// Retourner la vue avec la liste des celliers
-		return view('cellar.index', ['cellars' => $cellars]);
+		return view('cellar.index', ['cellars' => $cellars, 'cellar_id' => $cellar_id]);
 	}
 
 
