@@ -51,7 +51,6 @@
 		@endif
 	</div>
 </section>
-@endsection
 <template id="searchResultBottle">
 	<article class="card_bottle" data-js-key="">
 		<picture>
@@ -77,3 +76,4 @@
 		</section>
 	</article>
 </template>
+@endsection

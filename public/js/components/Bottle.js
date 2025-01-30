@@ -40,8 +40,6 @@ export default class Bottle {
             this.#jsKey = data.id;
         }
 
-		console.log(this.#source);
-
         this.#render();
     }
 
