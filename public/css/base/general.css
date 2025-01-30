@@ -45,7 +45,7 @@ body > footer {
     }
 }
 
-section > header {
+main > section > header {
     text-align: center;
     margin-bottom: var(--espace-m);
     margin-top: var(--espace-m);
