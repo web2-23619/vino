@@ -56,13 +56,16 @@
 	</article>
 </template>
 <section class="cellier-products">
-	<template id="bottle-template">
-		<article class="card_bottle" data-js-key="" data-js-Name="">
-			<picture>
-				<img src="" alt="">
-			</picture>
-			<section>
-				<header>
+    <template id="bottle-template">
+        <article class="card_bottle" data-js-key="" data-js-Name="">
+            <picture>
+				<button class="favorite-icon" data-js-favorite="false" title="Ajouter aux favoris">
+					🤍
+				</button>
+                <img src="" alt="">
+            </picture>
+            <section>
+                <header>
 					<div class="card_bottle__header">
 						<p class="card_bottle__metainfo"></p>
 					</div>

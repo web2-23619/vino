@@ -98,19 +98,33 @@ class FavoriteController extends Controller
     {
         $user = Auth::user();
         $bottleId = $request->input('bottle_id');
-
+    
         if (!$bottleId) {
             return response()->json(['error' => 'ID de la bouteille manquant.'], 400);
         }
-
+    
         // Ajouter ou retirer des favoris
         if ($user->favorites()->where('bottle_id', $bottleId)->exists()) {
             $user->favorites()->detach($bottleId);
-            return response()->json(['message' => 'Bouteille retirée des favoris.']);
+            return response()->json(['status' => 'removed', 'message' => 'Bouteille retirée des favoris.']);
         } else {
             $user->favorites()->attach($bottleId);
-            return response()->json(['message' => 'Bouteille ajoutée aux favoris.']);
+            return response()->json(['status' => 'added', 'message' => 'Bouteille ajoutée aux favoris.']);
         }
     }
-
+    
+    public function toggleFavoriteBottle($bottleId)
+    {
+        $user = auth()->user();
+        if ($user) {
+            $user->toggleFavorite($bottleId);
+    
+            return response()->json([
+                'message' => 'Bouteille ajoutée/enlevée des favoris.',
+            ]);
+        }
+    
+        return response()->json(['error' => 'Utilisateur non authentifié.'], 401);
+    }
+    
 }

@@ -265,7 +265,7 @@ import App from "../components/App.js";
      * @param {Array<Object>} bottles Informations des bouteilles du cellier.
      */
     function renderBottles(cellar, bottles) {
-        // Selectionne le conteneur
+        // Sélectionne le conteneur
         const bottlesContainer = document.querySelector(".cellier-products");
 
         // Supprime les articles existants
@@ -277,7 +277,7 @@ import App from "../components/App.js";
             displayNoContentMessage(currentCellar.value);
             return;
         }
-
+    
         // Cache le message "Aucune bouteille"
         const noContentMessage = document.querySelector(".noContent");
         if (noContentMessage) {
@@ -317,12 +317,59 @@ import App from "../components/App.js";
                 "[data-js-quantite='quantite']"
             );
             quantity.textContent = bottle.quantity;
-
+    
+            // Ajouter l'événement click pour gérer l'ajout et le retrait des favoris
+            const heartIcon = clone.querySelector(".favorite-icon");
+    
+            // Si la bouteille est déjà un favori, mets le cœur en rouge
+            if (bottle.is_favorite) {
+                heartIcon.dataset.jsFavorite = "true";
+                heartIcon.innerHTML = "❤️";  // Cœur rouge
+                heartIcon.title = "Retirer des favoris";
+            } else {
+                heartIcon.dataset.jsFavorite = "false";
+                heartIcon.innerHTML = "🤍";  // Cœur vide
+                heartIcon.title = "Ajouter aux favoris";
+            }
+    
+            heartIcon.addEventListener("click", async () => {
+                const bottleId = heartIcon.closest(".card_bottle").dataset.jsId;
+                const isFavorite = heartIcon.dataset.jsFavorite === "true";
+    
+                // Envoie une requête pour changer le statut du favori
+                const response = await fetch(`/favoris/toggle`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                    },
+                    body: JSON.stringify({ bottle_id: bottleId }),
+                });
+    
+                if (response.ok) {
+                    const data = await response.json();
+    
+                    // Mettre à jour l'état de l'icône du cœur en fonction de la réponse
+                    if (data.status === "added") {
+                        heartIcon.dataset.jsFavorite = "true";
+                        heartIcon.innerHTML = "❤️"; // Cœur rouge
+                        heartIcon.title = "Retirer des favoris";
+                    } else {
+                        heartIcon.dataset.jsFavorite = "false";
+                        heartIcon.innerHTML = "🤍"; // Cœur vide
+                        heartIcon.title = "Ajouter aux favoris";
+                    }
+                } else {
+                    console.error("Erreur lors du changement du statut du favori");
+                }
+            });
+    
             // Ajoute la bouteille au conteneur
             bottlesContainer.appendChild(clone);
         });
     }
-
+    
+    
     /**
      * Met à jour la quantité d'une bouteille dans un cellier
      * @param {Event} event Evénement déclenché par le clic sur le bouton "-" ou "+"
