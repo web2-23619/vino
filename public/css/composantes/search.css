@@ -9,6 +9,7 @@
 	position: relative;
 	width: 100%;
 	gap: var(--espace-micro);
+	margin-top: var(--espace-xs)
 }
 
 .search-container input {
@@ -42,4 +43,8 @@
 
 .search_suggestions .search_suggestion-item:hover {
     background-color: var(--clair);
+}
+
+.search {
+	margin-bottom: var(--espace-xs);
 }

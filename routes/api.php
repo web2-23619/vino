@@ -27,8 +27,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/login', [AuthController::class, 'apiLogin']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'apiLogout']);
 Route::middleware('auth:sanctum')->get('/profile', [UserController::class, 'profile'])->name('user.profile');
-// Registration route - no authentication required
-Route::post('/register', [AuthController::class, 'apiRegister']);
+
+//Route::post('/register', [AuthController::class, 'apiRegister']);
 
 // Protected route requiring authentication
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

@@ -36,30 +36,9 @@
 	</main>
 	@auth
 	<footer>
-		@if(Route::currentRouteName() == 'cellar.index')
-		<div>
-			<a href="{{ route('search.index', ['source' => 'cellier', 'cellar_id' => $cellar->id]) }}" class="btn btn_accent">Ajouter Bouteille</a>
-		</div>
-		@endif
-		@if(isset($addBottle))
-		<div>
-			<a href="{{ route('search.index') }}" class="btn-add">Ajouter {{$addBottle}}</a>
-		</div>
-		@endif
 		@if(Route::currentRouteName() == 'search.index')
 		<div>
-			<button class="btn btn_outline_dark" data-js="remonter">Remonter</button>
-		</div>
-		@endif
-		<!-- Ajouter un bouton "+ Bouteille" seulement sur la route 'cellar.showBottles' -->
-		@if(Route::currentRouteName() == 'cellar.showBottles' && $empty == false)
-		<div>
-			<a href="{{ route('search.index', ['source' => 'cellier', 'cellar_id' => $cellar->id]) }}" class="btn">Ajouter Bouteille</a>
-		</div>
-		@endif
-		@if(Route::currentRouteName() == 'user.showBottles' && $empty == false)
-		<div>
-			<a href="{{ route('search.index', ['source' => 'mesBouteilles']) }}" class="btn">Ajouter Bouteille</a>
+			<button class="btn btn_semi_accent no_corner" data-js="remonter">Remonter ⤴</button>
 		</div>
 		@endif
 		<nav class="nav-menu">
@@ -90,13 +69,13 @@
 			<a href="{{ route('favorites.index') }}" class="nav-menu__item">
 				<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
 					<g id="Heart">
-						<path 
+						<path
 							d="M256 464s-152-104-152-208c0-55.228 44.772-100 100-100 31.816 0 61.255 14.812 80 38.158C294.745 170.812 324.184 156 356 156c55.228 0 100 44.772 100 100 0 104-152 208-152 208z"
-							fill="#fefef2"/>
+							fill="#fefef2" />
 					</g>
 				</svg>Favoris
 			</a>
-			
+
 
 			<a href="{{route('purchase.index')}}" class="nav-menu__item">
 				<svg viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg">

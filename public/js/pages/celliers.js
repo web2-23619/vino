@@ -66,18 +66,19 @@ import App from "../components/App.js";
 
     document.addEventListener("DOMContentLoaded", () => {
         document.addEventListener("click", (event) => {
-            const modalButton = event.target.closest("[data-js-action='afficherModaleConfirmation']");
+            const modalButton = event.target.closest(
+                "[data-js-action='afficherModaleConfirmation']"
+            );
             if (modalButton.matches("[data-js-type='trash']")) {
-                const h3Content = document.querySelector("header h3").textContent;
+                const h3Content =
+                    document.querySelector("header h3").textContent;
                 afficherModaleSupressionBouteille(event, h3Content);
             } else {
                 afficherModaleSupressionCellier(event);
             }
         });
     });
-    
 
-        
     document.addEventListener("click", (event) => {
         if (event.target.matches("[data-js-action='reduire']")) {
             changeQuantity(event, "reduire");
@@ -113,11 +114,10 @@ import App from "../components/App.js";
         }
     }
 
-    
     /**
      * Affiche un message pour informer l'utilisateur qu'il n'y a pas de contenu
      * dans la page actuelle.
-     * 
+     *
      * Le message est stock  dans un template HTML et est ajouté au DOM.
      * Si un bouton "Ajouter" est présent, il est supprimé.
      */
@@ -163,7 +163,9 @@ import App from "../components/App.js";
         const declencheur = event.target;
         const cellierID = declencheur.dataset.jsCellier;
         const cellierNom = declencheur.dataset.jsName;
-        const elToChange = document.querySelector(`#cellar-select option[value="${cellierID}"]`);
+        const elToChange = document.querySelector(
+            `#cellar-select option[value="${cellierID}"]`
+        );
         const dropdown = document.querySelector(".menu-deroulant > input");
         dropdown.checked = false;
 
@@ -176,7 +178,6 @@ import App from "../components/App.js";
             elToChange
         );
     }
-
 
     /**
      * Affiche la modale de suppression d'une bouteille d'un cellier.
@@ -217,7 +218,6 @@ import App from "../components/App.js";
 
     const bottleTemplate = document.querySelector("#bottle-template");
 
-
     /**
      * Fonction qui injecte le contenu du template de menu déroulant (#kebab-menu)
      * dans le DOM en remplaçant les valeurs par défaut par celles du cellier
@@ -227,28 +227,35 @@ import App from "../components/App.js";
      *
      * @listens select#cellar-select
      */
-    function selectTheCurrentValue(){
+    function selectTheCurrentValue() {
         const kebabMenuContent = kebabMenu.content.cloneNode(true);
 
-        const lienModifier = kebabMenuContent.querySelector('[data-js-option="modifier"] a');
+        const lienModifier = kebabMenuContent.querySelector(
+            '[data-js-option="modifier"] a'
+        );
         const currentCellarId = currentCellar.value;
-        const selectedOptionName = currentCellar.options[currentCellar.selectedIndex].text
+        const selectedOptionName =
+            currentCellar.options[currentCellar.selectedIndex].text;
 
         // Passer le cellarId dans le kebabMenu pour le lien modifier
-        lienModifier.setAttribute('href', `${App.instance.baseURL}/modifier/cellier/${currentCellarId}`);
+        lienModifier.setAttribute(
+            "href",
+            `${App.instance.baseURL}/modifier/cellier/${currentCellarId}`
+        );
 
         // Ajouter le cellarId et le nom pour le lien supprimer
-        let liSupprimer = kebabMenuContent.querySelector("[data-js-option='supprimer']");
-        liSupprimer.setAttribute('data-js-cellier', currentCellarId);
-        liSupprimer.setAttribute('data-js-name', selectedOptionName);
+        let liSupprimer = kebabMenuContent.querySelector(
+            "[data-js-option='supprimer']"
+        );
+        liSupprimer.setAttribute("data-js-cellier", currentCellarId);
+        liSupprimer.setAttribute("data-js-name", selectedOptionName);
 
         // Injecter dans le DOM
-        const menuWrapper = document.querySelector('#kebab-menu-wrapper');
-        menuWrapper.innerHTML = '';
+        const menuWrapper = document.querySelector("#kebab-menu-wrapper");
+        menuWrapper.innerHTML = "";
         menuWrapper.appendChild(kebabMenuContent);
 
         updateBottleView(currentCellarId);
-
     }
 
 
@@ -276,17 +283,23 @@ import App from "../components/App.js";
      * @param {number} cellarId Identifiant du cellier selectionné.
      */
     async function updateBottleView(cellarId) {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content");
         try {
             // Fetch les bouteilles pour le cellier selectionné
-            const response = await fetch(`${App.instance.baseURL}/api/cellier/${cellarId}/bouteille`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": csrfToken,
-                    Authorization: "Bearer " + localStorage.getItem("token"),
-                },
-            })
+            const response = await fetch(
+                `${App.instance.baseURL}/api/cellier/${cellarId}/bouteille`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrfToken,
+                        Authorization:
+                            "Bearer " + localStorage.getItem("token"),
+                    },
+                }
+            );
             if (!response.ok) {
                 throw new Error("Erreur de chargement des bouteilles");
             }
@@ -305,19 +318,42 @@ import App from "../components/App.js";
     }
 
     /**
+     * affiche le bouton d'action d'ajout de bouteille en bas de page
+     */
+    function displayAddBottleBtn(cellar_id) {
+        const template = document.querySelector("template#action-button");
+        let content = template.content.cloneNode(true);
+        let footerHtml = document.querySelector("footer");
+        footerHtml.prepend(content);
+        const button = document.querySelector("[data-template-route]");
+        console.log(button);
+        const templateRoute = button.dataset.templateRoute;
+        const updatedRedirection = templateRoute.replace(
+            ":cellar_id",
+            String(cellar_id)
+        );
+        button.setAttribute("href", updatedRedirection);
+    }
+
+    /**
      * Charge les bouteilles pour le cellier selectionné dans la vue.
-     * 
+     *
      * @param {Object} cellar Informations du cellier selectionné.
      * @param {Array<Object>} bottles Informations des bouteilles du cellier.
      */
     function renderBottles(cellar, bottles) {
-    
         // Selectionne le conteneur
         const bottlesContainer = document.querySelector(".cellier-products");
-    
+
         // Supprime les articles existants
         const existingArticles = bottlesContainer.querySelectorAll("article");
         existingArticles.forEach((article) => article.remove());
+
+        // S'il y a aucune bouteille, affiche un message
+        if (bottles.length === 0) {
+            displayNoContentMessage();
+            return;
+        }
 
         // Cache le message "Aucune bouteille"
         const noContentMessage = document.querySelector(".noContent");
@@ -328,34 +364,44 @@ import App from "../components/App.js";
                 displayAddBottleBtn()
             }
         }
-    
+
+        const boutonAjout = document.querySelector("footer > div");
+        console.log(boutonAjout);
+        if (boutonAjout) {
+            boutonAjout.remove();
+        }
+
+        displayAddBottleBtn(currentCellar.value);
+
         // Affiche les bouteilles
         bottles.forEach((bottle) => {
             const clone = bottleTemplate.content.cloneNode(true);
-    
+
             const article = clone.querySelector(".card_bottle");
             article.setAttribute("data-js-key", `${cellar.id}|${bottle.id}`);
             article.setAttribute("data-js-id", bottle.id);
-    
+
             const img = clone.querySelector("img");
             img.src = bottle.image_url;
             img.alt = bottle.name;
-    
+
             const type = clone.querySelector(".card_bottle__metainfo");
             type.textContent = bottle.type;
-    
+
             const name = clone.querySelector("h3");
             name.textContent = bottle.name;
-    
+
             const details = clone.querySelectorAll(".card_bottle__metainfo")[1];
             details.textContent = `${bottle.volume} ml | ${bottle.country}`;
-    
-            const quantity = clone.querySelector("[data-js-quantite='quantite']");
+
+            const quantity = clone.querySelector(
+                "[data-js-quantite='quantite']"
+            );
             quantity.textContent = bottle.quantity;
 
             const price = clone.querySelector("[data-info='price']");
             price.textContent = bottle.price;
-    
+
             // Ajoute la bouteille au conteneur
             bottlesContainer.appendChild(clone);
         });
@@ -468,7 +514,7 @@ import App from "../components/App.js";
         chevronDetails.removeAttribute('open');
     }
     
-    
+
     /**
      * Met à jour la quantité d'une bouteille dans un cellier
      * @param {Event} event Evénement déclenché par le clic sur le bouton "-" ou "+"
@@ -476,13 +522,17 @@ import App from "../components/App.js";
      * @returns {Promise<void>}
      */
     async function changeQuantity(event, action) {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content");
         const trigger = event.target;
         const purchaseItem = trigger.closest("article");
-        const [cellarId, bottleId] = purchaseItem.dataset.jsKey.split('|');  
-        const quantityElement = purchaseItem.querySelector("[data-js-quantite='quantite']");
+        const [cellarId, bottleId] = purchaseItem.dataset.jsKey.split("|");
+        const quantityElement = purchaseItem.querySelector(
+            "[data-js-quantite='quantite']"
+        );
         let currentQuantity = parseInt(quantityElement.textContent);
-    
+
         // Ajuster la quantité selon l'action
         if (action === "reduire" && currentQuantity > 0) {
             currentQuantity--;
@@ -492,7 +542,6 @@ import App from "../components/App.js";
 
         // Envoie le PATCH request pour update seulement la quantité
         const response = await fetch(
-
             `${App.instance.baseURL}/api/cellier/${cellarId}/${bottleId}`,
             {
                 method: "PATCH",
@@ -506,26 +555,32 @@ import App from "../components/App.js";
                 }),
             }
         );
-    
+
         if (response.ok) {
             // Mettre à jour le UI
             quantityElement.textContent = currentQuantity;
-    
+
             // Desactiver le bouton "-" si la quantité est == 1
-            const btnReduire = purchaseItem.querySelector("[data-js-action='reduire']");
+            const btnReduire = purchaseItem.querySelector(
+                "[data-js-action='reduire']"
+            );
             if (currentQuantity === 0) {
                 btnReduire.setAttribute("inert", "true");
-                btnReduire.classList.add("disappear", "card_purchase_deactivated");
+                btnReduire.classList.add(
+                    "disappear",
+                    "card_purchase_deactivated"
+                );
             } else {
                 btnReduire.removeAttribute("inert");
-                btnReduire.classList.remove("disappear", "card_purchase_deactivated");
+                btnReduire.classList.remove(
+                    "disappear",
+                    "card_purchase_deactivated"
+                );
             }
         } else {
             // console.log("Échec.");
         }
     }
 
-
     selectTheCurrentValue();
 })();
-

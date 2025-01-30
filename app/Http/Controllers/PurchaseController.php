@@ -143,8 +143,6 @@ class PurchaseController extends Controller
 			// Mettre à jour la quantité de la bouteille
 			$existingPurchase->update(['quantity' => $newQuantity]);
 
-			// Oublier la session après la mise à jour
-			session()->forget('add_bottle_source');
 
 			return redirect()->route('purchase.index')
 				->with('success', 'La quantité de la bouteille a été mise à jour avec succès!');
@@ -155,9 +153,6 @@ class PurchaseController extends Controller
 				'bottle_id' => $request->input('bottle_id'),
 				'quantity' => $request->input('quantity'),
 			]);
-
-			// Oublier la session après l'ajout
-			session()->forget('add_bottle_source');
 
 			return redirect()->route('purchase.index')
 				->with('success', 'Bouteille ajoutée avec succès!');
@@ -210,37 +205,38 @@ class PurchaseController extends Controller
 	 */
 	public function destroy($purchaseId)
 	{
-		// Find the purchase by its ID
+		// Trouver l’achat par son ID
 		$purchase = Purchase::findOrFail($purchaseId);
 
-		// Delete the purchase
+		
 		if ($purchase->delete()) {
-			// Return a response indicating success
 			return response()->json(['message' => 'Bouteille retiré avec succes de la liste d\'achat'], 200);
 		} else {
 			return response()->json(['message' => 'Erreur au retrait de la bouteille'], 400);
 		}
 	}
+	
+	// ajouter la bouteille a cellier de liste d'achat
 	public function addToCellar(Request $request)
 	{
 		try {
-			// ✅ Validate request
+			// Validation
 			$validated = $request->validate([
 				'bottleId' => 'required|integer|exists:bottles,id',
 				'cellarId' => 'required|integer|exists:cellars,id',
 				'quantity' => 'required|integer|min:1',
 			]);
 	
-			\Log::info('Validated data:', $validated);
 	
-			// ✅ Check if the bottle already exists in the cellar
+	
+			// Vérifiez si la bouteille existe déjà dans la cellier
 			$cellarBottle = DB::table('cellar_has_bottles')
 				->where('bottle_id', $validated['bottleId'])
 				->where('cellar_id', $validated['cellarId'])
 				->first();
 	
 			if ($cellarBottle) {
-				// ✅ Update quantity if bottle exists
+				// Mettre à jour la quantité si la bouteille existe
 				DB::table('cellar_has_bottles')
 					->where('bottle_id', $validated['bottleId'])
 					->where('cellar_id', $validated['cellarId'])
@@ -248,9 +244,9 @@ class PurchaseController extends Controller
 						'quantity' => $cellarBottle->quantity + $validated['quantity'],
 						'updated_at' => now(),
 					]);
-				\Log::info('Bottle quantity updated in cellar.');
+			
 			} else {
-				// ✅ Insert if bottle is new
+				// Insérer si la bouteille est neuve
 				DB::table('cellar_has_bottles')->insert([
 					'cellar_id' => $validated['cellarId'],
 					'bottle_id' => $validated['bottleId'],
@@ -258,39 +254,35 @@ class PurchaseController extends Controller
 					'created_at' => now(),
 					'updated_at' => now(),
 				]);
-				\Log::info('New bottle added to cellar.');
+			
 			}
 	
-			// ✅ Verify if bottle exists in purchases before deletion
+			// Vérifier si la bouteille existe dans les achats avant la suppression
 			$purchaseExists = DB::table('purchases')
 				->where('bottle_id', $validated['bottleId'])
 				->where('user_id', Auth::id())
 				->exists();
-	
-			\Log::info('Does purchase exist before deletion?', ['exists' => $purchaseExists]);
+
 	
 			if (!$purchaseExists) {
-				\Log::error('Purchase entry not found, skipping deletion.');
 			} else {
-				// Force execution and return the delete result
-	$deletedRows = DB::table('purchases')
-	->where('bottle_id', $validated['bottleId'])
-	->where('user_id', Auth::id())
-	->delete();
+		
+	       $deletedRows = DB::table('purchases')
+	       ->where('bottle_id', $validated['bottleId'])
+	       ->where('user_id', Auth::id())
+	       ->delete();
 	
-	if ($deletedRows === 0) {
-	return response()->json(['error' => 'Delete failed, bottle still in purchases'], 500);
-	}
+	      if ($deletedRows === 0) {
+	     return response()->json(['error' => 'Delete failed, bottle still in purchases'], 500);
+	    }
 	
-	\Log::info('Successfully deleted bottle from purchases:', ['count' => $deletedRows]);
 	
 			}
 	
-			// ✅ Redirect to inventory page
+			// Rediriger vers la page d’inventaire
 			return redirect()->route('inventaire')->with('success', 'Bouteille ajoutée avec succès!');
 	
 		} catch (\Exception $e) {
-			\Log::error('Erreur lors de l\'ajout au cellier', ['error' => $e->getMessage()]);
 			return response()->json(['error' => 'Erreur lors de l\'ajout'], 500);
 		}
 	}

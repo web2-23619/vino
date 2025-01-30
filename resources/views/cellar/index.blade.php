@@ -28,25 +28,25 @@
 	</div>
 	@endif
 	<div class="cellier-inventory-action">
-			<div id="kebab-menu-wrapper">
-				<template id="kebab-menu">
-					<div class="menu-deroulant">
-						<input type="checkbox" aria-label="bouton pour ouvrir menu des actions">
-						<ul class="menu-deroulant__contenu">
-							<li data-js-option="modifier"><a href="">Modifier</a></li>
-							<li data-js-option="supprimer" data-js-action="afficherModaleConfirmation" data-js-cellier="" data-js-name="">Supprimer</li>
-							<li><a href="{{ route('cellar.create') }}">Ajouter un cellier</a></li>
-						</ul>
-					</div>
-				</template>
-			</div>
-			<select class="cellier-select" name="cellar-select" id="cellar-select">
-				@forelse($cellars as $cellar)	
-					<option value="{{ $cellar->id }}">{{ $cellar->name }}</option>
-				@empty
-				<option disable>Aucun cellier</option>
-				@endforelse
-			</select>
+		<div id="kebab-menu-wrapper">
+			<template id="kebab-menu">
+				<div class="menu-deroulant">
+					<input type="checkbox" aria-label="bouton pour ouvrir menu des actions">
+					<ul class="menu-deroulant__contenu">
+						<li data-js-option="modifier"><a href="">Modifier</a></li>
+						<li data-js-option="supprimer" data-js-action="afficherModaleConfirmation" data-js-cellier="" data-js-name="">Supprimer</li>
+						<li><a href="{{ route('cellar.create') }}">Ajouter un cellier</a></li>
+					</ul>
+				</div>
+			</template>
+		</div>
+		<select class="cellier-select" name="cellar-select" id="cellar-select">
+			@forelse($cellars as $cellar)
+			<option value="{{ $cellar->id }}">{{ $cellar->name }}</option>
+			@empty
+			<option disable>Aucun cellier</option>
+			@endforelse
+		</select>
 	</div>
 </section>
 
@@ -64,13 +64,13 @@
 	@include('layouts.sort')
 </div>
 <section class="cellier-products">
-    <template id="bottle-template">
-        <article class="card_bottle" data-js-key="" data-js-Name="">
-            <picture>
-                <img src="" alt="">
-            </picture>
-            <section>
-                <header>
+	<template id="bottle-template">
+		<article class="card_bottle" data-js-key="" data-js-Name="">
+			<picture>
+				<img src="" alt="">
+			</picture>
+			<section>
+				<header>
 					<div class="card_bottle__header">
 						<p class="card_bottle__metainfo"></p>
 						<button data-js-action="afficherModaleConfirmation" data-js-type="trash">
@@ -81,20 +81,20 @@
 							</svg>
 						</button>
 					</div>
-                    <h3></h3>
-                    <p class="card_bottle__metainfo"></p>
-                </header>
-                <div>
+					<h3></h3>
+					<p class="card_bottle__metainfo"></p>
+				</header>
+				<div>
 					<p>$ <span data-info="price">PRIX</span></p>
-                    <div class="card_bottle__actions">
-                        <button data-js-action="reduire">-</button>
-                        <span data-js-quantite="quantite"></span>
-                        <button data-js-action="augmenter">+</button>
-                    </div>
-                </div>
-            </section>
-        </article>
-    </template>
+					<div class="card_bottle__actions">
+						<button data-js-action="reduire">-</button>
+						<span data-js-quantite="quantite"></span>
+						<button data-js-action="augmenter">+</button>
+					</div>
+				</div>
+			</section>
+		</article>
+	</template>
 </section>
 
 <!-- Template pour l'utilisation des modales, ne pas supprimer-->
@@ -122,9 +122,11 @@
 		</div>
 	</div>
 </template>
+
+<!-- Template for the action button -->
 <template id="action-button">
-    <div>
-		<a href="{{ route('search.index', ['source' => 'cellier', 'cellar_id' => $cellar->id]) }}" class="btn btn_accent">Ajouter Bouteille</a>
-    </div>
+	<div>
+		<a href="#" data-template-route="{{ rawurldecode(route('search.index', ['source' => 'cellier', 'cellar_id' => ':cellar_id'])) }}" class=" btn btn_accent">Ajouter bouteille</a>
+	</div>
 </template>
 @endsection

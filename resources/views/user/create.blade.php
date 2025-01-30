@@ -41,7 +41,7 @@
 <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Confirmez votre mot de passe" required>
         </div>
         <div class="page-prompt">
-            <button type="submit" class="btn">Inscrire</button>
+            <button type="submit" class="btn">S'inscrire</button>
         </div>
     </form>
 </section>
