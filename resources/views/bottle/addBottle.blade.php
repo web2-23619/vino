@@ -11,7 +11,7 @@
 	<form class="form" id="addBottleForm" method="POST">
 		@csrf
 		<input type="hidden" name="bottle_id" value="{{ $bottle->id }}">
-		<input type="hidden" name="cellar_id" id="cellar_id" value="{{ session('cellar_id') }}">
+		<input type="hidden" name="cellar_id" id="cellar_id" value="{{ $cellar_id ?? null }}">
 		<input type="hidden" name="source" value="{{ $source }}">
 
 		<article class="card_bottle" data-js-key="{{ $bottle->id }}">
@@ -30,16 +30,16 @@
 			</section>
 		</article>
 		<!-- Quantité à ajouter -->
-    <div class="form-group">
-        <label for="quantity">Quantité :</label>
-        <input type="number" name="quantity" id="quantity" value="{{ old('quantity', $quantity) }}" min="1" required>
-    </div>
+		<div class="form-group">
+			<label for="quantity">Quantité :</label>
+			<input type="number" name="quantity" id="quantity" value="{{ old('quantity', $quantity ?? 1) }}" min="1" required>
+		</div>
 		@if($source == 'listeAchat')
 		<div class="form-group">
 			<input type="hidden" name="cellar_id" value="wishlist">
 		</div>
 		<button type="submit" class="btn">Liste d'achat</button>
-		@elseif($source == 'cellier')
+		@elseif($source == 'cellier' && !isset($cellar_id))
 		<div class="form-group">
 			<label for="cellar_id">Sélectionner un cellier :</label>
 			<div class="action-group">
@@ -48,6 +48,14 @@
 					{{ $cellar->name }}
 				</button>
 				@endforeach
+			</div>
+		</div>
+		@else
+		<div class="form-group">
+			<div class="action-group">
+				<button type="button" class="btn btn_cellar" data-cellar-id="{{ $cellar_id }}">
+					{{ $selectedCellarName }}
+				</button>
 			</div>
 		</div>
 		@endif

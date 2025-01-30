@@ -16,6 +16,10 @@
 	border: var(--bordure-s) solid var(--contraste);
 }
 
+.btn:hover{
+    cursor: pointer;
+}
+
 .btn.no-bg {
     background-color: var(--clair);
     color: var(--fonce);    
@@ -74,9 +78,16 @@
     width: 100%;
     padding: var(--espace-nano);
     transition: background-color var(--duree-std), transform var(--duree-x-rapide) ease-in-out;
+	margin-top: var(--espace-xs);
 }
 
 .btn_scanner:active{
     transform: scale(0.98);
     background-color: var(--contraste-faible);
+}
+
+.btn.no_corner{
+	border-radius: 0;
+	border-left: none;
+	border-right: none;
 }
