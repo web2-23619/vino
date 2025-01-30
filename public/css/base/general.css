@@ -21,6 +21,7 @@ body > * {
 
 body > header {
     padding-top: var(--espace-s);
+    padding-bottom: var(--espace-s);
 }
 
 body > main {
@@ -47,8 +48,7 @@ body > footer {
 
 main > section > header {
     text-align: center;
-    margin-bottom: var(--espace-m);
-    margin-top: var(--espace-m);
+    margin-bottom: var(--espace-s);
 
     position: relative;
 }
