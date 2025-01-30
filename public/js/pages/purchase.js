@@ -26,33 +26,39 @@ import Bottle from "../components/Bottle.js";
     document.addEventListener("click", (event) => {
         if (event.target.matches('[data-js-action="addToCellar"]')) {
             const bottleCard = event.target.closest(".card_bottle");
+    
             const bottleId = bottleCard.getAttribute("data-js-id");
     
-            let source = 'cellier'; 
-            if (window.location.href.includes("listeAchat")) {
-                source = 'listeAchat';
-            }
+            // ✅ Find the quantity element inside the card
+            const quantityElement = bottleCard.querySelector("[data-info='quantity']");
+            const quantityInput = bottleCard.querySelector("input[data-js-quantity]");
     
-            // Manually construct the URL based on Laravel route structure
-            const url = `/cellier/bouteille/ajouter/${bottleId}?source=${source}`;
-            
-            // Debugging
-            console.log("Redirecting to:", url); 
-            window.location.href = url;
+            // ✅ Get the quantity from the displayed element and store it in the input
+            const bottleQuantity = quantityElement.textContent.trim();
+            quantityInput.value = bottleQuantity;
+    
+            let source = window.location.href.includes("listeAchat") ? "listeAchat" : "cellier";
+    
+            // ✅ Pass `quantity` in the query string
+            window.location.href = `/listeAchat/bouteille/ajouter/${bottleId}?source=${source}&quantity=${bottleQuantity}`;
         }
     });
-
+    
+    
+    
+    
     // Remove bottle from UI after addition
-document.addEventListener("DOMContentLoaded", function () {
-    const successMessage = document.querySelector(".alert-success");
-    if (successMessage && window.location.href.includes("inventaire")) {
-        const bottleId = new URLSearchParams(window.location.search).get("bottleId");
-        const bottleCard = document.querySelector(`[data-js-id="${bottleId}"]`);
-        if (bottleCard) {
-            bottleCard.remove();
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const successMessage = document.querySelector(".alert-success");
+        if (successMessage && window.location.href.includes("inventaire")) {
+            const bottleId = new URLSearchParams(window.location.search).get("bottle_id");
+            const bottleCard = document.querySelector(`[data-js-id="${bottleId}"]`);
+            if (bottleCard) {
+                bottleCard.remove();
+            }
         }
-    }
-});
+    });
     
 
     // récupérer et afficher les données

@@ -71,7 +71,8 @@
                     <button data-js-action="augmenter"><span>+</span></button>
                 </div>
             </div>
-            <button class="btn btn_accent btn_cellar" data-js-action="addToCellar">Ajouter au cellier</button>
+            <input type="hidden" name="quantity" value="" data-js-quantity>
+            <button class="btn btn_semi_accent btn_cellar" data-js-action="addToCellar">Ajouter au cellier</button>
         </section>
     </article>
 </template>

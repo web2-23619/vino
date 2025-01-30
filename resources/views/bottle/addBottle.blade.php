@@ -7,7 +7,6 @@
 	<header>
 		<h2 class="register-header">Ajouter la bouteille</h2>
 	</header>
-
 	<!-- Formulaire avec action conditionnelle -->
 	<form class="form" id="addBottleForm" method="POST" action="{{ route('purchase.addToCellar') }}">
 		@csrf
@@ -31,11 +30,10 @@
 			</section>
 		</article>
 		<!-- Quantité à ajouter -->
-		<div class="form-group">
-			<label for="quantity">Quantité :</label>
-			<input type="number" name="quantity" id="quantity" min="1" required>
-		</div>
-
+    <div class="form-group">
+        <label for="quantity">Quantité :</label>
+        <input type="number" name="quantity" id="quantity" value="{{ old('quantity', $quantity) }}" min="1" required>
+    </div>
 		@if($source == 'listeAchat')
 		<div class="form-group">
 			<input type="hidden" name="cellar_id" value="wishlist">
