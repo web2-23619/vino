@@ -134,6 +134,17 @@ import App from "../components/App.js";
     }
 
 
+       /**
+     * affiche le bouton d'action d'ajout de bouteille en bas de page
+     */
+       function displayAddBottleBtn() {
+        const template = document.querySelector("template#action-button");
+        let content = template.content.cloneNode(true);
+        let sectionHTML = document.querySelector("footer");
+        sectionHTML.prepend(content);
+    }
+
+
     /**
      * Affiche la modale de suppression d'un cellier.
      *
@@ -240,7 +251,21 @@ import App from "../components/App.js";
 
     }
 
-    currentCellar.addEventListener('change', selectTheCurrentValue);
+
+    // Gestion du select des celliers dans inventaire
+    currentCellar.addEventListener('change', function () {
+        selectTheCurrentValue();
+        // Cache le message "Aucune bouteille"
+        const noContentMessage = document.querySelector(".noContent");
+        if (noContentMessage) {
+            noContentMessage.remove();
+            const boutonAjout = document.querySelector("footer > div");
+            if (!boutonAjout) {
+                displayAddBottleBtn()
+            }
+        }
+
+    });
 
     // fonction pour montrer la vue selon le cellier selectionner
 
@@ -293,17 +318,15 @@ import App from "../components/App.js";
         // Supprime les articles existants
         const existingArticles = bottlesContainer.querySelectorAll("article");
         existingArticles.forEach((article) => article.remove());
-    
-        // S'il y a aucune bouteille, affiche un message
-        if (bottles.length === 0) {
-            displayNoContentMessage();
-            return;
-        }
 
         // Cache le message "Aucune bouteille"
         const noContentMessage = document.querySelector(".noContent");
         if (noContentMessage) {
             noContentMessage.remove();
+            const boutonAjout = document.querySelector("footer > div");
+            if (!boutonAjout) {
+                displayAddBottleBtn()
+            }
         }
     
         // Affiche les bouteilles
@@ -336,6 +359,12 @@ import App from "../components/App.js";
             // Ajoute la bouteille au conteneur
             bottlesContainer.appendChild(clone);
         });
+
+        // S'il y a aucune bouteille, affiche un message
+        if (bottles.length === 0) {
+            displayNoContentMessage();
+            return;
+        }
     }
 
     /**

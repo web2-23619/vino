@@ -122,4 +122,9 @@
 		</div>
 	</div>
 </template>
+<template id="action-button">
+    <div>
+		<a href="{{ route('search.index', ['source' => 'cellier', 'cellar_id' => $cellar->id]) }}" class="btn btn_accent">Ajouter Bouteille</a>
+    </div>
+</template>
 @endsection
