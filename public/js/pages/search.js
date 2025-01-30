@@ -229,104 +229,6 @@ import Bottle from "../components/Bottle.js";
         renderSortAndFilter(sortOrder);
     });
 
-    //  ---- fonctions auxilières ----
-    /**
-     * charge et affiche les résultats
-     */
-    async function loadData(page = 1) {
-        // Prevent loading if there's an ongoing request
-        if (loading) return;
-        loading = true; // Set loading to true
-
-        // recupérer les données et afficher
-        try {
-            const searchQuery = document.querySelector("#search").value;
-
-            let formData = new FormData();
-            formData.append("query", searchQuery);
-
-            const csrfToken = document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute("content");
-            const response = await fetch(
-                `${App.instance.baseURL}/api/recherche?page=${page}`,
-                {
-                    method: "post",
-                    body: formData,
-                    headers: {
-                        "X-CSRF-TOKEN": csrfToken, // Ajoute CSRF token
-                        Authorization:
-                            "Bearer " + localStorage.getItem("token"), // Ajoute le token
-                    },
-                }
-            );
-
-            const data = await response.json();
-
-            // //TODO: render
-            const nbResults = document.createElement("p");
-            if (data.results.total === 0) {
-                nbResults.textContent = "0 rétulat trouvé";
-            } else if (data.results.total === 1) {
-                nbResults.textContent = `${data.results.total} résultat trouvé`;
-            } else {
-                nbResults.textContent = `${data.results.total} résultats trouvés`;
-            }
-            const existingResults = resultContainer.querySelector("p");
-
-            if (page === 1) {
-                resultContainer.innerHTML = "";
-                existingResults.remove();
-                resultContainer.append(nbResults);
-            }
-
-            const template = document.querySelector(
-                "template#searchResultBottle"
-            );
-
-            data.results.data.forEach(
-                (bottle) =>
-                    new Bottle(
-                        bottle,
-                        "search",
-                        template,
-                        resultContainer,
-                        data.source
-                    )
-            );
-            maxPage = data.results.last_page;
-
-            // ajouter bouton afficher plus si pas derniere page
-            if (page < maxPage) {
-                const btnAfficherPlus = document.createElement("button");
-                btnAfficherPlus.textContent = "Afficher plus";
-                btnAfficherPlus.classList.add("btn");
-                btnAfficherPlus.classList.add("btn_outline_dark");
-                btnAfficherPlus.dataset.js = "afficherPlusBouteille";
-
-                resultContainer.append(btnAfficherPlus);
-                const btnAfficherPlusHtml = resultContainer.lastElementChild;
-
-                btnAfficherPlusHtml.addEventListener("click", function (event) {
-                    const existingBtnAfficherPlus = event.target;
-                    existingBtnAfficherPlus.remove();
-                    loadData(currentPage);
-                });
-            }
-
-            const heading = document.querySelector(".search-header");
-            heading.textContent = `Résultat pour "${searchQuery}"`;
-
-            suggestionsContainer.style.display = "none";
-
-            currentPage++;
-            loading = false;
-        } catch (error) {
-            console.error(error);
-            loading = false;
-        }
-    }
-
     /**
      * trier et afficher
      */
@@ -373,8 +275,12 @@ import Bottle from "../components/Bottle.js";
             const csrfToken = document
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute("content");
+				        const urlParams = new URLSearchParams(
+                            window.location.search
+                        );
+                        let source = urlParams.get("source");
             const response = await fetch(
-                `${App.instance.baseURL}/api/recherche?page=${page}&tri=${sortOrder}`,
+                `${App.instance.baseURL}/api/recherche?source=${source}&page=${page}&tri=${sortOrder}`,
                 {
                     method: "post",
                     body: formData,
