@@ -72,7 +72,10 @@ class ModaleAction {
                         this.#retirerBouteilleDeCellier.bind(this)
                     );
                 } else if (this.#model === "favoris") {
-                        this.#btnAction.addEventListener("click", this.#supprimerFavori.bind(this));
+                    this.#btnAction.addEventListener(
+                        "click",
+                        this.#supprimerFavori.bind(this)
+                    );
                 } else {
                     this.#btnAction.addEventListener(
                         "click",
@@ -103,8 +106,8 @@ class ModaleAction {
      * Méthode privée pour fermer la modale
      */
     #fermerModale() {
-		const customEvent = new CustomEvent("fermerModale");
-		document.dispatchEvent(customEvent);
+        const customEvent = new CustomEvent("fermerModale");
+        document.dispatchEvent(customEvent);
 
         this.#déverouiller();
         this.#elementHTML.remove();
@@ -236,14 +239,23 @@ class ModaleAction {
         // Envoyer le formulaire de déconnexion masquée
         const logoutForm = document.getElementById("logout-form");
         if (logoutForm) {
-            const response = await fetch(`${App.instance.baseURL}/api/logout`, {
-                method: "GET",
-                headers: {
-                    "X-CSRF-TOKEN": csrfToken,
-                },
-            });
-            localStorage.removeItem("token");
-            logoutForm.submit();
+            try {
+                const response = await fetch(
+                    `${App.instance.baseURL}/api/logout`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "X-CSRF-TOKEN": csrfToken,
+                            Authorization:
+                                "Bearer " + localStorage.getItem("token"), // ajouter token
+                        },
+                    }
+                );
+                localStorage.removeItem("token");
+                logoutForm.submit();
+            } catch (error) {
+
+			}
         } else {
             console.error("Logout form not found.");
         }
@@ -271,30 +283,35 @@ class ModaleAction {
     }
 
     async #supprimerFavori() {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
-    
+        const csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content");
+
         try {
-            const response = await fetch(`${App.instance.baseURL}/api/favoris/${this.#id}`, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": csrfToken,
-                    Authorization: "Bearer " + localStorage.getItem("token"),
-                },
-            });
-    
+            const response = await fetch(
+                `${App.instance.baseURL}/api/favoris/${this.#id}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrfToken,
+                        Authorization:
+                            "Bearer " + localStorage.getItem("token"),
+                    },
+                }
+            );
+
             if (response.ok) {
-                this.#elToChange?.remove(); 
+                this.#elToChange?.remove();
             } else {
                 console.error("Erreur lors de la suppression du favori");
             }
-    
-            this.#fermerModale(); 
+
+            this.#fermerModale();
         } catch (error) {
             console.error("Erreur réseau :", error);
         }
     }
-    
 }
 
 export default ModaleAction;
