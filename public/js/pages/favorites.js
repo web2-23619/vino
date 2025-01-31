@@ -23,14 +23,70 @@ import Bottle from "../components/Bottle.js";
     // Récupérer et afficher les favoris
     const data = await getAllFavorites();
     render(data);
+    console.log(data);
 
     let favorites = data.favorites;
+
+    //affichage du bouton ajouter bouteille selon l'ouverture des filtres et tri
+    const sortingDetails = document.querySelector(".sorting > details");
+    const filterDetails = document.querySelector(".filters > details");
+
+    sortingDetails.addEventListener("toggle", modifyDiplayAddBtn);
+    filterDetails.addEventListener("toggle", modifyDiplayAddBtn);
+
+    // changer l'ordre d'affichage selon la selection
+    const sortingOptions = document.querySelector(".sorting__frame");
+    sortingOptions.addEventListener("click", function () {
+        const selectedSort = document.querySelector("[name='sorting']:checked");
+        sortingDetails.removeAttribute("open");
+        renderSort(selectedSort.value);
+    });
+
+    //filtres
+    const filterFormHTML = document.querySelector("[data-js='filtersForm']");
+    filterFormHTML.addEventListener("submit", function (event) {
+        filterDetails.removeAttribute("open");
+        renderFilter(event);
+    });
+
+    //reinitialisation des filtres
+    const btnResetFilters = filterFormHTML.querySelector(
+        "[data-js='resetFilters']"
+    );
+    btnResetFilters.addEventListener("click", function (event) {
+        event.preventDefault();
+        filterFormHTML.reset();
+    });
+
+    // affichage de la liste complete de pays
+    const btnAfficherPlus = document.querySelector("[data-js='afficherPlus']");
+    const btnAfficherMoins = document.querySelector(
+        "[data-js='afficherMoins']"
+    );
+    btnAfficherPlus.addEventListener("click", function (event) {
+        const trigger = event.target;
+        trigger.nextElementSibling.classList.remove("invisible");
+        btnAfficherMoins.classList.remove("invisible");
+        btnAfficherPlus.classList.add("invisible");
+    });
+
+    btnAfficherMoins.addEventListener("click", function (event) {
+        const trigger = event.target;
+        trigger.previousElementSibling.classList.add("invisible");
+        btnAfficherMoins.classList.add("invisible");
+        btnAfficherPlus.classList.remove("invisible");
+        document.querySelector("h1").scrollIntoView();
+    });
 
     /**
      * Efface tout le contenu affiché.
      */
     function clearAll() {
         document.querySelector("[data-js-list]").innerHTML = "";
+        const boutonAjout = document.querySelector("footer > div");
+        if (boutonAjout) {
+            boutonAjout.remove();
+        }
     }
 
     /**
@@ -75,7 +131,6 @@ import Bottle from "../components/Bottle.js";
         });
 
         const data = await response.json();
-        console.log(data);
         return data;
     }
 
@@ -182,20 +237,6 @@ import Bottle from "../components/Bottle.js";
         }
     }
 
-    /**
-     * Gère les clics pour supprimer ou déplacer des favoris.
-     */
-    // document.querySelector("[data-js-list]").addEventListener("click", (e) => {
-    //     const bottleCard = e.target.closest(".card_bottle");
-    //     if (!bottleCard) return;
-
-    //     const id = bottleCard.getAttribute("data-js-id");
-
-    //     if (e.target.matches("[data-js-action='removeFromFavorites']")) {
-    //         removeFavorite(id);
-    //     }
-    // });
-
     document
         .querySelectorAll("[data-js-action='moveToCellar']")
         .forEach((button) => {
@@ -266,38 +307,115 @@ import Bottle from "../components/Bottle.js";
             }
         });
     });
+
+    function modifyDiplayAddBtn() {
+        const btnAjouterBouteilleHTML = document.querySelector("footer>div");
+        if (sortingDetails.open || filterDetails.open) {
+            btnAjouterBouteilleHTML.classList.add("invisible");
+        } else {
+            btnAjouterBouteilleHTML.classList.remove("invisible");
+        }
+    }
+
+    /**
+     * tri et affiche le résultat trié
+     */
+    function renderSort(sortOption) {
+        const [criteria, sort] = sortOption.split("_");
+        favorites.sort((a, b) => {
+            if (criteria === "name") {
+                const nameA = a.name;
+                const nameB = b.name;
+
+                if (sort === "asc") {
+                    return nameA.localeCompare(nameB);
+                } else {
+                    return nameB.localeCompare(nameA);
+                }
+            } else if (criteria === "price") {
+                const priceA = a.price;
+                const priceB = b.price;
+                if (sort === "asc") {
+                    return priceA - priceB; // Ascending sort
+                } else {
+                    return priceB - priceA; // Descending sort
+                }
+            }
+        });
+        clearAll();
+
+        render({ favorites });
+    }
+
+    /**
+     * afficher données filterés
+     */
+    async function renderFilter(event) {
+        event.preventDefault();
+
+        //filtrer
+        const countriesHTML =
+            filterFormHTML.querySelectorAll("[name='country']");
+        const countries = [];
+        for (const country of countriesHTML) {
+            if (country.checked) {
+                countries.push(country.value);
+            }
+        }
+
+        const typesHTML = filterFormHTML.querySelectorAll("[name='type']");
+        const types = [];
+        for (const type of typesHTML) {
+            if (type.checked) {
+                types.push(type.value);
+            }
+        }
+
+        let filteredPurchase = purchases;
+
+        if (
+            countries.length === 0 &&
+            types.length === 0 &&
+            min.value === "" &&
+            max.value === ""
+        ) {
+            clearAll();
+            render(dataAll);
+            purchases = dataAll.purchases;
+        } else {
+            if (countries.length > 0) {
+                filteredPurchase = filteredPurchase.filter((purchase) =>
+                    countries.includes(purchase.country)
+                );
+            }
+            if (types.length > 0) {
+                filteredPurchase = filteredPurchase.filter((purchase) =>
+                    types.includes(purchase.type)
+                );
+            }
+            if (min.value != "") {
+                filteredPurchase = filteredPurchase.filter(
+                    (purchase) => purchase.price >= parseFloat(min.value)
+                );
+            }
+            if (max.value != "") {
+                filteredPurchase = filteredPurchase.filter(
+                    (purchase) => purchase.price <= parseFloat(max.value)
+                );
+            }
+
+            const dataFiltered = {
+                purchases: filteredPurchase,
+                empty: false,
+                filtered: true,
+            };
+            console.log(dataFiltered.purchases.length === 0);
+            if (dataFiltered.purchases.length === 0) {
+                dataFiltered.empty = true;
+            }
+            purchases = filteredPurchase;
+            clearAll();
+            render(dataFiltered);
+        }
+    }
 })();
-
-// document.addEventListener('DOMContentLoaded', () => {
-// 	const favoriteIcons = document.querySelectorAll('.favorite-icon');
-
-// 	favoriteIcons.forEach(icon => {
-// 		icon.addEventListener('click', async () => {
-// 			const bottleId = icon.dataset.jsFavorite;
-// 			const isFavorite = icon.dataset.favorite === 'true';
-
-// 			try {
-// 				// Envoyer une requête Ajax pour mettre à jour les favoris
-// 				const response = await fetch(`/favorites/toggle`, {
-// 					method: 'POST',
-// 					headers: {
-// 						'Content-Type': 'application/json',
-// 						'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-// 					},
-// 					body: JSON.stringify({ bottle_id: bottleId })
-// 				});
-
-// 				if (response.ok) {
-// 					// Mettre à jour l'état du cœur
-// 					icon.dataset.favorite = !isFavorite;
-// 					icon.innerHTML = !isFavorite ? '❤️' : '🤍';
-// 					icon.title = !isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris';
-// 				} else {
-// 					console.error('Erreur lors de la mise à jour des favoris');
-// 				}
-// 			} catch (error) {
-// 				console.error('Erreur réseau:', error);
-// 			}
-// 		});
-// 	});
-// });
