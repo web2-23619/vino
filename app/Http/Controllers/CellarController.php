@@ -16,8 +16,13 @@ class CellarController extends Controller
 	{
 		$user_id = Auth::user()->id;
 		$cellars = Cellar::select()->where('user_id', $user_id)->orderBy('name')->get();
-		
-		$countries = Bottle::select('country')->distinct()->get();
+		$cellar_id = request('cellar_id');
+
+		$countries = Bottle::select('country')
+		->selectRaw('COUNT(*) as total')
+		->groupBy('country')
+		->orderByDesc('total')
+		->get();
 
 		$countryNames = $countries->pluck('country')->toArray();
 
@@ -31,7 +36,7 @@ class CellarController extends Controller
 
 		// Retourner la vue avec la liste des celliers
 
-		return view('cellar.index', ['cellars' => $cellars], ['initialCountries' => $initialCountries, 'remainingCountries' => $remainingCountries, 'remainingCount' => $remainingCount, 'types' => $types]);
+		return view('cellar.index', ['cellars' => $cellars, 'cellar_id'=>$cellar_id, 'initialCountries' => $initialCountries, 'remainingCountries' => $remainingCountries, 'remainingCount' => $remainingCount, 'types' => $types]);
 
 	}
 

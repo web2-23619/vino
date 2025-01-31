@@ -16,28 +16,88 @@ import Bottle from "../components/Bottle.js";
         const nbBouteilles = bouteilles.length;
 
         if (nbBouteilles === 0) {
-            displayNoContentMessage();
+            displayNoContentMessage("noFavorite");
         }
     });
 
     // Récupérer et afficher les favoris
     const data = await getAllFavorites();
     render(data);
+    console.log(data);
 
     let favorites = data.favorites;
+
+    //affichage du bouton ajouter bouteille selon l'ouverture des filtres et tri
+    const sortingDetails = document.querySelector(".sorting > details");
+    const filterDetails = document.querySelector(".filters > details");
+
+    sortingDetails.addEventListener("toggle", modifyDiplayAddBtn);
+    filterDetails.addEventListener("toggle", modifyDiplayAddBtn);
+    const activeFiltersHTML = document.querySelector(
+        "[data-js='activeFilters']"
+    );
+
+    // changer l'ordre d'affichage selon la selection
+    const sortingOptions = document.querySelector(".sorting__frame");
+    sortingOptions.addEventListener("click", function () {
+        const selectedSort = document.querySelector("[name='sorting']:checked");
+        sortingDetails.removeAttribute("open");
+        renderSort(selectedSort.value);
+    });
+
+    //filtres
+    const filterFormHTML = document.querySelector("[data-js='filtersForm']");
+    filterFormHTML.addEventListener("submit", function (event) {
+        filterDetails.removeAttribute("open");
+        renderFilter(event);
+    });
+
+    //reinitialisation des filtres
+    const btnResetFilters = filterFormHTML.querySelector(
+        "[data-js='resetFilters']"
+    );
+    btnResetFilters.addEventListener("click", function (event) {
+        event.preventDefault();
+        filterFormHTML.reset();
+        activeFiltersHTML.textContent = 0;
+    });
+
+    // affichage de la liste complete de pays
+    const btnAfficherPlus = document.querySelector("[data-js='afficherPlus']");
+    const btnAfficherMoins = document.querySelector(
+        "[data-js='afficherMoins']"
+    );
+    btnAfficherPlus.addEventListener("click", function (event) {
+        const trigger = event.target;
+        trigger.nextElementSibling.classList.remove("invisible");
+        btnAfficherMoins.classList.remove("invisible");
+        btnAfficherPlus.classList.add("invisible");
+    });
+
+    btnAfficherMoins.addEventListener("click", function (event) {
+        const trigger = event.target;
+        trigger.previousElementSibling.classList.add("invisible");
+        btnAfficherMoins.classList.add("invisible");
+        btnAfficherPlus.classList.remove("invisible");
+        document.querySelector("h1").scrollIntoView();
+    });
 
     /**
      * Efface tout le contenu affiché.
      */
     function clearAll() {
         document.querySelector("[data-js-list]").innerHTML = "";
+        const boutonAjout = document.querySelector("footer > div");
+        if (boutonAjout) {
+            boutonAjout.remove();
+        }
     }
 
     /**
      * Affiche un message si la liste des favoris est vide.
      */
-    function displayNoContentMessage() {
-        const template = document.querySelector("template#noFavorite");
+    function displayNoContentMessage(templateName) {
+        const template = document.querySelector(`[id='${templateName}']`);
         let content = template.content.cloneNode(true);
         let sectionHTML = document.querySelector("main > section");
         sectionHTML.append(content);
@@ -75,7 +135,6 @@ import Bottle from "../components/Bottle.js";
         });
 
         const data = await response.json();
-        console.log(data);
         return data;
     }
 
@@ -85,7 +144,7 @@ import Bottle from "../components/Bottle.js";
      * @param {object} data - Les données des favoris.
      * @param {Array} data.favorites - Un tableau contenant les objets des favoris.
      */
-    function render(data) {
+    function render(data, filtered = false) {
         const container = document.querySelector("[data-js-list]");
         const template = document.querySelector("template#favoriteBottle");
         const actionButtonTemplate = document.querySelector(
@@ -150,8 +209,10 @@ import Bottle from "../components/Bottle.js";
             });
 
             displayAddBottleBtn();
+        } else if (filtered) {
+            displayNoContentMessage("noResult");
         } else {
-            displayNoContentMessage();
+            displayNoContentMessage("noFavorite");
         }
     }
 
@@ -181,20 +242,6 @@ import Bottle from "../components/Bottle.js";
             render({ favorites });
         }
     }
-
-    /**
-     * Gère les clics pour supprimer ou déplacer des favoris.
-     */
-    // document.querySelector("[data-js-list]").addEventListener("click", (e) => {
-    //     const bottleCard = e.target.closest(".card_bottle");
-    //     if (!bottleCard) return;
-
-    //     const id = bottleCard.getAttribute("data-js-id");
-
-    //     if (e.target.matches("[data-js-action='removeFromFavorites']")) {
-    //         removeFavorite(id);
-    //     }
-    // });
 
     document
         .querySelectorAll("[data-js-action='moveToCellar']")
@@ -266,38 +313,113 @@ import Bottle from "../components/Bottle.js";
             }
         });
     });
+
+    function modifyDiplayAddBtn() {
+        const btnAjouterBouteilleHTML = document.querySelector("footer>div");
+        if (sortingDetails.open || filterDetails.open) {
+            btnAjouterBouteilleHTML.classList.add("invisible");
+        } else {
+            btnAjouterBouteilleHTML.classList.remove("invisible");
+        }
+    }
+
+    /**
+     * tri et affiche le résultat trié
+     */
+    function renderSort(sortOption) {
+        const [criteria, sort] = sortOption.split("_");
+        favorites.sort((a, b) => {
+            if (criteria === "name") {
+                const nameA = a.name;
+                const nameB = b.name;
+
+                if (sort === "asc") {
+                    return nameA.localeCompare(nameB);
+                } else {
+                    return nameB.localeCompare(nameA);
+                }
+            } else if (criteria === "price") {
+                const priceA = a.price;
+                const priceB = b.price;
+                if (sort === "asc") {
+                    return priceA - priceB; // Ascending sort
+                } else {
+                    return priceB - priceA; // Descending sort
+                }
+            }
+        });
+        clearAll();
+
+        render({ favorites });
+    }
+
+    /**
+     * afficher données filterés
+     */
+    async function renderFilter(event) {
+        event.preventDefault();
+
+        let nbFilters = 0;
+
+        //filtrer
+        const countriesHTML =
+            filterFormHTML.querySelectorAll("[name='country']");
+        const countries = [];
+        for (const country of countriesHTML) {
+            if (country.checked) {
+				nbFilters++;
+                countries.push(country.value);
+            }
+        }
+
+        const typesHTML = filterFormHTML.querySelectorAll("[name='type']");
+        const types = [];
+        for (const type of typesHTML) {
+            if (type.checked) {
+				nbFilters++;
+                types.push(type.value);
+            }
+        }
+
+        let filteredFavorites = favorites;
+
+        if (
+            countries.length === 0 &&
+            types.length === 0 &&
+            min.value === "" &&
+            max.value === ""
+        ) {
+            clearAll();
+            render(data);
+            favorites = data.filteredFavorites;
+        } else {
+            if (countries.length > 0) {
+                filteredFavorites = filteredFavorites.filter((favorite) =>
+                    countries.includes(favorite.country)
+                );
+            }
+            if (types.length > 0) {
+                filteredFavorites = filteredFavorites.filter((favorite) =>
+                    types.includes(favorite.type)
+                );
+            }
+            if (min.value != "") {
+                filteredFavorites = filteredFavorites.filter(
+                    (favorite) => favorite.price >= parseFloat(min.value)
+                );
+            }
+            if (max.value != "") {
+				nbFilters++;
+                filteredFavorites = filteredFavorites.filter(
+                    (favorite) => favorite.price <= parseFloat(max.value)
+                );
+            }
+
+			activeFiltersHTML.textContent = nbFilters;
+
+            favorites = filteredFavorites;
+            clearAll();
+            render({ favorites }, true);
+        }
+    }
 })();
-
-// document.addEventListener('DOMContentLoaded', () => {
-// 	const favoriteIcons = document.querySelectorAll('.favorite-icon');
-
-// 	favoriteIcons.forEach(icon => {
-// 		icon.addEventListener('click', async () => {
-// 			const bottleId = icon.dataset.jsFavorite;
-// 			const isFavorite = icon.dataset.favorite === 'true';
-
-// 			try {
-// 				// Envoyer une requête Ajax pour mettre à jour les favoris
-// 				const response = await fetch(`/favorites/toggle`, {
-// 					method: 'POST',
-// 					headers: {
-// 						'Content-Type': 'application/json',
-// 						'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-// 					},
-// 					body: JSON.stringify({ bottle_id: bottleId })
-// 				});
-
-// 				if (response.ok) {
-// 					// Mettre à jour l'état du cœur
-// 					icon.dataset.favorite = !isFavorite;
-// 					icon.innerHTML = !isFavorite ? '❤️' : '🤍';
-// 					icon.title = !isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris';
-// 				} else {
-// 					console.error('Erreur lors de la mise à jour des favoris');
-// 				}
-// 			} catch (error) {
-// 				console.error('Erreur réseau:', error);
-// 			}
-// 		});
-// 	});
-// });

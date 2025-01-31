@@ -101,11 +101,13 @@ import Bottle from "../components/Bottle.js";
             });
     }
 
-	searchInput.addEventListener("input", debouncedAutoComplete)
-
+    searchInput.addEventListener("input", debouncedAutoComplete);
 
     // --- filtres ---
     const filterFormHTML = document.querySelector("[data-js='filtersForm']");
+    const activeFiltersHTML = document.querySelector(
+        "[data-js='activeFilters']"
+    );
 
     //reinitialisation des filtres
     const btnResetFilters = filterFormHTML.querySelector(
@@ -113,6 +115,7 @@ import Bottle from "../components/Bottle.js";
     );
     btnResetFilters.addEventListener("click", function (event) {
         event.preventDefault();
+        activeFiltersHTML.textContent = 0;
         filterFormHTML.reset();
     });
 
@@ -161,6 +164,8 @@ import Bottle from "../components/Bottle.js";
 
         // recupérer les données et afficher
         try {
+            let nbFilters = 0;
+
             const searchQuery = document.querySelector("#search").value;
 
             let formData = new FormData();
@@ -171,6 +176,7 @@ import Bottle from "../components/Bottle.js";
                 filterFormHTML.querySelectorAll("[name='country']");
             countries.forEach(function (country) {
                 if (country.checked) {
+                    nbFilters++;
                     formData.append("countries[]", country.value);
                 }
             });
@@ -179,6 +185,7 @@ import Bottle from "../components/Bottle.js";
             const types = filterFormHTML.querySelectorAll("[name='type']");
             types.forEach(function (type) {
                 if (type.checked) {
+					nbFilters++;
                     formData.append("types[]", type.value);
                 }
             });
@@ -188,9 +195,11 @@ import Bottle from "../components/Bottle.js";
             const maxPrice = document.querySelector("[name='max']").value;
 
             if (minPrice) {
+				nbFilters++;
                 formData.append("min_price", parseFloat(minPrice));
             }
             if (maxPrice) {
+				nbFilters++;
                 formData.append("max_price", parseFloat(maxPrice));
             }
 
@@ -268,6 +277,8 @@ import Bottle from "../components/Bottle.js";
             heading.textContent = `Résultat pour "${searchQuery}"`;
 
             suggestionsContainer.style.display = "none";
+
+			activeFiltersHTML.textContent = nbFilters;
 
             currentPage++;
             loading = false;

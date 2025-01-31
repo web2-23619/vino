@@ -33,7 +33,7 @@
     border-radius: 0;
     box-sizing: border-box;
     font-size: var(--police-std);
-    padding: var(--espace-nano);
+    padding: var(--espace-nano) var(--espace-xs);
     width: 100%;
 }
 

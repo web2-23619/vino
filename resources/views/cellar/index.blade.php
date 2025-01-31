@@ -31,7 +31,7 @@
 
 		<select class="cellier-select" name="cellar-select" id="cellar-select">
 			@forelse($cellars as $cellar)
-			<option value="{{ $cellar->id }}">{{ $cellar->name }}</option>
+			<option value="{{ $cellar->id }}" @selected($cellar_id==$cellar->id)>{{ $cellar->name }}</option>
 			@empty
 			<option disable>Aucun cellier</option>
 			@endforelse

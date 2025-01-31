@@ -18,7 +18,11 @@ class PurchaseController extends Controller
 	 */
 	public function index()
 	{
-		$countries = Bottle::select('country')->distinct()->get();
+		$countries = Bottle::select('country')
+			->selectRaw('COUNT(*) as total')
+			->groupBy('country')
+			->orderByDesc('total')
+			->get();
 
 		$countryNames = $countries->pluck('country')->toArray();
 
@@ -88,18 +92,6 @@ class PurchaseController extends Controller
 
 		// return redirect()->route('cellar.index')->with('succes', 'Cellier modifié avec succès!');
 	}
-
-	//public function showAddBottleForm($bottle_id)
-	//{
-		// Récupérer la bouteille par ID
-		//$bottle = Bottle::findOrFail($bottle_id);
-
-		// Récupérer la liste d'achat de l'utilisateur connecté
-		//$userCellars = Auth::user()->cellars;
-
-		// Retourner la vue pour le formulaire d'ajout de la bouteille
-		//return view('bottle.addBottlePurchase', compact('bottle', 'userCellars'));
-	//}
 
 	public function showAddBottleForm(Request $request, $bottle_id)
 {

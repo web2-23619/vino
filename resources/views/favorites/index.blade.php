@@ -14,12 +14,23 @@
 			<button data-js-action="fermer">x</button>
 		</div>
 	</template>
+	<div class="display-options">
+		@include('layouts.filtres',['initialCountries' => $initialCountries, 'remainingCountries' => $remainingCountries, 'remainingCount' => $remainingCount, 'types' => $types])
+		@include('layouts.sort')
+	</div>
 	<div data-js-list></div>
 </section>
 <template id="noFavorite">
 	<article class="noContent">
 		<h3>Votre liste de favoris est vide.</h3>
 		<p>Ajoutez vos bouteilles préférées ici pour y accéder facilement !</p>
+		<a href="{{ route('search.index', ['source' => 'favoris']) }}" class="btn">Découvrir des bouteilles</a>
+	</article>
+</template>
+<template id="noResult">
+	<article class="noContent">
+		<h3>Aucune bouteille dans vos favoris ne correspond à votre recherche</h3>
+		<p>Allez consulter le catalogue des bouteilles de la SAQ afin de trouver une bouteille !</p>
 		<a href="{{ route('search.index', ['source' => 'favoris']) }}" class="btn">Découvrir des bouteilles</a>
 	</article>
 </template>

@@ -11,21 +11,13 @@ import App from "../components/App.js";
         ".menu-deroulant > [type='checkbox']"
     );
 
-    //ecouteur d'evenement sur la composante Modale
-    document.addEventListener("fermerModale", async function (event) {
-
-        const bouteilles = document.querySelectorAll(".card_bottle");
-        const nbBouteilles = bouteilles.length;
-
-        if (nbBouteilles === 0) {
-            displayNoContentMessage();
-        }
-    });
-
     //filtres
     const filterFormHTML = document.querySelector("[data-js='filtersForm']");
     filterFormHTML.addEventListener("submit", renderFilter);
     const chevronDetails = document.querySelector(".filters > details");
+    const activeFiltersHTML = document.querySelector(
+        "[data-js='activeFilters']"
+    );
 
     // affichage de la liste complete de pays
     const btnAfficherPlus = document.querySelector("[data-js='afficherPlus']");
@@ -54,10 +46,7 @@ import App from "../components/App.js";
     btnResetFilters.addEventListener("click", function (event) {
         event.preventDefault();
         filterFormHTML.reset();
-        renderBottles(
-            { id: currentBottles[0]?.cellar_id || 0 },
-            currentBottles
-        );
+        activeFiltersHTML.textContent = 0;
     });
 
     for (const menu of menusHTML) {
@@ -132,7 +121,7 @@ import App from "../components/App.js";
      * Le message est stock  dans un template HTML et est ajouté au DOM.
      * Si un bouton "Ajouter" est présent, il est supprimé.
      */
-    function displayNoContentMessage(cellar_id) {
+    function displayNoContentMessage(cellar_id, filtered = false) {
         const template = document.querySelector("template#noPurchase");
         let content = template.content.cloneNode(true);
         let sectionHTML = document.querySelector(
@@ -140,13 +129,18 @@ import App from "../components/App.js";
         );
         sectionHTML.append(content);
         const button = document.querySelector("[data-template-route]");
-        console.log(button);
         const templateRoute = button.dataset.templateRoute;
         const updatedRedirection = templateRoute.replace(
             ":cellar_id",
             String(cellar_id)
         );
         button.setAttribute("href", updatedRedirection);
+
+        if (filtered) {
+            const h3 = document.querySelector(".noContent > h3");
+            h3.textContent =
+                "Aucune bouteille dans ce cellier ne correspond à votre recherche";
+        }
 
         const boutonAjout = document.querySelector("footer > div");
         if (boutonAjout) {
@@ -215,9 +209,7 @@ import App from "../components/App.js";
         const declencheur = event.target;
         const elToChange = declencheur.closest("article");
         const h3Element = name;
-        console.log(elToChange);
         const nom = elToChange.dataset.jsName;
-        console.log(h3Element);
         const ids = elToChange.dataset.jsKey;
 
         new ModaleAction(
@@ -236,6 +228,16 @@ import App from "../components/App.js";
     const kebabMenu = document.querySelector("template#kebab-menu");
 
     const bottleTemplate = document.querySelector("#bottle-template");
+
+    //ecouteur d'evenement sur la composante Modale
+    document.addEventListener("fermerModale", async function (event) {
+        const bouteilles = document.querySelectorAll(".card_bottle");
+        const nbBouteilles = bouteilles.length;
+
+        if (nbBouteilles === 0) {
+            displayNoContentMessage(currentCellar.value);
+        }
+    });
 
     /**
      * Fonction qui injecte le contenu du template de menu déroulant (#kebab-menu)
@@ -275,6 +277,8 @@ import App from "../components/App.js";
         menuWrapper.appendChild(kebabMenuContent);
 
         updateBottleView(currentCellarId);
+
+        history.pushState(null, "", `/inventaire?cellar_id=${currentCellarId}`);
     }
 
     // Gestion du select des celliers dans inventaire
@@ -343,7 +347,6 @@ import App from "../components/App.js";
         let footerHtml = document.querySelector("footer");
         footerHtml.prepend(content);
         const button = document.querySelector("[data-template-route]");
-        console.log(button);
         const templateRoute = button.dataset.templateRoute;
         const updatedRedirection = templateRoute.replace(
             ":cellar_id",
@@ -358,7 +361,7 @@ import App from "../components/App.js";
      * @param {Object} cellar Informations du cellier selectionné.
      * @param {Array<Object>} bottles Informations des bouteilles du cellier.
      */
-    function renderBottles(cellar, bottles) {
+    function renderBottles(cellar, bottles, filtered = false) {
         // Sélectionne le conteneur
         const bottlesContainer = document.querySelector(".cellier-products");
 
@@ -368,7 +371,7 @@ import App from "../components/App.js";
 
         // S'il y a aucune bouteille, affiche un message
         if (bottles.length === 0) {
-            displayNoContentMessage(currentCellar.value);
+            displayNoContentMessage(currentCellar.value, filtered);
             return;
         }
 
@@ -383,7 +386,6 @@ import App from "../components/App.js";
         }
 
         const boutonAjout = document.querySelector("footer > div");
-        console.log(boutonAjout);
         if (boutonAjout) {
             boutonAjout.remove();
         }
@@ -472,12 +474,6 @@ import App from "../components/App.js";
             // Ajoute la bouteille au conteneur
             bottlesContainer.appendChild(clone);
         });
-
-        // S'il y a aucune bouteille, affiche un message
-        if (bottles.length === 0) {
-            displayNoContentMessage();
-            return;
-        }
     }
 
     /**
@@ -519,12 +515,15 @@ import App from "../components/App.js";
     async function renderFilter(event) {
         event.preventDefault();
 
+        let nbFilters = 0;
+
         // Filter
         const countriesHTML =
             filterFormHTML.querySelectorAll("[name='country']");
         const countries = [];
         for (const country of countriesHTML) {
             if (country.checked) {
+                nbFilters++;
                 countries.push(country.value);
             }
         }
@@ -533,6 +532,7 @@ import App from "../components/App.js";
         const types = [];
         for (const type of typesHTML) {
             if (type.checked) {
+                nbFilters++;
                 types.push(type.value);
             }
         }
@@ -558,16 +558,20 @@ import App from "../components/App.js";
                 );
             }
             if (min.value !== "") {
+                nbFilters++;
                 filteredBottle = filteredBottle.filter(
                     (bottle) => bottle.price >= parseFloat(min.value)
                 );
             }
             if (max.value !== "") {
+                nbFilters++;
                 filteredBottle = filteredBottle.filter(
                     (bottle) => bottle.price <= parseFloat(max.value)
                 );
             }
         }
+
+        activeFiltersHTML.textContent = nbFilters;
 
         const dataFiltered = {
             bottles: filteredBottle,
@@ -581,7 +585,8 @@ import App from "../components/App.js";
 
         renderBottles(
             { id: currentBottles[0]?.cellar_id || 0 },
-            filteredBottle
+            filteredBottle,
+            true
         );
         chevronDetails.removeAttribute("open");
     }
