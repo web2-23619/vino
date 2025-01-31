@@ -20,9 +20,6 @@ import Bottle from "../components/Bottle.js";
     const resultContainer = document.querySelector("[data-js-list]");
     const suggestionsContainer = document.querySelector(".search_suggestions");
     const searchInput = document.querySelector("#search");
-    const barCodeScannerButton = document.querySelector(
-        "[data-js-action='scanner']"
-    );
 
     // pour autocomplete & scanner
     if (!searchInput || !suggestionsContainer) {
@@ -43,62 +40,6 @@ import Bottle from "../components/Bottle.js";
         // Si une source existe dans l'URL, la sauvegarder dans sessionStorage
         sessionStorage.setItem("source", source);
     }
-
-Quagga.init(
-                {
-                    inputStream: {
-                        name: "Live",
-                        type: "LiveStream",
-                        target: document.querySelector("#interactive"),
-                        constraints: {
-                            width: { ideal: 1920 },
-                            height: { ideal: 1080 },
-                            facingMode: "environment",
-                        },
-                    },
-                    decoder: {
-                        readers: [
-                            "ean_13_reader",     // For EAN-13 barcodes
-                        ],
-                    },
-                    locate: true,
-                    numOfWorkers: 1,
-                    halfSample: false,
-                },
-                function (err) {
-                    if (err) {
-                        console.error("Error initializing Quagga:", err);
-                        return;
-                    }
-                    console.log("Quagga initialized.");
-                    Quagga.start();
-
-                    timeout = setTimeout(() => {
-                        Quagga.stop();
-                        alert("No barcode detected within the allowed time.");
-                    }, 5000);
-                }
-            );
-
-            // Écouteur d'évènement pour la détection d'un barcode
-            Quagga.onDetected((data) => {
-
-                clearTimeout(timeout);
-
-                //TODO: lancer recherche au scan
-                let scannedBarCode = data.codeResult.code;
-                console.log("Barcode detected:", scannedBarCode);
-                if(scannedBarCode.length === 13) {
-                    scannedBarCode = "0" + scannedBarCode // le leading zero pour match le GTIN-14 (14 chiffres) upc dans la db
-
-                    const url = `/recherche?query=${encodeURIComponent(data.codeResult.code)}&source=${encodeURIComponent(source)}`;
-                    window.location.href = url;
-                }
-
-                Quagga.stop();
-                scannerContent.innerHTML = "";
-            });
-        });
 
     let debounceTimer;
     function debounce(func, delay) {
