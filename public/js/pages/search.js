@@ -213,6 +213,11 @@ import Bottle from "../components/Bottle.js";
                 formData.append("max_price", parseFloat(maxPrice));
             }
 
+            if (favorite.checked) {
+                nbFilters++;
+                formData.append("favorite", true);
+            }
+
             const csrfToken = document
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute("content");
@@ -253,16 +258,26 @@ import Bottle from "../components/Bottle.js";
                 "template#searchResultBottle"
             );
 
-            data.results.data.forEach(
-                (bottle) =>
-                    new Bottle(
-                        bottle,
-                        "search",
-                        template,
-                        resultContainer,
-                        data.source
-                    )
-            );
+            data.results.data.forEach((bottle) => {
+                new Bottle(
+                    bottle,
+                    "search",
+                    template,
+                    resultContainer,
+                    data.source
+                );
+
+				//ajouter le coeur rouge si favori
+                const bottleElement = resultContainer.querySelector(
+                    `[data-js-key="${bottle.id}"]`
+                );
+                const heartIcon = bottleElement.querySelector(".favorite-icon");
+				heartIcon.dataset.jsFavorite = bottle.is_favorite
+                    ? "true"
+                    : "false";
+                heartIcon.innerHTML = bottle.is_favorite ? "❤️" : "🤍";
+            });
+			
             maxPage = data.results.last_page;
 
             // ajouter bouton afficher plus si pas derniere page

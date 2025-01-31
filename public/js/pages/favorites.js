@@ -23,7 +23,6 @@ import Bottle from "../components/Bottle.js";
     // Récupérer et afficher les favoris
     const data = await getAllFavorites();
     render(data);
-    console.log(data);
 
     let favorites = data.favorites;
 
