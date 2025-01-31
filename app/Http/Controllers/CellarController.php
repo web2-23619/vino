@@ -69,7 +69,7 @@ class CellarController extends Controller
 
 		$cellar->save();
 
-		return redirect()->route('cellar.index')->with('succes', 'Cellier ajouté avec succès!');
+		return redirect()->route('cellar.index', ["cellar_id" => $cellar->id])->with('succes', 'Cellier ajouté avec succès!');
 	}
 
 	/**
