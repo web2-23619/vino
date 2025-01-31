@@ -11,6 +11,55 @@ import App from "../components/App.js";
         ".menu-deroulant > [type='checkbox']"
     );
 
+    //ecouteur d'evenement sur la composante Modale
+    document.addEventListener("fermerModale", async function (event) {
+
+        const bouteilles = document.querySelectorAll(".card_bottle");
+        const nbBouteilles = bouteilles.length;
+
+        if (nbBouteilles === 0) {
+            displayNoContentMessage();
+        }
+    });
+
+    //filtres
+    const filterFormHTML = document.querySelector("[data-js='filtersForm']");
+    filterFormHTML.addEventListener("submit", renderFilter);
+    const chevronDetails = document.querySelector(".filters > details");
+
+    // affichage de la liste complete de pays
+    const btnAfficherPlus = document.querySelector("[data-js='afficherPlus']");
+    const btnAfficherMoins = document.querySelector(
+        "[data-js='afficherMoins']"
+    );
+    btnAfficherPlus.addEventListener("click", function (event) {
+        const trigger = event.target;
+        trigger.nextElementSibling.classList.remove("invisible");
+        btnAfficherMoins.classList.remove("invisible");
+        btnAfficherPlus.classList.add("invisible");
+    });
+
+    btnAfficherMoins.addEventListener("click", function (event) {
+        const trigger = event.target;
+        trigger.previousElementSibling.classList.add("invisible");
+        btnAfficherMoins.classList.add("invisible");
+        btnAfficherPlus.classList.remove("invisible");
+        document.querySelector("h1").scrollIntoView();
+    });
+
+    //reinitialisation des filtres
+    const btnResetFilters = filterFormHTML.querySelector(
+        "[data-js='resetFilters']"
+    );
+    btnResetFilters.addEventListener("click", function (event) {
+        event.preventDefault();
+        filterFormHTML.reset();
+        renderBottles(
+            { id: currentBottles[0]?.cellar_id || 0 },
+            currentBottles
+        );
+    });
+
     for (const menu of menusHTML) {
         menu.addEventListener("change", checkMenu);
     }
@@ -20,6 +69,10 @@ import App from "../components/App.js";
     if (alerte) {
         new Alerte(alerte);
     }
+
+    // Variable qui contient les bouteilles après chaque render de la page
+    // Elle est mise à jour dand la fonction updateBottleView()
+    let currentBottles = [];
 
     document.addEventListener("DOMContentLoaded", () => {
         document.addEventListener("click", (event) => {
@@ -42,6 +95,21 @@ import App from "../components/App.js";
         } else if (event.target.matches("[data-js-action='augmenter']")) {
             changeQuantity(event, "augmenter");
         }
+    });
+
+    // Gestion de la fonctionnalité (Sort)
+    // changer l'ordre d'affichage selon la selection
+    document.addEventListener("DOMContentLoaded", () => {
+        const sortingOptions = document.querySelector(".sorting__frame");
+
+        sortingOptions.addEventListener("change", function () {
+            const selectedSort = document.querySelector(
+                "[name='sorting']:checked"
+            );
+            if (selectedSort && currentBottles.length > 0) {
+                renderSort(selectedSort.value);
+            }
+        });
     });
 
     function checkMenu(event) {
@@ -67,7 +135,9 @@ import App from "../components/App.js";
     function displayNoContentMessage(cellar_id) {
         const template = document.querySelector("template#noPurchase");
         let content = template.content.cloneNode(true);
-        let sectionHTML = document.querySelector("main > section");
+        let sectionHTML = document.querySelector(
+            "main > section.cellier-products"
+        );
         sectionHTML.append(content);
         const button = document.querySelector("[data-template-route]");
         console.log(button);
@@ -82,6 +152,16 @@ import App from "../components/App.js";
         if (boutonAjout) {
             boutonAjout.remove();
         }
+    }
+
+    /**
+     * affiche le bouton d'action d'ajout de bouteille en bas de page
+     */
+    function displayAddBottleBtn() {
+        const template = document.querySelector("template#action-button");
+        let content = template.content.cloneNode(true);
+        let sectionHTML = document.querySelector("footer");
+        sectionHTML.prepend(content);
     }
 
     /**
@@ -148,8 +228,6 @@ import App from "../components/App.js";
             "cellier_has_bouteille",
             elToChange
         );
-        const currentCellarId = currentCellar.value;
-        updateBottleView(currentCellarId);
     }
 
     // Fonctionnalité pour le menu kebab et le select dans l'inventaire
@@ -199,7 +277,19 @@ import App from "../components/App.js";
         updateBottleView(currentCellarId);
     }
 
-    currentCellar.addEventListener("change", selectTheCurrentValue);
+    // Gestion du select des celliers dans inventaire
+    currentCellar.addEventListener("change", function () {
+        selectTheCurrentValue();
+        // Cache le message "Aucune bouteille"
+        const noContentMessage = document.querySelector(".noContent");
+        if (noContentMessage) {
+            noContentMessage.remove();
+            const boutonAjout = document.querySelector("footer > div");
+            if (!boutonAjout) {
+                displayAddBottleBtn();
+            }
+        }
+    });
 
     // fonction pour montrer la vue selon le cellier selectionner
 
@@ -233,8 +323,12 @@ import App from "../components/App.js";
 
             const data = await response.json();
 
+            // Mise à jour de la liste des bouteilles dans la variable globale
+            // pour que la fonctionnalité (sort) puisse avoir accès
+            currentBottles = [...data.bottles];
+
             // Charge les bouteilles dans la vue
-            renderBottles(data.cellar, data.bottles);
+            renderBottles(data.cellar, currentBottles);
         } catch (error) {
             console.error("Une erreur s'est produite :", error);
         }
@@ -277,11 +371,15 @@ import App from "../components/App.js";
             displayNoContentMessage(currentCellar.value);
             return;
         }
-    
+
         // Cache le message "Aucune bouteille"
         const noContentMessage = document.querySelector(".noContent");
         if (noContentMessage) {
             noContentMessage.remove();
+            const boutonAjout = document.querySelector("footer > div");
+            if (!boutonAjout) {
+                displayAddBottleBtn();
+            }
         }
 
         const boutonAjout = document.querySelector("footer > div");
@@ -317,38 +415,43 @@ import App from "../components/App.js";
                 "[data-js-quantite='quantite']"
             );
             quantity.textContent = bottle.quantity;
-    
+
+            const price = clone.querySelector("[data-info='price']");
+            price.textContent = bottle.price;
+
             // Ajouter l'événement click pour gérer l'ajout et le retrait des favoris
             const heartIcon = clone.querySelector(".favorite-icon");
-    
+
             // Si la bouteille est déjà un favori, mets le cœur en rouge
             if (bottle.is_favorite) {
                 heartIcon.dataset.jsFavorite = "true";
-                heartIcon.innerHTML = "❤️";  // Cœur rouge
+                heartIcon.innerHTML = "❤️"; // Cœur rouge
                 heartIcon.title = "Retirer des favoris";
             } else {
                 heartIcon.dataset.jsFavorite = "false";
-                heartIcon.innerHTML = "🤍";  // Cœur vide
+                heartIcon.innerHTML = "🤍"; // Cœur vide
                 heartIcon.title = "Ajouter aux favoris";
             }
-    
+
             heartIcon.addEventListener("click", async () => {
                 const bottleId = heartIcon.closest(".card_bottle").dataset.jsId;
                 const isFavorite = heartIcon.dataset.jsFavorite === "true";
-    
+
                 // Envoie une requête pour changer le statut du favori
                 const response = await fetch(`/favoris/toggle`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                        "X-CSRF-TOKEN": document.querySelector(
+                            'meta[name="csrf-token"]'
+                        ).content,
                     },
                     body: JSON.stringify({ bottle_id: bottleId }),
                 });
-    
+
                 if (response.ok) {
                     const data = await response.json();
-    
+
                     // Mettre à jour l'état de l'icône du cœur en fonction de la réponse
                     if (data.status === "added") {
                         heartIcon.dataset.jsFavorite = "true";
@@ -360,16 +463,129 @@ import App from "../components/App.js";
                         heartIcon.title = "Ajouter aux favoris";
                     }
                 } else {
-                    console.error("Erreur lors du changement du statut du favori");
+                    console.error(
+                        "Erreur lors du changement du statut du favori"
+                    );
                 }
             });
-    
+
             // Ajoute la bouteille au conteneur
             bottlesContainer.appendChild(clone);
         });
+
+        // S'il y a aucune bouteille, affiche un message
+        if (bottles.length === 0) {
+            displayNoContentMessage();
+            return;
+        }
     }
-    
-    
+
+    /**
+     * tri et affiche le résultat trié
+     */
+    function renderSort(sortOption) {
+        if (currentBottles.length === 0) return;
+
+        const [criteria, sort] = sortOption.split("_");
+        currentBottles.sort((a, b) => {
+            if (criteria === "name") {
+                const nameA = a.name;
+                const nameB = b.name;
+
+                if (sort === "asc") {
+                    return nameA.localeCompare(nameB);
+                } else {
+                    return nameB.localeCompare(nameA);
+                }
+            } else if (criteria === "price") {
+                const priceA = a.price;
+                const priceB = b.price;
+                if (sort === "asc") {
+                    return priceA - priceB; // Ascending sort
+                } else {
+                    return priceB - priceA; // Descending sort
+                }
+            }
+        });
+        renderBottles(
+            { id: currentBottles[0]?.cellar_id || 0 },
+            currentBottles
+        );
+    }
+
+    /**
+     * afficher données filterés
+     */
+    async function renderFilter(event) {
+        event.preventDefault();
+
+        // Filter
+        const countriesHTML =
+            filterFormHTML.querySelectorAll("[name='country']");
+        const countries = [];
+        for (const country of countriesHTML) {
+            if (country.checked) {
+                countries.push(country.value);
+            }
+        }
+
+        const typesHTML = filterFormHTML.querySelectorAll("[name='type']");
+        const types = [];
+        for (const type of typesHTML) {
+            if (type.checked) {
+                types.push(type.value);
+            }
+        }
+
+        let filteredBottle = currentBottles;
+
+        if (
+            countries.length === 0 &&
+            types.length === 0 &&
+            min.value === "" &&
+            max.value === ""
+        ) {
+            filteredBottle = [...currentBottles];
+        } else {
+            if (countries.length > 0) {
+                filteredBottle = filteredBottle.filter((bottle) =>
+                    countries.includes(bottle.country)
+                );
+            }
+            if (types.length > 0) {
+                filteredBottle = filteredBottle.filter((bottle) =>
+                    types.includes(bottle.type)
+                );
+            }
+            if (min.value !== "") {
+                filteredBottle = filteredBottle.filter(
+                    (bottle) => bottle.price >= parseFloat(min.value)
+                );
+            }
+            if (max.value !== "") {
+                filteredBottle = filteredBottle.filter(
+                    (bottle) => bottle.price <= parseFloat(max.value)
+                );
+            }
+        }
+
+        const dataFiltered = {
+            bottles: filteredBottle,
+            empty: false,
+            filtered: true,
+        };
+
+        if (dataFiltered.bottles.length === 0) {
+            dataFiltered.empty = true;
+        }
+
+        renderBottles(
+            { id: currentBottles[0]?.cellar_id || 0 },
+            filteredBottle
+        );
+        chevronDetails.removeAttribute("open");
+    }
+
     /**
      * Met à jour la quantité d'une bouteille dans un cellier
      * @param {Event} event Evénement déclenché par le clic sur le bouton "-" ou "+"
@@ -438,4 +654,20 @@ import App from "../components/App.js";
     }
 
     selectTheCurrentValue();
+
+    //affichage du bouton ajouter bouteille selon l'ouverture des filtres et tri
+    const sortingDetails = document.querySelector(".sorting > details");
+    const filterDetails = document.querySelector(".filters > details");
+
+    sortingDetails.addEventListener("toggle", modifyDiplayAddBtn);
+    filterDetails.addEventListener("toggle", modifyDiplayAddBtn);
+
+    function modifyDiplayAddBtn() {
+        const btnAjouterBouteilleHTML = document.querySelector("footer>div");
+        if (sortingDetails.open || filterDetails.open) {
+            btnAjouterBouteilleHTML.classList.add("invisible");
+        } else {
+            btnAjouterBouteilleHTML.classList.remove("invisible");
+        }
+    }
 })();

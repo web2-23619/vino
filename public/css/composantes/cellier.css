@@ -45,4 +45,11 @@
     align-items: center;
     display: flex;
     gap: var(--espace-nano);
+    margin-bottom: var(--espace-xs);
+}
+
+[id=cellier-instruction] {
+    display: block;
+    font-weight: initial;
+    margin-bottom: 10px;
 }

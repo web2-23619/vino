@@ -12,12 +12,27 @@ class CellarController extends Controller
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index($cellar_id = null)
+	public function index()
 	{
 		$user_id = Auth::user()->id;
 		$cellars = Cellar::select()->where('user_id', $user_id)->orderBy('name')->get();
+		
+		$countries = Bottle::select('country')->distinct()->get();
+
+		$countryNames = $countries->pluck('country')->toArray();
+
+		$initialCountries = array_slice($countryNames, 0, 5);
+		$remainingCountries = array_slice($countryNames, 5);
+		$remainingCount = count($remainingCountries);
+
+		$types = Bottle::select('type')
+			->distinct()
+			->get();
+
 		// Retourner la vue avec la liste des celliers
-		return view('cellar.index', ['cellars' => $cellars, 'cellar_id' => $cellar_id]);
+
+		return view('cellar.index', ['cellars' => $cellars], ['initialCountries' => $initialCountries, 'remainingCountries' => $remainingCountries, 'remainingCount' => $remainingCount, 'types' => $types]);
+
 	}
 
 
