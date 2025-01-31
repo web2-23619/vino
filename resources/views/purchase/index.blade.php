@@ -92,7 +92,7 @@
 <!-- Template for the action button -->
 <template id="action-button">
 	<div>
-		<a href="{{ route('search.index', ['source' => 'listeAchat']) }}" class="btn">Ajouter Bouteille</a>
+		<a href="{{ route('search.index', ['source' => 'listeAchat']) }}" class="btn">Ajouter bouteille</a>
 	</div>
 </template>
 @endsection
