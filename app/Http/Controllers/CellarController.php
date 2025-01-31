@@ -106,7 +106,7 @@ class CellarController extends Controller
 
 
 		if ($cellar->user_id !== Auth::user()->id) {
-			return redirect()->route('cellar.index')->with('erreur', 'Accès non autorisé!');
+			return redirect()->route('cellar.index', ["cellar_id" => $cellar->id])->with('erreur', 'Accès non autorisé!');
 		}
 
 		// Mise à jour des données du cellier
@@ -115,7 +115,7 @@ class CellarController extends Controller
 			// 'quantity' => $request->input('quantity'),
 		]);
 
-		return redirect()->route('cellar.index')->with('succes', 'Cellier modifié avec succès!');
+		return redirect()->route('cellar.index', ["cellar_id"=>$cellar->id])->with('succes', 'Cellier modifié avec succès!');
 	}
 
 	/**
