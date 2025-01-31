@@ -11,6 +11,17 @@ import App from "../components/App.js";
         ".menu-deroulant > [type='checkbox']"
     );
 
+    //ecouteur d'evenement sur la composante Modale
+    document.addEventListener("fermerModale", async function (event) {
+
+        const bouteilles = document.querySelectorAll(".card_bottle");
+        const nbBouteilles = bouteilles.length;
+
+        if (nbBouteilles === 0) {
+            displayNoContentMessage();
+        }
+    });
+
     //filtres
     const filterFormHTML = document.querySelector("[data-js='filtersForm']");
     filterFormHTML.addEventListener("submit", renderFilter);
