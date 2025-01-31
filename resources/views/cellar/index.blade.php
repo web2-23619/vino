@@ -91,9 +91,9 @@
 								<path d="M27,6h-6V5c0-1.654-1.346-3-3-3h-4c-1.654,0-3,1.346-3,3v1H5C3.897,6,3,6.897,3,8v1c0,0.552,0.448,1,1,1h24  c0.552,0,1-0.448,1-1V8C29,6.897,28.103,6,27,6z M13,5c0-0.551,0.449-1,1-1h4c0.551,0,1,0.449,1,1v1h-6V5z" id="XMLID_243_" />
 							</svg>
 						</button>
-						<button data-js-action="reduire">-</button>
+						<button data-js-action="reduire"><span>-</span></button>
 						<span data-js-quantite="quantite"></span>
-						<button data-js-action="augmenter">+</button>
+						<button data-js-action="augmenter"><span>+</span></button>
 					</div>
 				</div>
 			</section>
