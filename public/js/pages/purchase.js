@@ -199,20 +199,73 @@ import Bottle from "../components/Bottle.js";
         const container = document.querySelector("[data-js-list]");
         const template = document.querySelector("template#bottle");
         console.log(data);
-
+    
         if (!data.empty) {
+            // On parcourt les achats et on les affiche
             data.purchases.forEach((purchase) => {
+                // Création de la bouteille
                 new Bottle(purchase, "purchase", template, container);
+                const bottleElement = container.querySelector(`[data-js-bottle-id="${purchase.id}"]`);
+                    if (!bottleElement) {
+                        console.error(`Erreur : Impossible de trouver la bouteille avec l'ID ${purchase.id}`);
+                        return;
+                    }
+    
+                    // Sélection et mise à jour de l'icône de favori
+                    const heartIcon = bottleElement.querySelector(".favorite-icon");
+                    if (!heartIcon) {
+                        console.error(`Erreur : Icône de favori introuvable pour la bouteille ${purchase.id}`);
+                        return;
+                    }
+    
+                    // Mettre à jour l'affichage du favori en fonction de l'état des données serveur
+                    heartIcon.dataset.jsFavorite = purchase.is_favorite ? "true" : "false";
+                    heartIcon.innerHTML = purchase.is_favorite ? "❤️" : "🤍";
+                    heartIcon.title = purchase.is_favorite ? "Retirer des favoris" : "Ajouter aux favoris";
+    
+                    // Ajouter un événement pour basculer le favori
+                    heartIcon.addEventListener("click", async () => {
+                        try {
+                            const response = await fetch(`/favoris/toggle`, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                                },
+                                body: JSON.stringify({ bottle_id: purchase.id }),
+                            });
+    
+                            if (!response.ok) {
+                                throw new Error("Erreur serveur !");
+                            }
+    
+                            const responseData = await response.json();
+    
+                            // Mise à jour du favori après la réponse du serveur
+                            if (responseData.status === "added") {
+                                heartIcon.dataset.jsFavorite = "true";
+                                heartIcon.innerHTML = "❤️";
+                                heartIcon.title = "Retirer des favoris";
+                            } else {
+                                heartIcon.dataset.jsFavorite = "false";
+                                heartIcon.innerHTML = "🤍";
+                                heartIcon.title = "Ajouter aux favoris";
+                            }
+    
+                        } catch (error) {
+                            console.error("Erreur lors du changement du statut du favori :", error);
+                        }
+                    });
             });
             displayAddBottleBtn();
         } else if (data.filtered) {
-            console.log("no result");
+            console.log("Aucun résultat trouvé");
             displayNoContentMessage("noResult");
         } else {
             displayNoContentMessage("noPurchase");
         }
     }
-
+    
     /**
      * tri et affiche le résultat trié
      */

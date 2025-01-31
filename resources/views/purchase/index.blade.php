@@ -44,8 +44,11 @@
 	</article>
 </template>
 <template id="bottle">
-	<article class="card_bottle" data-js-id="" data-js-Name="">
+	<article class="card_bottle" data-js-id="" data-js-bottle-id="" data-js-Name="">
 		<picture>
+			<button class="favorite-icon" data-js-favorite="false" title="Ajouter aux favoris">
+				🤍
+			</button>
 			<img data-info="img" src="" alt="">
 		</picture>
 		<section>

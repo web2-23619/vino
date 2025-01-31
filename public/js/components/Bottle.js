@@ -10,6 +10,7 @@ export default class Bottle {
     #quantity;
     #img;
     #purchaseId;
+    #purchaseBottleId
     #template;
     #page;
     #container;
@@ -33,6 +34,7 @@ export default class Bottle {
         this.#container = container;
 
         if (this.#page === "purchase") {
+            this.#purchaseBottleId = data.id;
             this.#purchaseId = data.purchase_id;
             this.#quantity = data.purchase_quantity;
             this.#changeQuantity = this.#changePurchaseQuantity;
@@ -67,6 +69,7 @@ export default class Bottle {
 
         if (this.#page === "purchase") {
             this.#elementHTML.setAttribute("data-js-id", this.#purchaseId);
+            this.#elementHTML.setAttribute("data-js-bottle-id", this.#purchaseBottleId);
 
             this.#btnRemove = this.#elementHTML.querySelector(
                 "[data-js-action='afficherModaleConfirmation']"
