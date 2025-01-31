@@ -253,9 +253,7 @@ class ModaleAction {
                 );
                 localStorage.removeItem("token");
                 logoutForm.submit();
-            } catch (error) {
-
-			}
+            } catch (error) {}
         } else {
             console.error("Logout form not found.");
         }
@@ -303,6 +301,7 @@ class ModaleAction {
 
             if (response.ok) {
                 this.#elToChange?.remove();
+                new Alerte(null, 'Favori retiré avec succès', 'succes');
             } else {
                 console.error("Erreur lors de la suppression du favori");
             }
