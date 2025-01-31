@@ -213,6 +213,11 @@ import Bottle from "../components/Bottle.js";
                 formData.append("max_price", parseFloat(maxPrice));
             }
 
+			if(favorite.checked){
+				 nbFilters++;
+				 formData.append("favorite", true);
+			}
+
             const csrfToken = document
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute("content");

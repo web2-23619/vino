@@ -151,7 +151,6 @@ class SearchController extends Controller
 			$cellar_id = null;
 		}
 		
-
 		$query = Bottle::query();
 		$searchQuery = $request->input('query');
 
@@ -187,6 +186,13 @@ class SearchController extends Controller
 		}
 		if ($request->filled('max_price')) {
 			$query->where('price', '<=', $request->input('max_price'));
+		}
+
+		//filtré par favori
+		if ($request->filled('favorite')) {
+			$query->whereHas('favoritedBy', function ($q) {
+				$q->where('users.id', auth()->id());
+			});
 		}
 
 
