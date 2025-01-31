@@ -140,7 +140,6 @@ import App from "../components/App.js";
         );
         sectionHTML.append(content);
         const button = document.querySelector("[data-template-route]");
-        console.log(button);
         const templateRoute = button.dataset.templateRoute;
         const updatedRedirection = templateRoute.replace(
             ":cellar_id",
@@ -215,9 +214,7 @@ import App from "../components/App.js";
         const declencheur = event.target;
         const elToChange = declencheur.closest("article");
         const h3Element = name;
-        console.log(elToChange);
         const nom = elToChange.dataset.jsName;
-        console.log(h3Element);
         const ids = elToChange.dataset.jsKey;
 
         new ModaleAction(
@@ -275,6 +272,8 @@ import App from "../components/App.js";
         menuWrapper.appendChild(kebabMenuContent);
 
         updateBottleView(currentCellarId);
+
+		history.pushState(null, "", `/inventaire?cellar_id=${currentCellarId}`);
     }
 
     // Gestion du select des celliers dans inventaire
@@ -343,7 +342,6 @@ import App from "../components/App.js";
         let footerHtml = document.querySelector("footer");
         footerHtml.prepend(content);
         const button = document.querySelector("[data-template-route]");
-        console.log(button);
         const templateRoute = button.dataset.templateRoute;
         const updatedRedirection = templateRoute.replace(
             ":cellar_id",
@@ -383,7 +381,6 @@ import App from "../components/App.js";
         }
 
         const boutonAjout = document.querySelector("footer > div");
-        console.log(boutonAjout);
         if (boutonAjout) {
             boutonAjout.remove();
         }

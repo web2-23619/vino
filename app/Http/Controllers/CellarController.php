@@ -16,7 +16,7 @@ class CellarController extends Controller
 	{
 		$user_id = Auth::user()->id;
 		$cellars = Cellar::select()->where('user_id', $user_id)->orderBy('name')->get();
-		$cellar_id = request()->route('cellar_id');
+		$cellar_id = request('cellar_id');
 
 		$countries = Bottle::select('country')
 		->selectRaw('COUNT(*) as total')

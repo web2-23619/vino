@@ -61,7 +61,7 @@ class SearchController extends Controller
 
 			$cellar->bottles()->updateExistingPivot($bottle->id, ['quantity' => $newQuantity]);
 
-			return redirect()->route('cellar.showBottles', ['cellar' => $cellar->id])
+			return redirect()->route('cellar.index', ['cellar_id' => $cellar->id])
 				->with('success', 'La quantité de la bouteille a été mise à jour avec succès!');
 		} else {
 			// Sinon, ajouter la bouteille au cellier
