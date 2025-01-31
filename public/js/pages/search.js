@@ -55,6 +55,8 @@ import Bottle from "../components/Bottle.js";
     function searchAutoComplete() {
         const query = searchInput.value.trim();
 
+        if (searchTriggered) return;
+
         if (query.length < 2) {
             suggestionsContainer.innerHTML = "";
             suggestionsContainer.style.display = "none";
@@ -101,7 +103,10 @@ import Bottle from "../components/Bottle.js";
             });
     }
 
-    searchInput.addEventListener("input", debouncedAutoComplete);
+    searchInput.addEventListener("input", function () {
+        searchTriggered = false;
+        debouncedAutoComplete();
+    });
 
     // --- filtres ---
     const filterFormHTML = document.querySelector("[data-js='filtersForm']");
@@ -121,8 +126,17 @@ import Bottle from "../components/Bottle.js";
 
     filterFormHTML.addEventListener("submit", function (event) {
         event.preventDefault();
+
+        //annuler la suggestion
+		searchTriggered = true;
+        clearTimeout(debounceTimer);
+        suggestionsContainer.style.display = "none";
+
+        //fermer le tag details avec les filtres
         const fitlerDetails = document.querySelector(".filters > details");
         fitlerDetails.removeAttribute("open");
+
+        // reinitialiser la page courante, lancer la recherche avec le tri présélectionné
         currentPage = 1;
         const selectedSort = document.querySelector("[name='sorting']:checked");
         renderSortAndFilter(selectedSort.value);
@@ -185,7 +199,7 @@ import Bottle from "../components/Bottle.js";
             const types = filterFormHTML.querySelectorAll("[name='type']");
             types.forEach(function (type) {
                 if (type.checked) {
-					nbFilters++;
+                    nbFilters++;
                     formData.append("types[]", type.value);
                 }
             });
@@ -195,11 +209,11 @@ import Bottle from "../components/Bottle.js";
             const maxPrice = document.querySelector("[name='max']").value;
 
             if (minPrice) {
-				nbFilters++;
+                nbFilters++;
                 formData.append("min_price", parseFloat(minPrice));
             }
             if (maxPrice) {
-				nbFilters++;
+                nbFilters++;
                 formData.append("max_price", parseFloat(maxPrice));
             }
 
@@ -278,7 +292,7 @@ import Bottle from "../components/Bottle.js";
 
             suggestionsContainer.style.display = "none";
 
-			activeFiltersHTML.textContent = nbFilters;
+            activeFiltersHTML.textContent = nbFilters;
 
             currentPage++;
             loading = false;
