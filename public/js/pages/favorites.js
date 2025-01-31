@@ -16,7 +16,7 @@ import Bottle from "../components/Bottle.js";
         const nbBouteilles = bouteilles.length;
 
         if (nbBouteilles === 0) {
-            displayNoContentMessage();
+            displayNoContentMessage("noFavorite");
         }
     });
 
@@ -92,8 +92,8 @@ import Bottle from "../components/Bottle.js";
     /**
      * Affiche un message si la liste des favoris est vide.
      */
-    function displayNoContentMessage() {
-        const template = document.querySelector("template#noFavorite");
+    function displayNoContentMessage(templateName) {
+        const template = document.querySelector(`[id='${templateName}']`);
         let content = template.content.cloneNode(true);
         let sectionHTML = document.querySelector("main > section");
         sectionHTML.append(content);
@@ -140,7 +140,7 @@ import Bottle from "../components/Bottle.js";
      * @param {object} data - Les données des favoris.
      * @param {Array} data.favorites - Un tableau contenant les objets des favoris.
      */
-    function render(data) {
+    function render(data, filtered = false) {
         const container = document.querySelector("[data-js-list]");
         const template = document.querySelector("template#favoriteBottle");
         const actionButtonTemplate = document.querySelector(
@@ -205,8 +205,10 @@ import Bottle from "../components/Bottle.js";
             });
 
             displayAddBottleBtn();
+        } else if (filtered) {
+            displayNoContentMessage("noResult");
         } else {
-            displayNoContentMessage();
+            displayNoContentMessage("noFavorite");
         }
     }
 
@@ -371,7 +373,7 @@ import Bottle from "../components/Bottle.js";
             }
         }
 
-        let filteredPurchase = purchases;
+        let filteredFavorites = favorites;
 
         if (
             countries.length === 0 &&
@@ -380,42 +382,33 @@ import Bottle from "../components/Bottle.js";
             max.value === ""
         ) {
             clearAll();
-            render(dataAll);
-            purchases = dataAll.purchases;
+            render(data);
+            favorites = data.filteredFavorites;
         } else {
             if (countries.length > 0) {
-                filteredPurchase = filteredPurchase.filter((purchase) =>
-                    countries.includes(purchase.country)
+                filteredFavorites = filteredFavorites.filter((favorite) =>
+                    countries.includes(favorite.country)
                 );
             }
             if (types.length > 0) {
-                filteredPurchase = filteredPurchase.filter((purchase) =>
-                    types.includes(purchase.type)
+                filteredFavorites = filteredFavorites.filter((favorite) =>
+                    types.includes(favorite.type)
                 );
             }
             if (min.value != "") {
-                filteredPurchase = filteredPurchase.filter(
-                    (purchase) => purchase.price >= parseFloat(min.value)
+                filteredFavorites = filteredFavorites.filter(
+                    (favorite) => favorite.price >= parseFloat(min.value)
                 );
             }
             if (max.value != "") {
-                filteredPurchase = filteredPurchase.filter(
-                    (purchase) => purchase.price <= parseFloat(max.value)
+                filteredFavorites = filteredFavorites.filter(
+                    (favorite) => favorite.price <= parseFloat(max.value)
                 );
             }
 
-            const dataFiltered = {
-                purchases: filteredPurchase,
-                empty: false,
-                filtered: true,
-            };
-            console.log(dataFiltered.purchases.length === 0);
-            if (dataFiltered.purchases.length === 0) {
-                dataFiltered.empty = true;
-            }
-            purchases = filteredPurchase;
+            favorites = filteredFavorites;
             clearAll();
-            render(dataFiltered);
+            render({ favorites }, true);
         }
     }
 })();

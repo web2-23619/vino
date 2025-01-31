@@ -262,7 +262,7 @@ import Bottle from "../components/Bottle.js";
             console.log("Aucun résultat trouvé");
             displayNoContentMessage("noResult");
         } else {
-            displayNoContentMessage("noPurchase");
+            displayNoContentMessage("noFavorite");
         }
     }
     

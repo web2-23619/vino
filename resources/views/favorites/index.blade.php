@@ -27,6 +27,13 @@
 		<a href="{{ route('search.index', ['source' => 'favoris']) }}" class="btn">Découvrir des bouteilles</a>
 	</article>
 </template>
+<template id="noResult">
+	<article class="noContent">
+		<h3>Aucune bouteille dans vos favoris ne correspond à votre recherche</h3>
+		<p>Allez consulter le catalogue des bouteilles de la SAQ afin de trouver une bouteille !</p>
+		<a href="{{ route('search.index', ['source' => 'favoris']) }}" class="btn">Découvrir des bouteilles</a>
+	</article>
+</template>
 <!-- Template pour l'utilisation des modales, ne pas supprimer-->
 <template id="supprimerFavoris">
 	<div class="modale-action">
