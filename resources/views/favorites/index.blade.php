@@ -14,10 +14,6 @@
 			<button data-js-action="fermer">x</button>
 		</div>
 	</template>
-	<div class="display-options">
-		@include('layouts.filtres',['initialCountries' => $initialCountries, 'remainingCountries' => $remainingCountries, 'remainingCount' => $remainingCount, 'types' => $types])
-		@include('layouts.sort')
-	</div>
 	<div data-js-list></div>
 </section>
 <template id="noFavorite">
@@ -49,9 +45,6 @@
 <template id="favoriteBottle">
 	<article class="card_bottle" data-js-id="" data-js-Name="">
 		<picture>
-			<button class="favorite-icon" data-js-favorite="false" title="Ajouter aux favoris">
-				❤️
-			</button>
 			<img data-info="img" src="" alt="">
 		</picture>
 		<section>
