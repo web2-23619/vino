@@ -232,11 +232,9 @@ import App from "../components/App.js";
     //ecouteur d'evenement sur la composante Modale
     document.addEventListener("fermerModale", async function (event) {
         const bouteilles = document.querySelectorAll(".card_bottle");
-        const nbBouteilles = bouteilles.length;
 
-        if (nbBouteilles === 0) {
-            displayNoContentMessage(currentCellar.value);
-        }
+		updateBottleView(currentCellar.value);
+
     });
 
     /**
