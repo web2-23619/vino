@@ -50,6 +50,9 @@
 <template id="searchResultBottle">
 	<article class="card_bottle" data-js-key="">
 		<picture>
+			<button class="favorite-icon" data-js-favorite="false">
+				🤍
+			</button>
 			<img data-info="img" loading="lazy" src="" alt="">
 		</picture>
 		<section>

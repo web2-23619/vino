@@ -209,6 +209,12 @@ class SearchController extends Controller
 		// Handling Pagination
 		$results = $query->paginate(30);
 
+		//ajouter si favori ou non
+		$results->getCollection()->transform(function ($bottle) {
+			$bottle->is_favorite = $bottle->favoritedBy->contains(auth()->id());
+			return $bottle;
+		});
+
 		// Récupérer les celliers de l’utilisatrice pour la liste déroulante
 		$userCellars = auth()->check() ? auth()->user()->cellars : [];
 		$source = $request->input('source');
