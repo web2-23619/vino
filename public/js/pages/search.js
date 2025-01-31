@@ -62,8 +62,8 @@ import Bottle from "../components/Bottle.js";
                         type: "LiveStream",
                         target: document.querySelector("#interactive"),
                         constraints: {
-                            width: { min: 640 },
-                            height: { min: 480 },
+                            width: { ideal: 1920 },
+                            height: { ideal: 1080 },
                             facingMode: "environment",
                         },
                     },
@@ -88,9 +88,16 @@ import Bottle from "../components/Bottle.js";
 
             // Écouteur d'évènement pour la détection d'un barcode
             Quagga.onDetected((data) => {
-                console.log("Barcode detected:", data.codeResult.code);
 
                 //TODO: lancer recherche au scan
+                let scannedBarCode = data.codeResult.code;
+                console.log("Barcode detected:", scannedBarCode);
+                if(scannedBarCode.length === 13) {
+                    scannedBarCode = "0" + scannedBarCode // le leading zero pour match le GTIN-14 (14 chiffres) upc dans la db
+
+                    const url = `/recherche?query=${encodeURIComponent(data.codeResult.code)}&source=${encodeURIComponent(source)}`;
+                    window.location.href = url;
+                }
 
                 Quagga.stop();
                 scannerContent.innerHTML = "";
