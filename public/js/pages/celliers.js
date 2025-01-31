@@ -543,7 +543,8 @@ import App from "../components/App.js";
             countries.length === 0 &&
             types.length === 0 &&
             min.value === "" &&
-            max.value === ""
+            max.value === "" &&
+            !favorite.checked
         ) {
             filteredBottle = [...currentBottles];
         } else {
@@ -567,6 +568,13 @@ import App from "../components/App.js";
                 nbFilters++;
                 filteredBottle = filteredBottle.filter(
                     (bottle) => bottle.price <= parseFloat(max.value)
+                );
+            }
+
+            if (favorite.checked) {
+                nbFilters++;
+                filteredBottle = filteredBottle.filter(
+                    (bottle) => bottle.is_favorite
                 );
             }
         }

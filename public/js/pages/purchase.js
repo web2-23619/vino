@@ -28,22 +28,28 @@ import Bottle from "../components/Bottle.js";
             const bottleCard = event.target.closest(".card_bottle");
 
             const bottleId = bottleCard.getAttribute("data-js-bottle-id");
-    
+
             // Trouver l’élément de quantité à l’intérieur de la carte
-            const quantityElement = bottleCard.querySelector("[data-info='quantity']");
-            const quantityInput = bottleCard.querySelector("input[data-js-quantity]");
-    
+            const quantityElement = bottleCard.querySelector(
+                "[data-info='quantity']"
+            );
+            const quantityInput = bottleCard.querySelector(
+                "input[data-js-quantity]"
+            );
+
             // Récupérer la quantité de l’élément affiché et la stocker dans l’entrée
             const bottleQuantity = quantityElement.textContent.trim();
             quantityInput.value = bottleQuantity;
-    
-            let source = window.location.href.includes("listeAchat") ? "listeAchat" : "cellier";
-    
+
+            let source = window.location.href.includes("listeAchat")
+                ? "listeAchat"
+                : "cellier";
+
             // Passer 'quantity' dans la chaîne de requête
             window.location.href = `/listeAchat/bouteille/ajouter/${bottleId}?source=${source}&quantity=${bottleQuantity}`;
         }
     });
-    
+
     // Retirer la bouteille de l’interface utilisateur après l’ajout
     document.addEventListener("DOMContentLoaded", function () {
         const successMessage = document.querySelector(".alert-success");
@@ -68,7 +74,7 @@ import Bottle from "../components/Bottle.js";
     //affichage du bouton ajouter bouteille selon l'ouverture des filtres et tri
     const sortingDetails = document.querySelector(".sorting > details");
     const filterDetails = document.querySelector(".filters > details");
-	const activeFiltersHTML = document.querySelector(
+    const activeFiltersHTML = document.querySelector(
         "[data-js='activeFilters']"
     );
 
@@ -97,7 +103,7 @@ import Bottle from "../components/Bottle.js";
     btnResetFilters.addEventListener("click", function (event) {
         event.preventDefault();
         filterFormHTML.reset();
-		activeFiltersHTML.textContent = 0;
+        activeFiltersHTML.textContent = 0;
     });
 
     // affichage de la liste complete de pays
@@ -201,63 +207,77 @@ import Bottle from "../components/Bottle.js";
     function render(data) {
         const container = document.querySelector("[data-js-list]");
         const template = document.querySelector("template#bottle");
-    
+
         if (!data.empty) {
             // On parcourt les achats et on les affiche
             data.purchases.forEach((purchase) => {
                 // Création de la bouteille
                 new Bottle(purchase, "purchase", template, container);
-                const bottleElement = container.querySelector(`[data-js-bottle-id="${purchase.id}"]`);
-                    if (!bottleElement) {
-                        console.error(`Erreur : Impossible de trouver la bouteille avec l'ID ${purchase.id}`);
-                        return;
-                    }
-    
-                    // Sélection et mise à jour de l'icône de favori
-                    const heartIcon = bottleElement.querySelector(".favorite-icon");
-                    if (!heartIcon) {
-                        console.error(`Erreur : Icône de favori introuvable pour la bouteille ${purchase.id}`);
-                        return;
-                    }
-    
-                    // Mettre à jour l'affichage du favori en fonction de l'état des données serveur
-                    heartIcon.dataset.jsFavorite = purchase.is_favorite ? "true" : "false";
-                    heartIcon.innerHTML = purchase.is_favorite ? "❤️" : "🤍";
-                    heartIcon.title = purchase.is_favorite ? "Retirer des favoris" : "Ajouter aux favoris";
-    
-                    // Ajouter un événement pour basculer le favori
-                    heartIcon.addEventListener("click", async () => {
-                        try {
-                            const response = await fetch(`/favoris/toggle`, {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
-                                },
-                                body: JSON.stringify({ bottle_id: purchase.id }),
-                            });
-    
-                            if (!response.ok) {
-                                throw new Error("Erreur serveur !");
-                            }
-    
-                            const responseData = await response.json();
-    
-                            // Mise à jour du favori après la réponse du serveur
-                            if (responseData.status === "added") {
-                                heartIcon.dataset.jsFavorite = "true";
-                                heartIcon.innerHTML = "❤️";
-                                heartIcon.title = "Retirer des favoris";
-                            } else {
-                                heartIcon.dataset.jsFavorite = "false";
-                                heartIcon.innerHTML = "🤍";
-                                heartIcon.title = "Ajouter aux favoris";
-                            }
-    
-                        } catch (error) {
-                            console.error("Erreur lors du changement du statut du favori :", error);
+                const bottleElement = container.querySelector(
+                    `[data-js-bottle-id="${purchase.id}"]`
+                );
+                if (!bottleElement) {
+                    console.error(
+                        `Erreur : Impossible de trouver la bouteille avec l'ID ${purchase.id}`
+                    );
+                    return;
+                }
+
+                // Sélection et mise à jour de l'icône de favori
+                const heartIcon = bottleElement.querySelector(".favorite-icon");
+                if (!heartIcon) {
+                    console.error(
+                        `Erreur : Icône de favori introuvable pour la bouteille ${purchase.id}`
+                    );
+                    return;
+                }
+
+                // Mettre à jour l'affichage du favori en fonction de l'état des données serveur
+                heartIcon.dataset.jsFavorite = purchase.is_favorite
+                    ? "true"
+                    : "false";
+                heartIcon.innerHTML = purchase.is_favorite ? "❤️" : "🤍";
+                heartIcon.title = purchase.is_favorite
+                    ? "Retirer des favoris"
+                    : "Ajouter aux favoris";
+
+                // Ajouter un événement pour basculer le favori
+                heartIcon.addEventListener("click", async () => {
+                    try {
+                        const response = await fetch(`/favoris/toggle`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": document.querySelector(
+                                    'meta[name="csrf-token"]'
+                                ).content,
+                            },
+                            body: JSON.stringify({ bottle_id: purchase.id }),
+                        });
+
+                        if (!response.ok) {
+                            throw new Error("Erreur serveur !");
                         }
-                    });
+
+                        const responseData = await response.json();
+
+                        // Mise à jour du favori après la réponse du serveur
+                        if (responseData.status === "added") {
+                            heartIcon.dataset.jsFavorite = "true";
+                            heartIcon.innerHTML = "❤️";
+                            heartIcon.title = "Retirer des favoris";
+                        } else {
+                            heartIcon.dataset.jsFavorite = "false";
+                            heartIcon.innerHTML = "🤍";
+                            heartIcon.title = "Ajouter aux favoris";
+                        }
+                    } catch (error) {
+                        console.error(
+                            "Erreur lors du changement du statut du favori :",
+                            error
+                        );
+                    }
+                });
             });
             displayAddBottleBtn();
         } else if (data.filtered) {
@@ -266,7 +286,7 @@ import Bottle from "../components/Bottle.js";
             displayNoContentMessage("noPurchase");
         }
     }
-    
+
     /**
      * tri et affiche le résultat trié
      */
@@ -309,7 +329,7 @@ import Bottle from "../components/Bottle.js";
     async function renderFilter(event) {
         event.preventDefault();
 
-		let nbFilters = 0;
+        let nbFilters = 0;
 
         //filtrer
         const countriesHTML =
@@ -317,7 +337,7 @@ import Bottle from "../components/Bottle.js";
         const countries = [];
         for (const country of countriesHTML) {
             if (country.checked) {
-				nbFilters++;
+                nbFilters++;
                 countries.push(country.value);
             }
         }
@@ -326,7 +346,7 @@ import Bottle from "../components/Bottle.js";
         const types = [];
         for (const type of typesHTML) {
             if (type.checked) {
-				nbFilters++;
+                nbFilters++;
                 types.push(type.value);
             }
         }
@@ -337,7 +357,8 @@ import Bottle from "../components/Bottle.js";
             countries.length === 0 &&
             types.length === 0 &&
             min.value === "" &&
-            max.value === ""
+            max.value === "" &&
+			!favorite.checked
         ) {
             clearAll();
             render(dataAll);
@@ -354,19 +375,26 @@ import Bottle from "../components/Bottle.js";
                 );
             }
             if (min.value != "") {
-				nbFilters++;
+                nbFilters++;
                 filteredPurchase = filteredPurchase.filter(
                     (purchase) => purchase.price >= parseFloat(min.value)
                 );
             }
             if (max.value != "") {
-				nbFilters++;
+                nbFilters++;
                 filteredPurchase = filteredPurchase.filter(
                     (purchase) => purchase.price <= parseFloat(max.value)
                 );
             }
 
-			activeFiltersHTML.textContent = nbFilters;
+            if (favorite.checked) {
+                nbFilters++;
+                filteredPurchase = filteredPurchase.filter(
+                    (purchase) => purchase.is_favorite
+                );
+            }
+
+            activeFiltersHTML.textContent = nbFilters;
 
             const dataFiltered = {
                 purchases: filteredPurchase,

@@ -15,7 +15,7 @@
 .filters__pair {
     width: 100%;
 
-	label{
+	label:not(.noMaxLength){
 		display: inline-block;
 		width: 12ch;
 	};

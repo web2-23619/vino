@@ -4,6 +4,17 @@
 		<form data-js="filtersForm">
 			<section>
 				<details class="filters__criterion">
+					<summary>Favori</summary>
+				</details>
+				<div class="filters__content">
+					<div class="filters__pair">
+						<input type="checkbox" name="favorite" id="favorite" value="favorite">
+						<label for="favorite" class="noMaxLength">Favori seulement</label>
+					</div>
+				</div>
+			</section>
+			<section>
+				<details class="filters__criterion">
 					<summary>Type</summary>
 				</details>
 				<div class="filters__content">
