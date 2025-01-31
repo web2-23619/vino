@@ -28,6 +28,14 @@
 	</div>
 	@endif
 	<div class="cellier-inventory-action">
+
+		<select class="cellier-select" name="cellar-select" id="cellar-select">
+			@forelse($cellars as $cellar)
+			<option value="{{ $cellar->id }}">{{ $cellar->name }}</option>
+			@empty
+			<option disable>Aucun cellier</option>
+			@endforelse
+		</select>
 		<div id="kebab-menu-wrapper">
 			<template id="kebab-menu">
 				<div class="menu-deroulant">
@@ -40,13 +48,6 @@
 				</div>
 			</template>
 		</div>
-		<select class="cellier-select" name="cellar-select" id="cellar-select">
-			@forelse($cellars as $cellar)
-			<option value="{{ $cellar->id }}">{{ $cellar->name }}</option>
-			@empty
-			<option disable>Aucun cellier</option>
-			@endforelse
-		</select>
 	</div>
 </section>
 
@@ -64,16 +65,16 @@
 	@include('layouts.sort')
 </div>
 <section class="cellier-products">
-    <template id="bottle-template">
-        <article class="card_bottle" data-js-key="" data-js-Name="">
-            <picture>
+	<template id="bottle-template">
+		<article class="card_bottle" data-js-key="" data-js-Name="">
+			<picture>
 				<button class="favorite-icon" data-js-favorite="false" title="Ajouter aux favoris">
 					🤍
 				</button>
-                <img src="" alt="">
-            </picture>
-            <section>
-                <header>
+				<img src="" alt="">
+			</picture>
+			<section>
+				<header>
 					<div class="card_bottle__header">
 						<p class="card_bottle__metainfo"></p>
 					</div>
@@ -81,7 +82,7 @@
 					<p class="card_bottle__metainfo"></p>
 				</header>
 				<div>
-        					<p>$ <span data-info="price">PRIX</span></p>
+					<p>$ <span data-info="price">PRIX</span></p>
 					<div class="card_bottle__actions">
 						<button data-js-action="afficherModaleConfirmation" data-js-type="trash">
 							<svg enable-background="new 0 0 32 32" id="Glyph" version="1.1" viewBox="0 0 32 32" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
