@@ -183,21 +183,43 @@ class PurchaseController extends Controller
 	 */
 	public function AllPurchaseApi(Request $request)
 	{
-
+		$user = Auth::user();
+	
+		// Récupération des achats avec les informations sur les bouteilles associées
 		$purchases = Purchase::join('bottles', 'purchases.bottle_id', '=', 'bottles.id')
-			->where('user_id', Auth::user()->id)
+			->where('user_id', $user->id)
 			->select('purchases.id as purchase_id', 'purchases.quantity as purchase_quantity', 'bottles.*')
 			->orderBy('bottles.name', 'asc')
 			->get();
-
+	
 		$empty = true;
 		if (count($purchases) > 0) {
 			$empty = false;
 		}
-
-		return response()->json(['purchases' => $purchases, 'empty' => $empty, 'filtered'=>false], 200);
+	
+		// Ajout du champ is_favorite pour chaque bouteille
+		$purchases = $purchases->map(function ($purchase) use ($user) {
+			return [
+				'purchase_id' => $purchase->purchase_id,
+				'purchase_quantity' => $purchase->purchase_quantity,
+				'id' => $purchase->id,
+				'name' => $purchase->name,
+				'price' => $purchase->price,
+				'image_url' => $purchase->image_url,
+				'country' => $purchase->country,
+				'volume' => $purchase->volume,
+				'type' => $purchase->type,
+				'is_favorite' => $user ? $user->isFavorite($purchase->id) : false, // Vérifier si la bouteille est favorite
+			];
+		});
+	
+		return response()->json([
+			'purchases' => $purchases,
+			'empty' => $empty,
+			'filtered' => false,
+		], 200);
 	}
-
+	
 
 
 	/**
