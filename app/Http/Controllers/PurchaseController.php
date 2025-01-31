@@ -207,8 +207,6 @@ class PurchaseController extends Controller
 	
 		return response()->json([
 			'purchases' => $purchases,
-			'empty' => $empty,
-			'filtered' => false,
 		], 200);
 	}
 	

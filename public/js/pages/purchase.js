@@ -10,19 +10,6 @@ import Bottle from "../components/Bottle.js";
         new Alerte(alerte);
     }
 
-    //ecouteur d'evenement sur la composante Modale
-    document.addEventListener("fermerModale", async function (event) {
-        dataAll = await getAll();
-        purchases = dataAll.purchases;
-
-        const bouteilles = document.querySelectorAll(".card_bottle");
-        const nbBouteilles = bouteilles.length;
-
-        if (nbBouteilles === 0) {
-            displayNoContentMessage("noPurchase");
-        }
-    });
-
     document.addEventListener("click", (event) => {
         if (event.target.matches('[data-js-action="addToCellar"]')) {
             const bottleCard = event.target.closest(".card_bottle");
@@ -67,9 +54,9 @@ import Bottle from "../components/Bottle.js";
     });
 
     // récupérer et afficher les données
-    let dataAll = await getAll();
-    render(dataAll);
-    let purchases = dataAll.purchases;
+    let data = await getAll();
+    render(data);
+    let purchases = data.purchases;
 
     //affichage du bouton ajouter bouteille selon l'ouverture des filtres et tri
     const sortingDetails = document.querySelector(".sorting > details");
@@ -77,6 +64,16 @@ import Bottle from "../components/Bottle.js";
     const activeFiltersHTML = document.querySelector(
         "[data-js='activeFilters']"
     );
+
+    //ecouteur d'evenement sur la composante Modale
+    document.addEventListener("fermerModale", async function (event) {
+        const bouteilles = document.querySelectorAll(".card_bottle");
+        const nbBouteilles = bouteilles.length;
+
+        if (nbBouteilles === 0) {
+            displayNoContentMessage("noPurchase");
+        }
+    });
 
     sortingDetails.addEventListener("toggle", modifyDiplayAddBtn);
     filterDetails.addEventListener("toggle", modifyDiplayAddBtn);
@@ -86,14 +83,16 @@ import Bottle from "../components/Bottle.js";
     sortingOptions.addEventListener("click", function () {
         const selectedSort = document.querySelector("[name='sorting']:checked");
         sortingDetails.removeAttribute("open");
-        renderSort(selectedSort.value);
+        renderSortAndFilter(selectedSort.value);
     });
 
     //filtres
     const filterFormHTML = document.querySelector("[data-js='filtersForm']");
     filterFormHTML.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const selectedSort = document.querySelector("[name='sorting']:checked");
         filterDetails.removeAttribute("open");
-        renderFilter(event);
+        renderSortAndFilter(selectedSort.value);
     });
 
     //reinitialisation des filtres
@@ -135,6 +134,9 @@ import Bottle from "../components/Bottle.js";
 
     function clearAll() {
         document.querySelector("[data-js-list]").innerHTML = "";
+
+        document.querySelector("main > section > .noContent")?.remove();
+
         const boutonAjout = document.querySelector("footer > div");
         if (boutonAjout) {
             boutonAjout.remove();
@@ -204,11 +206,11 @@ import Bottle from "../components/Bottle.js";
      * @param {boolean} data.empty - Un indicateur indiquant si la liste est vide.
      * @param {Array} data.purchases - Un tableau d'objets d'achats à afficher.
      */
-    function render(data) {
+    function render(data, filtered = false) {
         const container = document.querySelector("[data-js-list]");
         const template = document.querySelector("template#bottle");
 
-        if (!data.empty) {
+        if (data.purchases.length > 0) {
             // On parcourt les achats et on les affiche
             data.purchases.forEach((purchase) => {
                 // Création de la bouteille
@@ -280,142 +282,215 @@ import Bottle from "../components/Bottle.js";
                 });
             });
             displayAddBottleBtn();
-        } else if (data.filtered) {
+        } else if (filtered) {
             displayNoContentMessage("noResult");
         } else {
             displayNoContentMessage("noPurchase");
         }
     }
 
-    /**
-     * tri et affiche le résultat trié
-     */
-    function renderSort(sortOption) {
-        const [criteria, sort] = sortOption.split("_");
-        purchases.sort((a, b) => {
-            if (criteria === "name") {
-                const nameA = a.name;
-                const nameB = b.name;
-
-                if (sort === "asc") {
-                    return nameA.localeCompare(nameB);
-                } else {
-                    return nameB.localeCompare(nameA);
-                }
-            } else if (criteria === "price") {
-                const priceA = a.price;
-                const priceB = b.price;
-                if (sort === "asc") {
-                    return priceA - priceB; // Ascending sort
-                } else {
-                    return priceB - priceA; // Descending sort
-                }
-            }
-        });
-
+    async function renderSortAndFilter(sortOption = "name_asc") {
         clearAll();
+
+        data = await getAll();
+        purchases = data.purchases;
 
         const container = document.querySelector("[data-js-list]");
         const template = document.querySelector("template#bottle");
-        purchases.forEach((purchase) => {
-            new Bottle(purchase, "purchase", template, container);
-        });
-        displayAddBottleBtn();
-    }
 
-    /**
-     * afficher données filterés
-     */
-    async function renderFilter(event) {
-        event.preventDefault();
+        if (purchases.length > 0) {
+            //trier
+            const [criteria, sort] = sortOption.split("_");
+            purchases.sort((a, b) => {
+                if (criteria === "name") {
+                    const nameA = a.name;
+                    const nameB = b.name;
 
-        let nbFilters = 0;
+                    if (sort === "asc") {
+                        return nameA.localeCompare(nameB);
+                    } else {
+                        return nameB.localeCompare(nameA);
+                    }
+                } else if (criteria === "price") {
+                    const priceA = a.price;
+                    const priceB = b.price;
+                    if (sort === "asc") {
+                        return priceA - priceB; // Ascending sort
+                    } else {
+                        return priceB - priceA; // Descending sort
+                    }
+                }
+            });
 
-        //filtrer
-        const countriesHTML =
-            filterFormHTML.querySelectorAll("[name='country']");
-        const countries = [];
-        for (const country of countriesHTML) {
-            if (country.checked) {
-                nbFilters++;
-                countries.push(country.value);
+            //fltre
+
+            let nbFilters = 0;
+
+            //filtrer
+            const countriesHTML =
+                filterFormHTML.querySelectorAll("[name='country']");
+            const countries = [];
+            for (const country of countriesHTML) {
+                if (country.checked) {
+                    nbFilters++;
+                    countries.push(country.value);
+                }
             }
-        }
 
-        const typesHTML = filterFormHTML.querySelectorAll("[name='type']");
-        const types = [];
-        for (const type of typesHTML) {
-            if (type.checked) {
-                nbFilters++;
-                types.push(type.value);
+            const typesHTML = filterFormHTML.querySelectorAll("[name='type']");
+            const types = [];
+            for (const type of typesHTML) {
+                if (type.checked) {
+                    nbFilters++;
+                    types.push(type.value);
+                }
             }
-        }
 
-        let filteredPurchase = purchases;
+            let filteredPurchase = [...purchases];
 
-        if (
-            countries.length === 0 &&
-            types.length === 0 &&
-            min.value === "" &&
-            max.value === "" &&
-			!favorite.checked
-        ) {
-            clearAll();
-            render(dataAll);
-            purchases = dataAll.purchases;
+            if (
+                countries.length === 0 &&
+                types.length === 0 &&
+                min.value === "" &&
+                max.value === "" &&
+                !favorite.checked
+            ) {
+                clearAll();
+                render(data);
+            } else {
+                if (countries.length > 0) {
+                    filteredPurchase = filteredPurchase.filter((purchase) =>
+                        countries.includes(purchase.country)
+                    );
+                }
+                if (types.length > 0) {
+                    filteredPurchase = filteredPurchase.filter((purchase) =>
+                        types.includes(purchase.type)
+                    );
+                }
+                if (min.value != "") {
+                    nbFilters++;
+                    filteredPurchase = filteredPurchase.filter(
+                        (purchase) => purchase.price >= parseFloat(min.value)
+                    );
+                }
+                if (max.value != "") {
+                    nbFilters++;
+                    filteredPurchase = filteredPurchase.filter(
+                        (purchase) => purchase.price <= parseFloat(max.value)
+                    );
+                }
+
+                if (favorite.checked) {
+                    nbFilters++;
+                    filteredPurchase = filteredPurchase.filter(
+                        (purchase) => purchase.is_favorite
+                    );
+                }
+
+                activeFiltersHTML.textContent = nbFilters;
+                purchases = filteredPurchase;
+
+                if (purchases.length > 0) {
+                    clearAll();
+
+                    // afficher: On parcourt les achats et on les affiche
+                    purchases.forEach((purchase) => {
+                        // Création de la bouteille
+                        new Bottle(purchase, "purchase", template, container);
+                        const bottleElement = container.querySelector(
+                            `[data-js-bottle-id="${purchase.id}"]`
+                        );
+                        if (!bottleElement) {
+                            console.error(
+                                `Erreur : Impossible de trouver la bouteille avec l'ID ${purchase.id}`
+                            );
+                            return;
+                        }
+
+                        // Sélection et mise à jour de l'icône de favori
+                        const heartIcon =
+                            bottleElement.querySelector(".favorite-icon");
+                        if (!heartIcon) {
+                            console.error(
+                                `Erreur : Icône de favori introuvable pour la bouteille ${purchase.id}`
+                            );
+                            return;
+                        }
+
+                        // Mettre à jour l'affichage du favori en fonction de l'état des données serveur
+                        heartIcon.dataset.jsFavorite = purchase.is_favorite
+                            ? "true"
+                            : "false";
+                        heartIcon.innerHTML = purchase.is_favorite
+                            ? "❤️"
+                            : "🤍";
+                        heartIcon.title = purchase.is_favorite
+                            ? "Retirer des favoris"
+                            : "Ajouter aux favoris";
+
+                        // Ajouter un événement pour basculer le favori
+                        heartIcon.addEventListener("click", async () => {
+                            try {
+                                const response = await fetch(
+                                    `/favoris/toggle`,
+                                    {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            "X-CSRF-TOKEN":
+                                                document.querySelector(
+                                                    'meta[name="csrf-token"]'
+                                                ).content,
+                                        },
+                                        body: JSON.stringify({
+                                            bottle_id: purchase.id,
+                                        }),
+                                    }
+                                );
+
+                                if (!response.ok) {
+                                    throw new Error("Erreur serveur !");
+                                }
+
+                                const responseData = await response.json();
+
+                                // Mise à jour du favori après la réponse du serveur
+                                if (responseData.status === "added") {
+                                    heartIcon.dataset.jsFavorite = "true";
+                                    heartIcon.innerHTML = "❤️";
+                                    heartIcon.title = "Retirer des favoris";
+                                } else {
+                                    heartIcon.dataset.jsFavorite = "false";
+                                    heartIcon.innerHTML = "🤍";
+                                    heartIcon.title = "Ajouter aux favoris";
+                                }
+                            } catch (error) {
+                                console.error(
+                                    "Erreur lors du changement du statut du favori :",
+                                    error
+                                );
+                            }
+                        });
+                    });
+                    displayAddBottleBtn();
+                } else {
+                    displayNoContentMessage("noResult");
+                }
+            }
         } else {
-            if (countries.length > 0) {
-                filteredPurchase = filteredPurchase.filter((purchase) =>
-                    countries.includes(purchase.country)
-                );
-            }
-            if (types.length > 0) {
-                filteredPurchase = filteredPurchase.filter((purchase) =>
-                    types.includes(purchase.type)
-                );
-            }
-            if (min.value != "") {
-                nbFilters++;
-                filteredPurchase = filteredPurchase.filter(
-                    (purchase) => purchase.price >= parseFloat(min.value)
-                );
-            }
-            if (max.value != "") {
-                nbFilters++;
-                filteredPurchase = filteredPurchase.filter(
-                    (purchase) => purchase.price <= parseFloat(max.value)
-                );
-            }
-
-            if (favorite.checked) {
-                nbFilters++;
-                filteredPurchase = filteredPurchase.filter(
-                    (purchase) => purchase.is_favorite
-                );
-            }
-
-            activeFiltersHTML.textContent = nbFilters;
-
-            const dataFiltered = {
-                purchases: filteredPurchase,
-                empty: false,
-                filtered: true,
-            };
-            if (dataFiltered.purchases.length === 0) {
-                dataFiltered.empty = true;
-            }
-            purchases = filteredPurchase;
-            clearAll();
-            render(dataFiltered);
+            displayNoContentMessage("noPurchase");
         }
     }
 
     function modifyDiplayAddBtn() {
         const btnAjouterBouteilleHTML = document.querySelector("footer>div");
-        if (sortingDetails.open || filterDetails.open) {
-            btnAjouterBouteilleHTML.classList.add("invisible");
-        } else {
-            btnAjouterBouteilleHTML.classList.remove("invisible");
+        if (btnAjouterBouteilleHTML) {
+            if (sortingDetails.open || filterDetails.open) {
+                btnAjouterBouteilleHTML.classList.add("invisible");
+            } else {
+                btnAjouterBouteilleHTML.classList.remove("invisible");
+            }
         }
     }
 })();
