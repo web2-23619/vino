@@ -83,11 +83,18 @@ import Bottle from "../components/Bottle.js";
                     }
                     console.log("Quagga initialized.");
                     Quagga.start();
+
+                    timeout = setTimeout(() => {
+                        Quagga.stop();
+                        alert("No barcode detected within the allowed time.");
+                    }, 5000);
                 }
             );
 
             // Écouteur d'évènement pour la détection d'un barcode
             Quagga.onDetected((data) => {
+
+                clearTimeout(timeout);
 
                 //TODO: lancer recherche au scan
                 let scannedBarCode = data.codeResult.code;
