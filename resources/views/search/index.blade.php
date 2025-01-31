@@ -12,10 +12,6 @@
 		@include('layouts.filtres',['initialCountries' => $initialCountries, 'remainingCountries' => $remainingCountries, 'remainingCount' => $remainingCount, 'types' => $types])
 		@include('layouts.sort')
 	</div>
-	<!-- Template pour la position du scanner ne pas supprimer, merci! -->
-	<template id="interactive-container">
-		<div id="interactive" style="width: 100%; height: 300px;"></div>
-	</template>
 
 	<div data-js-list>
 		<header>
