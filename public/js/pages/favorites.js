@@ -33,6 +33,9 @@ import Bottle from "../components/Bottle.js";
 
     sortingDetails.addEventListener("toggle", modifyDiplayAddBtn);
     filterDetails.addEventListener("toggle", modifyDiplayAddBtn);
+    const activeFiltersHTML = document.querySelector(
+        "[data-js='activeFilters']"
+    );
 
     // changer l'ordre d'affichage selon la selection
     const sortingOptions = document.querySelector(".sorting__frame");
@@ -56,6 +59,7 @@ import Bottle from "../components/Bottle.js";
     btnResetFilters.addEventListener("click", function (event) {
         event.preventDefault();
         filterFormHTML.reset();
+        activeFiltersHTML.textContent = 0;
     });
 
     // affichage de la liste complete de pays
@@ -355,12 +359,15 @@ import Bottle from "../components/Bottle.js";
     async function renderFilter(event) {
         event.preventDefault();
 
+        let nbFilters = 0;
+
         //filtrer
         const countriesHTML =
             filterFormHTML.querySelectorAll("[name='country']");
         const countries = [];
         for (const country of countriesHTML) {
             if (country.checked) {
+				nbFilters++;
                 countries.push(country.value);
             }
         }
@@ -369,6 +376,7 @@ import Bottle from "../components/Bottle.js";
         const types = [];
         for (const type of typesHTML) {
             if (type.checked) {
+				nbFilters++;
                 types.push(type.value);
             }
         }
@@ -401,10 +409,13 @@ import Bottle from "../components/Bottle.js";
                 );
             }
             if (max.value != "") {
+				nbFilters++;
                 filteredFavorites = filteredFavorites.filter(
                     (favorite) => favorite.price <= parseFloat(max.value)
                 );
             }
+
+			activeFiltersHTML.textContent = nbFilters;
 
             favorites = filteredFavorites;
             clearAll();

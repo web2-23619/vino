@@ -1,6 +1,6 @@
 <div class="filters">
 	<details>
-		<summary>Filtrer <span class="filters__chevron">&#10094;</span></summary>
+		<summary><span>Filtrer [<span data-js="activeFilters">0</span>] </span><span class="filters__chevron">&#10094;</span></summary>
 		<form data-js="filtersForm">
 			<section>
 				<details class="filters__criterion">

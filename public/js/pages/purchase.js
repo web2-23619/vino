@@ -68,6 +68,9 @@ import Bottle from "../components/Bottle.js";
     //affichage du bouton ajouter bouteille selon l'ouverture des filtres et tri
     const sortingDetails = document.querySelector(".sorting > details");
     const filterDetails = document.querySelector(".filters > details");
+	const activeFiltersHTML = document.querySelector(
+        "[data-js='activeFilters']"
+    );
 
     sortingDetails.addEventListener("toggle", modifyDiplayAddBtn);
     filterDetails.addEventListener("toggle", modifyDiplayAddBtn);
@@ -94,6 +97,7 @@ import Bottle from "../components/Bottle.js";
     btnResetFilters.addEventListener("click", function (event) {
         event.preventDefault();
         filterFormHTML.reset();
+		activeFiltersHTML.textContent = 0;
     });
 
     // affichage de la liste complete de pays
@@ -179,7 +183,6 @@ import Bottle from "../components/Bottle.js";
         );
 
         const data = await response.json();
-        console.log(data);
         return data;
     }
 
@@ -198,7 +201,6 @@ import Bottle from "../components/Bottle.js";
     function render(data) {
         const container = document.querySelector("[data-js-list]");
         const template = document.querySelector("template#bottle");
-        console.log(data);
     
         if (!data.empty) {
             // On parcourt les achats et on les affiche
@@ -259,10 +261,9 @@ import Bottle from "../components/Bottle.js";
             });
             displayAddBottleBtn();
         } else if (data.filtered) {
-            console.log("Aucun résultat trouvé");
             displayNoContentMessage("noResult");
         } else {
-            displayNoContentMessage("noFavorite");
+            displayNoContentMessage("noPurchase");
         }
     }
     
@@ -308,12 +309,15 @@ import Bottle from "../components/Bottle.js";
     async function renderFilter(event) {
         event.preventDefault();
 
+		let nbFilters = 0;
+
         //filtrer
         const countriesHTML =
             filterFormHTML.querySelectorAll("[name='country']");
         const countries = [];
         for (const country of countriesHTML) {
             if (country.checked) {
+				nbFilters++;
                 countries.push(country.value);
             }
         }
@@ -322,6 +326,7 @@ import Bottle from "../components/Bottle.js";
         const types = [];
         for (const type of typesHTML) {
             if (type.checked) {
+				nbFilters++;
                 types.push(type.value);
             }
         }
@@ -349,22 +354,25 @@ import Bottle from "../components/Bottle.js";
                 );
             }
             if (min.value != "") {
+				nbFilters++;
                 filteredPurchase = filteredPurchase.filter(
                     (purchase) => purchase.price >= parseFloat(min.value)
                 );
             }
             if (max.value != "") {
+				nbFilters++;
                 filteredPurchase = filteredPurchase.filter(
                     (purchase) => purchase.price <= parseFloat(max.value)
                 );
             }
+
+			activeFiltersHTML.textContent = nbFilters;
 
             const dataFiltered = {
                 purchases: filteredPurchase,
                 empty: false,
                 filtered: true,
             };
-            console.log(dataFiltered.purchases.length === 0);
             if (dataFiltered.purchases.length === 0) {
                 dataFiltered.empty = true;
             }
