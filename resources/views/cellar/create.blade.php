@@ -9,7 +9,7 @@
 	<form action="{{ route('cellar.store') }}" method="POST" class="form">
 		@csrf
 		<div class="form-group">
-			<label for="name">Nom:</label>
+			<label for="name">Nom</label>
 			<input type="text" name="name" id="name" value="{{ old('name') }}" required>
 			@error('name')
 			<div>{{ $message }}</div>

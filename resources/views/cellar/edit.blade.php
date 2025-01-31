@@ -9,7 +9,7 @@
 		@csrf
 		@method('PUT')
 		<div class="form-group">
-			<label for="name">Nom:</label>
+			<label for="name">Nom</label>
 			<input type="text" name="name" id="name" value="{{ old('name', $cellar->name) }}" required>
 			@error('name')
 			<div>{{ $message }}</div>

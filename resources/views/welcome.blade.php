@@ -39,7 +39,7 @@
 
 		<div class="page-prompt">
 		
-			<p>Pas encore membre ?</p>
+			<p>Vous n'êtes pas encore membre?</p>
 			<a href="{{ route('user.create') }}" class="btn">Enregistrement</a>
 		</div>
 	</div>
