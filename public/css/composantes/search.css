@@ -14,7 +14,7 @@
 
 .search-container input {
 	flex: 1;
-	padding: var(--espace-nano);
+	padding: var(--espace-micro);
 	border: var(--bordure-s) solid var(--contraste-faible);
 	border-radius: var(--rayon-m);
 	box-sizing: border-box;
