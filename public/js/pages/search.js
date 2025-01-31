@@ -294,7 +294,7 @@ import Bottle from "../components/Bottle.js";
                 btnAfficherPlusHtml.addEventListener("click", function (event) {
                     const existingBtnAfficherPlus = event.target;
                     existingBtnAfficherPlus.remove();
-                    renderSort(sortOrder, currentPage);
+                    renderSortAndFilter(sortOrder, currentPage);
                 });
             }
 
