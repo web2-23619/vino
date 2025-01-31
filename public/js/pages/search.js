@@ -25,37 +25,26 @@ import Bottle from "../components/Bottle.js";
     );
 
     // pour autocomplete & scanner
-    document.addEventListener("DOMContentLoaded", function () {
-        if (!searchInput || !suggestionsContainer) {
-            console.error(
-                "L'élément #search ou .search_suggestions est introuvable !"
-            );
-            return;
-        }
+    if (!searchInput || !suggestionsContainer) {
+        console.error(
+            "L'élément #search ou .search_suggestions est introuvable !"
+        );
+        return;
+    }
 
-        // Récupérer la source actuelle de l'URL ou depuis sessionStorage
-        const urlParams = new URLSearchParams(window.location.search);
-        let source = urlParams.get("source");
+    // Récupérer la source actuelle de l'URL ou depuis sessionStorage
+    const urlParams = new URLSearchParams(window.location.search);
+    let source = urlParams.get("source");
 
-        if (!source) {
-            // Si aucune source dans l'URL, essayez de récupérer depuis sessionStorage
-            source = sessionStorage.getItem("source") || "default";
-        } else {
-            // Si une source existe dans l'URL, la sauvegarder dans sessionStorage
-            sessionStorage.setItem("source", source);
-        }
+    if (!source) {
+        // Si aucune source dans l'URL, essayez de récupérer depuis sessionStorage
+        source = sessionStorage.getItem("source") || "default";
+    } else {
+        // Si une source existe dans l'URL, la sauvegarder dans sessionStorage
+        sessionStorage.setItem("source", source);
+    }
 
-        // Lancer le scanner au click en utilisant la camera de l'utilisateur
-        barCodeScannerButton.addEventListener("click", function () {
-            console.log("Scanner button clicked");
-            // Selection de l'emplacement du scanner
-            const scannerContainer = document.querySelector(
-                "template#interactive-container"
-            );
-            const scannerContent = scannerContainer.content.cloneNode(true);
-            document.querySelector("main > section").append(scannerContent);
-
-            Quagga.init(
+Quagga.init(
                 {
                     inputStream: {
                         name: "Live",
@@ -111,83 +100,68 @@ import Bottle from "../components/Bottle.js";
             });
         });
 
-        searchInput.addEventListener("input", function () {
-            const query = searchInput.value.trim();
+    let debounceTimer;
+    function debounce(func, delay) {
+        return function (...args) {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                func(...args);
+            }, delay);
+        };
+    }
+    const debouncedAutoComplete = debounce(searchAutoComplete, 500); // 500ms delay
 
-            if (query.length < 2) {
+    function searchAutoComplete() {
+        const query = searchInput.value.trim();
+
+        if (query.length < 2) {
+            suggestionsContainer.innerHTML = "";
+            suggestionsContainer.style.display = "none";
+            return;
+        }
+        fetch(`/recherche-autocomplete?query=${encodeURIComponent(query)}`)
+            .then((response) => response.json())
+            .then((data) => {
                 suggestionsContainer.innerHTML = "";
-                suggestionsContainer.style.display = "none";
-            }
 
-            // Récupérer la source actuelle de l'URL ou depuis sessionStorage
-            const urlParams = new URLSearchParams(window.location.search);
-            let source = urlParams.get("source");
-
-            if (!source) {
-                // Si aucune source dans l'URL, essayez de récupérer depuis sessionStorage
-                source = sessionStorage.getItem("source") || "default";
-            } else {
-                // Si une source existe dans l'URL, la sauvegarder dans sessionStorage
-                sessionStorage.setItem("source", source);
-            }
-
-            searchInput.addEventListener("input", function () {
-                const query = searchInput.value.trim();
-
-                if (query.length < 2) {
-                    suggestionsContainer.innerHTML = "";
-                    suggestionsContainer.style.display = "none";
+                if (data.length === 0) {
+                    // Afficher un message d'absence de résultats (optionnel)
+                    const noResultMessage = document.createElement("li");
+                    noResultMessage.textContent = "Aucun résultat trouvé.";
+                    noResultMessage.classList.add("suggestion-item");
+                    suggestionsContainer.appendChild(noResultMessage);
+                    suggestionsContainer.style.display = "block";
                     return;
                 }
 
-                fetch(
-                    `/recherche-autocomplete?query=${encodeURIComponent(query)}`
-                )
-                    .then((response) => response.json())
-                    .then((data) => {
-                        suggestionsContainer.innerHTML = "";
+                data.forEach((item) => {
+                    const suggestion = document.createElement("li");
+                    suggestion.textContent = `${item.name} (${item.type}, ${item.country})`;
+                    suggestion.classList.add("search_suggestion-item");
 
-                        if (data.length === 0) {
-                            // Afficher un message d'absence de résultats (optionnel)
-                            const noResultMessage =
-                                document.createElement("li");
-                            noResultMessage.textContent =
-                                "Aucun résultat trouvé.";
-                            noResultMessage.classList.add("suggestion-item");
-                            suggestionsContainer.appendChild(noResultMessage);
-                            suggestionsContainer.style.display = "block";
-                            return;
-                        }
-
-                        data.forEach((item) => {
-                            const suggestion = document.createElement("li");
-                            suggestion.textContent = `${item.name} (${item.type}, ${item.country})`;
-                            suggestion.classList.add("search_suggestion-item");
-
-                            suggestion.addEventListener(
-                                "click",
-                                function (event) {
-                                    searchInput.value = item.name;
-                                    suggestionsContainer.style.display = "none";
-									const btnSubmit = searchForm.querySelector("[type='submit']");
-									btnSubmit.click();
-                                }
-                            );
-
-                            suggestionsContainer.appendChild(suggestion);
-                        });
-
-                        suggestionsContainer.style.display = "block";
-                    })
-                    .catch((error) => {
-                        console.error(
-                            "Erreur lors de la récupération des suggestions :",
-                            error
-                        );
+                    suggestion.addEventListener("click", function (event) {
+                        searchInput.value = item.name;
+                        suggestionsContainer.style.display = "none";
+                        const btnSubmit =
+                            searchForm.querySelector("[type='submit']");
+                        btnSubmit.click();
                     });
+
+                    suggestionsContainer.appendChild(suggestion);
+                });
+
+                suggestionsContainer.style.display = "block";
+            })
+            .catch((error) => {
+                console.error(
+                    "Erreur lors de la récupération des suggestions :",
+                    error
+                );
             });
-        });
-    });
+    }
+
+	searchInput.addEventListener("input", debouncedAutoComplete)
+
 
     // --- filtres ---
     const filterFormHTML = document.querySelector("[data-js='filtersForm']");
