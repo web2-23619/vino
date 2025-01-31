@@ -27,7 +27,7 @@ import Bottle from "../components/Bottle.js";
         if (event.target.matches('[data-js-action="addToCellar"]')) {
             const bottleCard = event.target.closest(".card_bottle");
 
-            const bottleId = bottleCard.getAttribute("data-js-id");
+            const bottleId = bottleCard.getAttribute("data-js-bottle-id");
     
             // Trouver l’élément de quantité à l’intérieur de la carte
             const quantityElement = bottleCard.querySelector("[data-info='quantity']");
