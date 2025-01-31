@@ -43,6 +43,15 @@
 		<a href="{{ route('search.index', ['source' => 'listeAchat']) }}" class="btn">Découvrir des bouteilles</a>
 	</article>
 </template>
+<template id="noResult">
+	<article class="noContent">
+		<h3>
+			Aucune bouteille dans la liste d'achat ne correspond à votre recherche
+		</h3>
+		<p>Allez consulter le catalogue des bouteilles de la SAQ afin d'ajouter la bouteille désirée à la liste d'achat!</p>
+		<a href="{{ route('search.index', ['source' => 'listeAchat']) }}" class="btn">Découvrir des bouteilles</a>
+	</article>
+</template>
 <template id="bottle">
 	<article class="card_bottle" data-js-id="" data-js-bottle-id="" data-js-Name="">
 		<picture>

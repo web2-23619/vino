@@ -82,9 +82,9 @@ import Bottle from "../components/Bottle.js";
 
     //filtres
     const filterFormHTML = document.querySelector("[data-js='filtersForm']");
-    filterFormHTML.addEventListener("submit", function () {
+    filterFormHTML.addEventListener("submit", function (event) {
         filterDetails.removeAttribute("open");
-        renderFilter();
+        renderFilter(event);
     });
 
     //reinitialisation des filtres
