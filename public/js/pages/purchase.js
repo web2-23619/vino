@@ -19,7 +19,7 @@ import Bottle from "../components/Bottle.js";
         const nbBouteilles = bouteilles.length;
 
         if (nbBouteilles === 0) {
-            displayNoContentMessage();
+            displayNoContentMessage("noPurchase");
         }
     });
 
