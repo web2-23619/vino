@@ -50,12 +50,10 @@ import Bottle from "../components/Bottle.js";
             }, delay);
         };
     }
-    const debouncedAutoComplete = debounce(searchAutoComplete, 500); // 500ms delay
+    const debouncedAutoComplete = debounce(searchAutoComplete, 300);
 
     function searchAutoComplete() {
         const query = searchInput.value.trim();
-
-        if (searchTriggered) return;
 
         if (query.length < 2) {
             suggestionsContainer.innerHTML = "";
@@ -104,7 +102,6 @@ import Bottle from "../components/Bottle.js";
     }
 
     searchInput.addEventListener("input", function () {
-        searchTriggered = false;
         debouncedAutoComplete();
     });
 
@@ -128,7 +125,6 @@ import Bottle from "../components/Bottle.js";
         event.preventDefault();
 
         //annuler la suggestion
-		searchTriggered = true;
         clearTimeout(debounceTimer);
         suggestionsContainer.style.display = "none";
 
