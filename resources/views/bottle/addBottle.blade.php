@@ -31,7 +31,7 @@
 		</article>
 		<!-- Quantité à ajouter -->
 		<div class="form-group">
-			<label for="quantity">Quantité :</label>
+			<label for="quantity">Quantité </label>
 			<input type="number" name="quantity" id="quantity" value="{{ old('quantity', $quantity ?? 1) }}" min="1" required>
 		</div>
 		@if($source == 'listeAchat')
@@ -41,7 +41,7 @@
 		<button type="submit" class="btn">Liste d'achat</button>
 		@elseif($source == 'cellier' && !isset($cellar_id))
 		<div class="form-group">
-			<label for="cellar_id">Sélectionner un cellier :</label>
+			<label for="cellar_id">Sélectionner un cellier </label>
 			<div class="action-group">
 				@foreach ($userCellars as $cellar)
 				<button type="button" class="btn btn_cellar" data-cellar-id="{{ $cellar->id }}">

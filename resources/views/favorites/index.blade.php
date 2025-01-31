@@ -71,7 +71,7 @@
 <template id="action-button">
 	<!-- Si on est sur la page des favoris -->
 	<div>
-		<a href="{{ route('search.index', ['source' => 'favoris']) }}" class="btn">Ajouter Bouteille</a>
+		<a href="{{ route('search.index', ['source' => 'favoris']) }}" class="btn">Ajouter bouteille</a>
 	</div>
 </template>
 
