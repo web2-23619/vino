@@ -31,6 +31,10 @@ import Bottle from "../components/Bottle.js";
     const sortingDetails = document.querySelector(".sorting > details");
     const filterDetails = document.querySelector(".filters > details");
 
+    //retirer filtre favori
+	const filtreFavori = filterDetails.querySelector("section:has(input[name='favorite'])");
+	filtreFavori.remove();
+
     sortingDetails.addEventListener("toggle", modifyDiplayAddBtn);
     filterDetails.addEventListener("toggle", modifyDiplayAddBtn);
     const activeFiltersHTML = document.querySelector(
@@ -367,7 +371,7 @@ import Bottle from "../components/Bottle.js";
         const countries = [];
         for (const country of countriesHTML) {
             if (country.checked) {
-				nbFilters++;
+                nbFilters++;
                 countries.push(country.value);
             }
         }
@@ -376,7 +380,7 @@ import Bottle from "../components/Bottle.js";
         const types = [];
         for (const type of typesHTML) {
             if (type.checked) {
-				nbFilters++;
+                nbFilters++;
                 types.push(type.value);
             }
         }
@@ -409,13 +413,13 @@ import Bottle from "../components/Bottle.js";
                 );
             }
             if (max.value != "") {
-				nbFilters++;
+                nbFilters++;
                 filteredFavorites = filteredFavorites.filter(
                     (favorite) => favorite.price <= parseFloat(max.value)
                 );
             }
 
-			activeFiltersHTML.textContent = nbFilters;
+            activeFiltersHTML.textContent = nbFilters;
 
             favorites = filteredFavorites;
             clearAll();

@@ -297,4 +297,13 @@ import Bottle from "../components/Bottle.js";
             loading = false;
         }
     }
+
+    //fermer suggestion si click n'importe ou que suggestion
+    document.addEventListener("click", function (event) {
+        const trigger = event.target;
+
+        if (trigger.tagName !== "LI") {
+            suggestionsContainer.style.display = "none";
+        }
+    });
 })();
