@@ -21,7 +21,7 @@
         opacity: 1;
     }
 
-	& [type="checkbox"]:checked{
+	& [type="checkbox"]:checked::after{
 		background-color: var(--contraste);
 		color: var(--clair);
 	}
@@ -29,6 +29,7 @@
 .menu-deroulant__contenu {
     position: absolute;
     top: 100%;
+	right: 0;
 	z-index: 5;
 
 	display: flex;
@@ -38,6 +39,8 @@
 	background-color: var(--contraste);
 
 	& > *:is(a, button, li) {
+		width: max-content;
+
 		display: block;
 
 		font-size: var(--police-s);

@@ -11,7 +11,7 @@
     }
 
     svg {
-        width: 12px;
+        width: 16px;
         color: var(--tres-fonce);
 
         transition-property: transform;
