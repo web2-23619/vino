@@ -67,7 +67,7 @@ class SearchController extends Controller
 			// Sinon, ajouter la bouteille au cellier
 			$cellar->bottles()->attach($bottle, ['quantity' => $request->input('quantity')]);
 
-			return redirect()->route('cellar.index', ['cellar' => $cellar->id])
+			return redirect()->route('cellar.index', ['cellar_id' => $cellar->id])
 				->with('success', 'Bouteille ajoutée avec succès!');
 		}
 	}
@@ -115,7 +115,11 @@ class SearchController extends Controller
 		$randomBottles = Bottle::inRandomOrder()->take(5)->get();
 
 		// recupérer donner pour afficher les filtres
-		$countries = Bottle::select('country')->distinct()->get();
+		$countries = Bottle::select('country')
+		->selectRaw('COUNT(*) as total')
+		->groupBy('country')
+		->orderByDesc('total')
+		->get();
 
 		$countryNames = $countries->pluck('country')->toArray();
 
