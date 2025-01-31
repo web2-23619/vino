@@ -3,7 +3,7 @@
     width: 100%;
     max-width: 100%;
     max-height: fit-content;
-    padding: var(--espace-nano) var(--espace-s);
+    padding: var(--espace-nano) var(--espace-nano);
     background-color: var(--contraste);
     color: var(--clair);
     font-size: var(--police-std);

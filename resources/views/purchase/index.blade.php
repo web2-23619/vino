@@ -12,10 +12,6 @@
 			<button data-js-action="fermer">x</button>
 		</div>
 	</template>
-	<div class="display-options">
-		@include('layouts.filtres',['initialCountries' => $initialCountries, 'remainingCountries' => $remainingCountries, 'remainingCount' => $remainingCount, 'types' => $types])
-		@include('layouts.sort')
-	</div>
 	<div data-js-list>
 
 	</div>
