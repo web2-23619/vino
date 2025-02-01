@@ -60,10 +60,6 @@
 		<a href="href=" #" data-template-route="{{ rawurldecode(route('search.index', ['source' => 'cellier', 'cellar_id' => ':cellar_id'])) }}" class="btn btn_accent">Découvrir des bouteilles</a>
 	</article>
 </template>
-<div class="display-options">
-	@include('layouts.filtres',['initialCountries' => $initialCountries, 'remainingCountries' => $remainingCountries, 'remainingCount' => $remainingCount, 'types' => $types])
-	@include('layouts.sort')
-</div>
 <section class="cellier-products">
 	<template id="bottle-template">
 		<article class="card_bottle" data-js-key="" data-js-Name="">
