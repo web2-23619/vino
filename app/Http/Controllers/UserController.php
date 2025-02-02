@@ -42,7 +42,7 @@ class UserController extends Controller
 		$request->validate([
 			'username' => 'required|string|max:255',
 			'email' => 'required|email|unique:users,email',
-			'password' => 'required|string|min:6|max:20',
+			'password' => 'required|string|min:6|max:20|confirmed',
 		]);
 
 		$user = new User;
@@ -61,7 +61,7 @@ class UserController extends Controller
 		$request->session()->regenerate();
 
 
-return redirect()->route('user.profile')->with('success', 'Utilisateur créé avec succès!');
+return redirect()->route('cellar.index')->with('success', 'Utilisateur créé avec succès!');
 	}
 
 	public function profile()
